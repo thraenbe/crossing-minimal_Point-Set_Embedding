@@ -1,0 +1,3 @@
+/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles/PointSetCrossMin.dir
+/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles/edit_cache.dir
+/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles/rebuild_cache.dir
