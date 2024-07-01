@@ -2,17 +2,35 @@
 #include <cmath>
 #include <map>
 #include <vector>
+
 // Required geometry for this contest -> points are on integer coordinates
 using size_t = std::size_t;
+using namespace std;
 class Point {
 
 public:
 	Point() = default;
-	Point(int x, int y) : _x(x), _y(y) {};
+	    Point(int x, int y, int cluster = 0) : _x(x), _y(y), _cluster(cluster) {}
 
-	void SetPosition(const std::pair<int, int>& newPos) noexcept { _x = newPos.first; _y = newPos.second; };
-	void SetPosition(const int x, const int y) noexcept { _x = x; _y = y; };
+    // SetPosition methods
+    void SetPosition(const std::pair<int, int>& newPos) noexcept {
+        _x = newPos.first;
+        _y = newPos.second;
+    }
+    void SetPosition(int x, int y) noexcept {
+        _x = x;
+        _y = y;
+    }
 
+    // SetCluster method
+    void SetCluster(int cluster) noexcept {
+        _cluster = cluster;
+    }
+
+    // GetCluster method
+    int GetCluster() const noexcept {
+        return _cluster;
+    }
 	Point operator+ (const Point& other) const
 	{
 		return Point(_x + other._x, _y + other._y);
@@ -51,6 +69,7 @@ public:
 	}
 	int _x{ 0 };
 	int _y{ 0 };
+	int _cluster{0};
 	};
 
 using Segment = std::pair<Point, Point>;
@@ -152,5 +171,12 @@ using Segment = std::pair<Point, Point>;
 }
 [[nodiscard]] inline bool DoIntersect(const Segment& lhs, const Segment& rhs, int numNodes) {
 	return DoIntersect(lhs.first, lhs.second, rhs.first, rhs.second, numNodes);
+}
+[[nodiscard]] inline int sqr(int number) {
+    return number * number;
+}
+
+[[nodiscard]] inline float euclideanDistance(const Point& p, const Point& q ){
+	return sqrt(sqr(p._x - q._x) + sqr(p._y - q._y));
 }
 

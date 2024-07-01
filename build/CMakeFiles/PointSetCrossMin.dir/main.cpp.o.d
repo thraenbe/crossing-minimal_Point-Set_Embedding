@@ -271,11 +271,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h \
  /home/bela/uni-tuebingen/6/bachelor/code/Geometry.hpp \
- /usr/include/c++/11/random /usr/include/c++/11/bits/random.h \
- /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
- /usr/include/c++/11/bits/random.tcc /usr/include/c++/11/iostream \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/deterministic.h \
+ /usr/include/c++/11/iostream /usr/include/c++/11/list \
+ /usr/include/c++/11/bits/stl_list.h /usr/include/c++/11/bits/list.tcc \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_queue.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Graph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EdgeArray.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Graph_d.h \
@@ -301,7 +301,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/malloc.h /usr/include/c++/11/mutex \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/bits/parse_numbers.h \
- /usr/include/c++/11/bits/unique_lock.h \
+ /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/random \
+ /usr/include/c++/11/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
+ /usr/include/c++/11/bits/random.tcc \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/ArrayBuffer.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/List.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/list_templates.h \
@@ -310,23 +313,27 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/copy_move.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/RegisteredArray.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Math.h \
- /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
- /usr/include/c++/11/bits/list.tcc \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/InducedSubgraph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphObserver.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/NodeArray.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/Clusterer.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ClustererModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/simple_graph_alg.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/SList.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/tuples.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Hashing.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraph.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/deterministic.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomized.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomGeographicalThresholdGraph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomHierarchy.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraph.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/SList.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/DfsAcyclicSubgraph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphAttributes.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutStandards.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graphics.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/geometry.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EpsilonTest.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Hashing.h \
  /usr/include/c++/11/cfloat \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/AcyclicSubgraphModule.h \
@@ -341,4 +348,28 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraphAttributes.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterArray.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/steiner_tree/EdgeWeightedGraph.h \
- /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc
+ /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationLayout.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/packing/CCLayoutPackModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/CrossingMinimizationModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Module.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Timeouter.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EdgeTypePatterns.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/NodeTypePatterns.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EmbedderModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/extended_graph_alg.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DisjointSets.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/PriorityQueue.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/HashArray.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/PairingHeap.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/HeapBase.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/BoyerMyrvold.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/ExtractKuratowskis.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/KuratowskiSubdivision.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/LayoutPlanRepModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h

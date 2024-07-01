@@ -7,6 +7,41 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/Graph.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/JSONParser.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/json.hpp
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Array.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/ArrayBuffer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EdgeArray.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Graph.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphList.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphObserver.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Graph_d.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Hashing.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/InducedSubgraph.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/List.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Logger.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Math.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/NodeArray.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Observer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/RegisteredArray.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Reverse.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/SList.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/System.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/basic.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/comparer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/exceptions.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/config.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/config_autogen.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/copy_move.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/graph_iterators.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/list_templates.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/version.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory/MallocMemoryAllocator.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory/PoolMemoryAllocator.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/simple_graph_alg.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/tuples.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraph.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/Clusterer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ClustererModule.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
@@ -35,6 +70,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/bits/cpp_type_traits.h
  /usr/include/c++/11/bits/cxxabi_forced.h
  /usr/include/c++/11/bits/cxxabi_init_exception.h
+ /usr/include/c++/11/bits/deque.tcc
  /usr/include/c++/11/bits/enable_special_members.h
  /usr/include/c++/11/bits/erase_if.h
  /usr/include/c++/11/bits/exception.h
@@ -69,9 +105,12 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/bits/node_handle.h
  /usr/include/c++/11/bits/ostream.tcc
  /usr/include/c++/11/bits/ostream_insert.h
+ /usr/include/c++/11/bits/parse_numbers.h
  /usr/include/c++/11/bits/postypes.h
  /usr/include/c++/11/bits/predefined_ops.h
  /usr/include/c++/11/bits/ptr_traits.h
+ /usr/include/c++/11/bits/random.h
+ /usr/include/c++/11/bits/random.tcc
  /usr/include/c++/11/bits/range_access.h
  /usr/include/c++/11/bits/ranges_algo.h
  /usr/include/c++/11/bits/ranges_algobase.h
@@ -92,6 +131,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/bits/stl_algobase.h
  /usr/include/c++/11/bits/stl_bvector.h
  /usr/include/c++/11/bits/stl_construct.h
+ /usr/include/c++/11/bits/stl_deque.h
  /usr/include/c++/11/bits/stl_function.h
  /usr/include/c++/11/bits/stl_heap.h
  /usr/include/c++/11/bits/stl_iterator.h
@@ -102,6 +142,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/bits/stl_multimap.h
  /usr/include/c++/11/bits/stl_numeric.h
  /usr/include/c++/11/bits/stl_pair.h
+ /usr/include/c++/11/bits/stl_queue.h
  /usr/include/c++/11/bits/stl_raw_storage_iter.h
  /usr/include/c++/11/bits/stl_relops.h
  /usr/include/c++/11/bits/stl_tempbuf.h
@@ -114,6 +155,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/bits/string_view.tcc
  /usr/include/c++/11/bits/stringfwd.h
  /usr/include/c++/11/bits/uniform_int_dist.h
+ /usr/include/c++/11/bits/unique_lock.h
  /usr/include/c++/11/bits/unique_ptr.h
  /usr/include/c++/11/bits/unordered_map.h
  /usr/include/c++/11/bits/unordered_set.h
@@ -127,6 +169,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/cassert
  /usr/include/c++/11/cctype
  /usr/include/c++/11/cerrno
+ /usr/include/c++/11/chrono
  /usr/include/c++/11/ciso646
  /usr/include/c++/11/climits
  /usr/include/c++/11/clocale
@@ -138,10 +181,12 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/cstdio
  /usr/include/c++/11/cstdlib
  /usr/include/c++/11/cstring
+ /usr/include/c++/11/ctime
  /usr/include/c++/11/cwchar
  /usr/include/c++/11/cwctype
  /usr/include/c++/11/debug/assertions.h
  /usr/include/c++/11/debug/debug.h
+ /usr/include/c++/11/deque
  /usr/include/c++/11/exception
  /usr/include/c++/11/ext/aligned_buffer.h
  /usr/include/c++/11/ext/alloc_traits.h
@@ -164,6 +209,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/list
  /usr/include/c++/11/map
  /usr/include/c++/11/memory
+ /usr/include/c++/11/mutex
  /usr/include/c++/11/new
  /usr/include/c++/11/numbers
  /usr/include/c++/11/numeric
@@ -173,6 +219,9 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/c++/11/pstl/glue_memory_defs.h
  /usr/include/c++/11/pstl/glue_numeric_defs.h
  /usr/include/c++/11/pstl/pstl_config.h
+ /usr/include/c++/11/queue
+ /usr/include/c++/11/random
+ /usr/include/c++/11/ratio
  /usr/include/c++/11/stdexcept
  /usr/include/c++/11/streambuf
  /usr/include/c++/11/string
@@ -208,6 +257,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/linux/errno.h
  /usr/include/linux/limits.h
  /usr/include/locale.h
+ /usr/include/malloc.h
  /usr/include/math.h
  /usr/include/pthread.h
  /usr/include/sched.h
@@ -327,6 +377,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h
+ /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h
  /usr/include/x86_64-linux-gnu/gnu/stubs.h
@@ -351,6 +402,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Array.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/ArrayBuffer.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/CombinatorialEmbedding.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DisjointSets.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DualGraph.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EdgeArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EpsilonTest.h
@@ -362,22 +414,28 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphObserver.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Graph_d.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GridLayout.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/HashArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Hashing.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/InducedSubgraph.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Layout.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutModule.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutStandards.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/List.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Logger.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Math.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Module.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/NodeArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Observer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/PriorityQueue.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/RegisteredArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Reverse.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/SList.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/System.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Timeouter.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/basic.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/comparer.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/exceptions.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/extended_graph_alg.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/geometry.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/deterministic.h
@@ -385,6 +443,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomHierarchy.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomized.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graphics.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/HeapBase.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/PairingHeap.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/config.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/config_autogen.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/copy_move.h
@@ -394,13 +454,32 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory/MallocMemoryAllocator.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/memory/PoolMemoryAllocator.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/simple_graph_alg.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/tuples.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraph.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraphAttributes.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/fileformats/GraphIO.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/Clusterer.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ClustererModule.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/steiner_tree/EdgeWeightedGraph.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/AcyclicSubgraphModule.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/DfsAcyclicSubgraph.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/packing/CCLayoutPackModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/BoyerMyrvold.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/CrossingMinimizationModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EdgeTypePatterns.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EmbedderModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/ExtractKuratowskis.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/KuratowskiSubdivision.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/LayoutPlanRepModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/NodeTypePatterns.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationLayout.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
@@ -429,6 +508,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /usr/include/c++/11/bits/cpp_type_traits.h
  /usr/include/c++/11/bits/cxxabi_forced.h
  /usr/include/c++/11/bits/cxxabi_init_exception.h
+ /usr/include/c++/11/bits/deque.tcc
  /usr/include/c++/11/bits/enable_special_members.h
  /usr/include/c++/11/bits/erase_if.h
  /usr/include/c++/11/bits/exception.h
@@ -490,6 +570,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /usr/include/c++/11/bits/stl_algobase.h
  /usr/include/c++/11/bits/stl_bvector.h
  /usr/include/c++/11/bits/stl_construct.h
+ /usr/include/c++/11/bits/stl_deque.h
  /usr/include/c++/11/bits/stl_function.h
  /usr/include/c++/11/bits/stl_heap.h
  /usr/include/c++/11/bits/stl_iterator.h
@@ -500,6 +581,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /usr/include/c++/11/bits/stl_multimap.h
  /usr/include/c++/11/bits/stl_numeric.h
  /usr/include/c++/11/bits/stl_pair.h
+ /usr/include/c++/11/bits/stl_queue.h
  /usr/include/c++/11/bits/stl_raw_storage_iter.h
  /usr/include/c++/11/bits/stl_relops.h
  /usr/include/c++/11/bits/stl_tempbuf.h
@@ -544,6 +626,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /usr/include/c++/11/cwctype
  /usr/include/c++/11/debug/assertions.h
  /usr/include/c++/11/debug/debug.h
+ /usr/include/c++/11/deque
  /usr/include/c++/11/exception
  /usr/include/c++/11/ext/aligned_buffer.h
  /usr/include/c++/11/ext/alloc_traits.h
@@ -576,6 +659,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /usr/include/c++/11/pstl/glue_memory_defs.h
  /usr/include/c++/11/pstl/glue_numeric_defs.h
  /usr/include/c++/11/pstl/pstl_config.h
+ /usr/include/c++/11/queue
  /usr/include/c++/11/random
  /usr/include/c++/11/ratio
  /usr/include/c++/11/sstream
