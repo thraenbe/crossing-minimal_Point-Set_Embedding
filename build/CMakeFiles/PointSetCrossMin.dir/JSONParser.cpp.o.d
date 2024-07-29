@@ -273,6 +273,7 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o: \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h \
  /home/bela/uni-tuebingen/6/bachelor/code/Geometry.hpp \
+ /home/bela/uni-tuebingen/6/bachelor/code/Node.hpp \
  /usr/include/c++/11/iostream /usr/include/c++/11/list \
  /usr/include/c++/11/bits/stl_list.h /usr/include/c++/11/bits/list.tcc \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \

@@ -6,11 +6,13 @@
 // Required geometry for this contest -> points are on integer coordinates
 using size_t = std::size_t;
 using namespace std;
+
+
 class Point {
 
 public:
 	Point() = default;
-	    Point(int x, int y, int cluster = 0) : _x(x), _y(y), _cluster(cluster) {}
+	    Point(int id, int x, int y, int cluster = 0) :  _id(id), _x(x), _y(y), _cluster(cluster) {}
 
     // SetPosition methods
     void SetPosition(const std::pair<int, int>& newPos) noexcept {
@@ -20,7 +22,7 @@ public:
     void SetPosition(int x, int y) noexcept {
         _x = x;
         _y = y;
-    }
+	}
 
     // SetCluster method
     void SetCluster(int cluster) noexcept {
@@ -33,12 +35,12 @@ public:
     }
 	Point operator+ (const Point& other) const
 	{
-		return Point(_x + other._x, _y + other._y);
+		return Point(_x + other._x, _y + other._y , _id);
 	}
 
 	Point operator- (const Point& other) const
 	{
-		return Point(_x - other._x, _y - other._y);
+		return Point(_x - other._x, _y - other._y, _id);
 	}
 
 	void operator+=(const Point& other) {
@@ -67,8 +69,14 @@ public:
 	int GetY() const {
 		return _y;
 	}
+
+	int GetId() const  {
+		return _id;
+	}
+	
 	int _x{ 0 };
 	int _y{ 0 };
+	int _id{ 0 };
 	int _cluster{0};
 	};
 
@@ -178,5 +186,16 @@ using Segment = std::pair<Point, Point>;
 
 [[nodiscard]] inline float euclideanDistance(const Point& p, const Point& q ){
 	return sqrt(sqr(p._x - q._x) + sqr(p._y - q._y));
+}
+
+[[nodiscard]] inline float computeGradient(const Point& p, const Point& q ){
+	double gradient;
+	if (p._x != q._x){ 
+		gradient =  (double)(p._y - q._y) / (double)(p._x - q._x);
+	}
+	else{
+		gradient = std::numeric_limits<double>::infinity();
+	}
+	return gradient;
 }
 

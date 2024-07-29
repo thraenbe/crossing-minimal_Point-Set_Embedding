@@ -3,6 +3,11 @@ project(PointSetCrossMin)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(BOOST_ROOT "~/boost-ver/boost_1_85_0")
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
+
 add_executable(PointSetCrossMin
         main.cpp
         JSONParser.cpp
@@ -10,18 +15,20 @@ add_executable(PointSetCrossMin
         Geometry.hpp
         json.hpp
         Graph.hpp
+        matching.hpp
+        Node.hpp
         )
 
-target_include_directories(PointSetCrossMin PRIVATE ogdf/include)
+target_include_directories(PointSetCrossMin PRIVATE ogdf/include ${Boost_INCLUDE_DIRS})
 find_library(OGDF OGDF HINTS ogdf ./ogdf/Release)
 find_library(COIN COIN HINTS ogdf ./ogdf/Release)
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set(CMAKE_CXX_FLAGS "-O3 -fopenmp")
-    target_link_libraries(PointSetCrossMin PRIVATE ${OGDF} ${COIN} stdc++fs)
+    target_link_libraries(PointSetCrossMin PRIVATE ${OGDF} ${COIN} stdc++fs ${Boost_LIBRARIES})
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set(CMAKE_CXX_FLAGS "/Ox /EHsc /openmp")
-    target_link_libraries(PointSetCrossMin PRIVATE ${OGDF} ${COIN})
+    target_link_libraries(PointSetCrossMin PRIVATE ${OGDF} ${COIN} ${Boost_LIBRARIES})
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

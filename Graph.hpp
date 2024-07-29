@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <tuple>
 #include <map>
 #include <vector>
 #include <unordered_set>
@@ -7,6 +8,7 @@
 #include <iterator>
 #include <algorithm>
 #include "Geometry.hpp"
+#include "Node.hpp"
 #include <cassert>
 #include <iostream>
 #include <list>
@@ -17,6 +19,7 @@
 
 using size_t = std::size_t;
 using Edge = std::pair<size_t,size_t>;
+
 namespace {
 	const std::vector<std::vector<size_t>> InitAdjList(const size_t numNodes, const std::vector<Edge>& edges) {
 		//Generate adj list.
@@ -29,19 +32,10 @@ namespace {
 	}
 }
 struct Graph {
-	Graph(const size_t numNodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet)
-		: numNodes(numNodes), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet), edges(edges), adjList(InitAdjList(numNodes, edges)) {
+	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet)
+		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet), edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)) {
 
-		// Simple assignment to first n points
 		
-		// for (size_t i = 0; i < numNodes;++i) {
-		// 	mapVerticesToPoints[i] = i;
-		// 	usedPoints.insert(i);
-		
-		// };
-
-		// Assign first point 
-
 
 		queueNodes.push(0);
 		queuePoints.push(0);
@@ -84,6 +78,7 @@ struct Graph {
 	const size_t numNodes;
 	const size_t numEdges;
 	const size_t numPoints;
+	std::vector<Node> nodes;
 	std::vector<Point>points;
 	const std::vector<Edge>edges;
 	const std::vector<std::vector<size_t>>adjList;
@@ -97,6 +92,9 @@ struct Graph {
 
 	std::queue<size_t> queuePoints ;
 	std::queue<size_t> queueNodes ; 
+
+	std::vector<std::vector<Point>> pointClusters;
+    std::vector<std::vector<Node>> NodeClusters;
 
 	[[nodiscard]] inline std::tuple<std::queue<size_t>,std::unordered_set<size_t>> AppendQueue( std::queue<size_t> queue,  std::vector<size_t> vector, std::unordered_set<size_t> used){
 		for (const auto& element : vector) {
@@ -153,6 +151,7 @@ struct Graph {
 		return indices;
 	}
 
+
 	// Point query.
 	[[nodiscard]] inline const Point& GetConstPosOfNode(const size_t nodeId) const {
 		return points[mapVerticesToPoints.at(nodeId)];
@@ -199,26 +198,57 @@ struct Graph {
     }
 
 
+	[[nodiscard]] inline std::vector<std::vector<Point>> getPointClusters(std::vector<Point>points, int numClusters){
+		std::vector<std::vector<Point>> pointClusters(numClusters);
+		for (auto point : points){
+			pointClusters[point.GetCluster()].push_back(point);
+		}
+		return pointClusters;
+	}
+
+
+    // [[nodiscard]] inline std::vector<std::vector<Point>> getNodeClusters(ogdf::SList<ogdf::SimpleCluster *> clusters){
+
+	// }
+
+
 	void initializeCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
 		for (int i = 0; i < k; ++i) {
 			centroids[i] = points[i];
 		}
 	}
 
-	void assignClusters(vector<Point>& points, const vector<Point>& centroids) {
-		for (auto& point : points) {
-			double minDistance = numeric_limits<double>::max();
-			int bestCluster = 0;
-			for (int i = 0; i < centroids.size(); ++i) {
-				double distance = euclideanDistance(point, centroids[i]);
-				if (distance < minDistance) {
-					minDistance = distance;
-					bestCluster = i;
-				}
-			}
-			point.SetCluster(bestCluster);
-		}
-	}
+	
+	void balancedAssignClusters(vector<Point>& points, const vector<Point>& centroids, vector<int> targetClusterSizes) {
+	int k = targetClusterSizes.size();
+    vector<vector<pair<double, int>>> distances(points.size(), vector<pair<double, int>>(k));
+
+    // Calculate distances from each point to each centroid
+    for (int i = 0; i < points.size(); ++i) {
+        for (int j = 0; j < k; ++j) {
+            distances[i][j] = {euclideanDistance(points[i], centroids[j]), j};
+        }
+        sort(distances[i].begin(), distances[i].end());
+    }
+
+    // Create a balanced assignment
+    vector<int> clusterSizes(k, 0);
+
+    for (int i = 0; i < points.size(); ++i) {
+        for (int j = 0; j < k; ++j) {
+            int cluster = distances[i][j].second;
+            if (clusterSizes[cluster] < targetClusterSizes[cluster]) {
+                points[i].SetCluster(cluster);
+                clusterSizes[cluster]++;
+                break;
+            }
+        }
+    }
+}
+
+
+
+
 
 	void updateCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
 		vector<int> count(k, 0);
@@ -242,23 +272,23 @@ struct Graph {
 
 	bool hasConverged(const vector<Point>& centroids, const vector<Point>& oldCentroids) {
 		for (int i = 0; i < centroids.size(); ++i) {
-			if (euclideanDistance(centroids[i], oldCentroids[i]) > 1e-6) {
+			if (euclideanDistance(centroids[i], oldCentroids[i]) > 1) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	void kMeans( vector<Point>& points, int k) {
+	void kMeans( vector<Point>& points, int k, vector<int> clusterSizes) {
 		vector<Point> centroids(k);
 		initializeCentroids(centroids, points, k);
 
 		vector<Point> oldCentroids(k);
 
-		while (true) {
+		for(int tmp = 0; tmp < 10000; tmp++ ) {
 			oldCentroids = centroids;
 
-			assignClusters(points, centroids);
+			balancedAssignClusters(points, centroids, clusterSizes);
 			updateCentroids(centroids, points, k);
 
 			if (hasConverged(centroids, oldCentroids)) {
@@ -267,9 +297,58 @@ struct Graph {
 		}
 	}
 
+	/**
+	 * @brief Reduces the number of points in a cluster.
+	 *
+	 * This function reduces the number of points in a cluster by deleting collinear points.
+	 * @param points the points of a certain cluster
+	 */
+	void reductCluster(std::vector<Point> points, int newNumPoints){
+		vector<vector<double>> radialGradient(points.size(), vector<double> (points.size())) ; 
+		for(int i = 0; i < points.size() ; i++){ 
+			for(int j = 0; j < points.size(); j++) { 
+				if (i == j){
+					radialGradient[i][j] = - std::numeric_limits<double>::infinity();
+				}
+				else{ 
+				radialGradient[i][j] = computeGradient(points[i],points[j]);
+				}
+			}
+		}
+		std::unordered_map<double, int> countMap;
+		for (int i = 0; i < points.size(); ++i){
+			for (int j = 0; j < points.size(); ++j) {
+				countMap[radialGradient[i][j]]++;
+			}
+			for (const auto& pair : countMap) {
+				if(pair.second != (double)1){
+					std::cout << i << " Value: " << pair.first << ", Count: " << pair.second << " ;" << std::endl;
+				}
+			
+			}
+			countMap.clear();
+		}
+	}
+
+	std::vector<vector<Node>> assignClustersToNodes(ogdf::SList<ogdf::SimpleCluster *> clusters){
+		int clusterIndex = 0;
+		std::vector<vector<Node>> nodeClusters(clusters.size());
+		std::vector<int> clusterSizes; 
+		for (auto cluster : clusters) {
+			clusterSizes.push_back(cluster->m_size);
+
+			for (ogdf::node v : cluster->nodes()) {
+				nodes[v->index()].setCluster(clusterIndex);
+				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
+			}
+			
+			clusterIndex++;
+		}
+		return nodeClusters;
+
+
+    }
+
 
 };
 
-
-
-// K-MEANS
