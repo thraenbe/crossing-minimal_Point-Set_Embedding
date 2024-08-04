@@ -33,6 +33,10 @@ public:
         _cluster = cluster;
     }
 
+    Point nodeToPoint() const {
+        return Point(0, _x, _y);
+    }
+
 
     // Method to display the node's details
     void display() const {

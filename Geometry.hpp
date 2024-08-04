@@ -12,14 +12,14 @@ class Point {
 
 public:
 	Point() = default;
-	    Point(int id, int x, int y, int cluster = 0) :  _id(id), _x(x), _y(y), _cluster(cluster) {}
+	    Point(int id, double x, double y, int cluster = 0) :  _id(id), _x(x), _y(y), _cluster(cluster) {}
 
     // SetPosition methods
-    void SetPosition(const std::pair<int, int>& newPos) noexcept {
+    void SetPosition(const std::pair<double, double>& newPos) noexcept {
         _x = newPos.first;
         _y = newPos.second;
     }
-    void SetPosition(int x, int y) noexcept {
+    void SetPosition(double x, double y) noexcept {
         _x = x;
         _y = y;
 	}
@@ -63,10 +63,10 @@ public:
 		return _y < other._y;
 	}
 
-	int GetX() const {
+	double GetX() const {
 		return _x;
 	}
-	int GetY() const {
+	double GetY() const {
 		return _y;
 	}
 
@@ -74,8 +74,8 @@ public:
 		return _id;
 	}
 	
-	int _x{ 0 };
-	int _y{ 0 };
+	double _x{ 0 };
+	double _y{ 0 };
 	int _id{ 0 };
 	int _cluster{0};
 	};

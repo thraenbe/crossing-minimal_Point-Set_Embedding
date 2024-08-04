@@ -1,4 +1,3 @@
-#pragma once
 #include"JSONParser.hpp"
 #include"matching.hpp"
 #include <random>
@@ -142,11 +141,10 @@ int main(int argc, char* argv[]) {
 
     // Print the clusters
     std::vector<int> clusterSizes;
-    std::vector<vector<Node>> nodeClusters;
 
     
-    nodeClusters = myGraph.assignClustersToNodes(clusters);
-    for (auto cluster : nodeClusters){
+    myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
+    for (auto cluster : myGraph.NodeClusters){
         clusterSizes.push_back(cluster.size());
     }
     clusterSizes = computeClusterSizes(myGraph, clusterSizes, clusters.size());
@@ -157,22 +155,26 @@ int main(int argc, char* argv[]) {
     myGraph.kMeans(myGraph.points,clusters.size() , clusterSizes);
 
     myGraph.reductCluster(myGraph.points,clusterSizes[0]);
-    printVector(nodeClusters);
+    printVector(myGraph.NodeClusters);
 
     std::vector<ogdf::Graph> graphClusters(clusters.size());
-    for (int i = 0 ; i < graphClusters.size(); i++){
-        createClusterGraph(graphClusters[i], myGraph, nodeClusters[i] );
-        
-    }
+    myGraph.pointClusters = myGraph.getPointClusters(myGraph.points, clusters.size());
+    matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
 
-    
+    for (auto graph : graphClusters){
+        if (graph.edges.size() > 0) {
+            std::cout << graph.edges.size() << ": " ;
+            std::cout << graph.firstEdge()->target()->index() << " - " << graph.firstEdge()->source()->index() << std::endl;
+
+        }
+    }
     
 
 
     // Apply a layout algorithm
-    // ogdf::PlanarizationLayout layout;
+    ogdf::PlanarizationLayout layout;
     
-    // layout.call(GA);
+    layout.call(GA);
 
     // Export the graph to a SVG file
     ogdf::GraphIO::write(GA, "../results/output.svg", ogdf::GraphIO::drawSVG);

@@ -325,6 +325,13 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Hashing.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/matching.hpp \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphAttributes.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutStandards.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graphics.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/geometry.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EpsilonTest.h \
+ /usr/include/c++/11/cfloat \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterPlanarity.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Module.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Timeouter.h \
@@ -381,13 +388,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/lpsub.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/internal/basics.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraphAttributes.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GraphAttributes.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutStandards.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graphics.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/geometry.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/EpsilonTest.h \
- /usr/include/c++/11/cfloat \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterArray.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/external/abacus.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/branchrule.h \
@@ -403,6 +403,39 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GridLayout.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Layout.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/steiner_tree/EdgeWeightedGraph.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationLayout.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/packing/CCLayoutPackModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/CrossingMinimizationModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EdgeTypePatterns.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/NodeTypePatterns.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EmbedderModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/extended_graph_alg.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DisjointSets.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/PriorityQueue.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/PairingHeap.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/HeapBase.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/BoyerMyrvold.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/ExtractKuratowskis.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/KuratowskiSubdivision.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/LayoutPlanRepModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationGridLayout.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarlayout/GridLayoutModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarSubgraphModule.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Thread.h \
+ /usr/include/c++/11/thread /usr/include/c++/11/stop_token \
+ /usr/include/c++/11/atomic /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/semaphore /usr/include/c++/11/bits/semaphore_base.h \
+ /usr/include/c++/11/bits/atomic_timed_wait.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/semaphore.h \
+ /usr/include/x86_64-linux-gnu/bits/semaphore.h \
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizerMixedInsertion.h \
  /usr/include/boost/graph/adjacency_list.hpp \
  /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
  /usr/include/boost/config/detail/select_compiler_config.hpp \
@@ -1290,6 +1323,326 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/typeof/decltype.hpp \
  /usr/include/boost/graph/detail/adj_list_edge_iterator.hpp \
  /usr/include/boost/graph/adjacency_iterator.hpp \
+ /usr/include/boost/graph/maximum_weighted_matching.hpp \
+ /usr/include/boost/shared_ptr.hpp /usr/include/boost/make_shared.hpp \
+ /usr/include/boost/smart_ptr/make_shared.hpp \
+ /usr/include/boost/smart_ptr/make_shared_object.hpp \
+ /usr/include/boost/smart_ptr/detail/sp_forward.hpp \
+ /usr/include/boost/smart_ptr/make_shared_array.hpp \
+ /usr/include/boost/core/default_allocator.hpp \
+ /usr/include/boost/smart_ptr/allocate_shared_array.hpp \
+ /usr/include/boost/core/allocator_access.hpp \
+ /usr/include/boost/core/alloc_construct.hpp \
+ /usr/include/boost/core/noinit_adaptor.hpp \
+ /usr/include/boost/core/first_scalar.hpp \
+ /usr/include/boost/type_traits/is_bounded_array.hpp \
+ /usr/include/boost/type_traits/is_unbounded_array.hpp \
+ /usr/include/boost/graph/max_cardinality_matching.hpp \
+ /usr/include/boost/graph/visitors.hpp \
+ /usr/include/boost/graph/depth_first_search.hpp \
+ /usr/include/boost/graph/named_function_params.hpp \
+ /usr/include/boost/preprocessor.hpp \
+ /usr/include/boost/preprocessor/library.hpp \
+ /usr/include/boost/preprocessor/arithmetic.hpp \
+ /usr/include/boost/preprocessor/arithmetic/div.hpp \
+ /usr/include/boost/preprocessor/arithmetic/mul.hpp \
+ /usr/include/boost/preprocessor/array.hpp \
+ /usr/include/boost/preprocessor/array/enum.hpp \
+ /usr/include/boost/preprocessor/array/insert.hpp \
+ /usr/include/boost/preprocessor/array/push_back.hpp \
+ /usr/include/boost/preprocessor/array/detail/get_data.hpp \
+ /usr/include/boost/preprocessor/facilities/is_1.hpp \
+ /usr/include/boost/preprocessor/facilities/is_empty.hpp \
+ /usr/include/boost/preprocessor/facilities/is_empty_variadic.hpp \
+ /usr/include/boost/preprocessor/punctuation/is_begin_parens.hpp \
+ /usr/include/boost/preprocessor/punctuation/detail/is_begin_parens.hpp \
+ /usr/include/boost/preprocessor/facilities/detail/is_empty.hpp \
+ /usr/include/boost/preprocessor/variadic/has_opt.hpp \
+ /usr/include/boost/preprocessor/variadic/detail/has_opt.hpp \
+ /usr/include/boost/preprocessor/comparison/not_equal.hpp \
+ /usr/include/boost/preprocessor/array/pop_back.hpp \
+ /usr/include/boost/preprocessor/repetition/deduce_z.hpp \
+ /usr/include/boost/preprocessor/array/pop_front.hpp \
+ /usr/include/boost/preprocessor/array/push_front.hpp \
+ /usr/include/boost/preprocessor/array/remove.hpp \
+ /usr/include/boost/preprocessor/array/replace.hpp \
+ /usr/include/boost/preprocessor/array/reverse.hpp \
+ /usr/include/boost/preprocessor/tuple/reverse.hpp \
+ /usr/include/boost/preprocessor/tuple/size.hpp \
+ /usr/include/boost/preprocessor/array/to_list.hpp \
+ /usr/include/boost/preprocessor/tuple/to_list.hpp \
+ /usr/include/boost/preprocessor/array/to_seq.hpp \
+ /usr/include/boost/preprocessor/tuple/to_seq.hpp \
+ /usr/include/boost/preprocessor/array/to_tuple.hpp \
+ /usr/include/boost/preprocessor/comparison.hpp \
+ /usr/include/boost/preprocessor/comparison/equal.hpp \
+ /usr/include/boost/preprocessor/comparison/greater.hpp \
+ /usr/include/boost/preprocessor/comparison/less.hpp \
+ /usr/include/boost/preprocessor/comparison/greater_equal.hpp \
+ /usr/include/boost/preprocessor/config/limits.hpp \
+ /usr/include/boost/preprocessor/control.hpp \
+ /usr/include/boost/preprocessor/debug.hpp \
+ /usr/include/boost/preprocessor/debug/assert.hpp \
+ /usr/include/boost/preprocessor/debug/line.hpp \
+ /usr/include/boost/preprocessor/facilities.hpp \
+ /usr/include/boost/preprocessor/facilities/apply.hpp \
+ /usr/include/boost/preprocessor/detail/is_unary.hpp \
+ /usr/include/boost/preprocessor/facilities/check_empty.hpp \
+ /usr/include/boost/preprocessor/facilities/va_opt.hpp \
+ /usr/include/boost/preprocessor/iteration.hpp \
+ /usr/include/boost/preprocessor/iteration/local.hpp \
+ /usr/include/boost/preprocessor/iteration/self.hpp \
+ /usr/include/boost/preprocessor/list.hpp \
+ /usr/include/boost/preprocessor/list/append.hpp \
+ /usr/include/boost/preprocessor/list/at.hpp \
+ /usr/include/boost/preprocessor/list/rest_n.hpp \
+ /usr/include/boost/preprocessor/list/cat.hpp \
+ /usr/include/boost/preprocessor/list/enum.hpp \
+ /usr/include/boost/preprocessor/list/for_each_i.hpp \
+ /usr/include/boost/preprocessor/list/filter.hpp \
+ /usr/include/boost/preprocessor/list/first_n.hpp \
+ /usr/include/boost/preprocessor/list/for_each.hpp \
+ /usr/include/boost/preprocessor/list/for_each_product.hpp \
+ /usr/include/boost/preprocessor/list/to_tuple.hpp \
+ /usr/include/boost/preprocessor/list/size.hpp \
+ /usr/include/boost/preprocessor/list/to_array.hpp \
+ /usr/include/boost/preprocessor/list/to_seq.hpp \
+ /usr/include/boost/preprocessor/list/transform.hpp \
+ /usr/include/boost/preprocessor/logical.hpp \
+ /usr/include/boost/preprocessor/logical/bitnor.hpp \
+ /usr/include/boost/preprocessor/logical/bitor.hpp \
+ /usr/include/boost/preprocessor/logical/bitxor.hpp \
+ /usr/include/boost/preprocessor/logical/nor.hpp \
+ /usr/include/boost/preprocessor/logical/or.hpp \
+ /usr/include/boost/preprocessor/logical/xor.hpp \
+ /usr/include/boost/preprocessor/punctuation.hpp \
+ /usr/include/boost/preprocessor/punctuation/paren.hpp \
+ /usr/include/boost/preprocessor/punctuation/paren_if.hpp \
+ /usr/include/boost/preprocessor/punctuation/remove_parens.hpp \
+ /usr/include/boost/preprocessor/tuple/enum.hpp \
+ /usr/include/boost/preprocessor/repetition.hpp \
+ /usr/include/boost/preprocessor/repetition/deduce_r.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_params_with_a_default.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_params_with_defaults.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_shifted.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_shifted_binary_params.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_trailing.hpp \
+ /usr/include/boost/preprocessor/repetition/enum_trailing_binary_params.hpp \
+ /usr/include/boost/preprocessor/selection.hpp \
+ /usr/include/boost/preprocessor/selection/max.hpp \
+ /usr/include/boost/preprocessor/selection/min.hpp \
+ /usr/include/boost/preprocessor/seq.hpp \
+ /usr/include/boost/preprocessor/seq/filter.hpp \
+ /usr/include/boost/preprocessor/seq/first_n.hpp \
+ /usr/include/boost/preprocessor/seq/detail/split.hpp \
+ /usr/include/boost/preprocessor/seq/fold_right.hpp \
+ /usr/include/boost/preprocessor/seq/reverse.hpp \
+ /usr/include/boost/preprocessor/seq/for_each.hpp \
+ /usr/include/boost/preprocessor/seq/for_each_product.hpp \
+ /usr/include/boost/preprocessor/seq/insert.hpp \
+ /usr/include/boost/preprocessor/seq/rest_n.hpp \
+ /usr/include/boost/preprocessor/seq/pop_back.hpp \
+ /usr/include/boost/preprocessor/seq/pop_front.hpp \
+ /usr/include/boost/preprocessor/seq/push_back.hpp \
+ /usr/include/boost/preprocessor/seq/push_front.hpp \
+ /usr/include/boost/preprocessor/seq/remove.hpp \
+ /usr/include/boost/preprocessor/seq/replace.hpp \
+ /usr/include/boost/preprocessor/seq/subseq.hpp \
+ /usr/include/boost/preprocessor/seq/to_array.hpp \
+ /usr/include/boost/preprocessor/seq/to_list.hpp \
+ /usr/include/boost/preprocessor/seq/detail/binary_transform.hpp \
+ /usr/include/boost/preprocessor/variadic/detail/is_single_return.hpp \
+ /usr/include/boost/preprocessor/seq/to_tuple.hpp \
+ /usr/include/boost/preprocessor/seq/variadic_seq_to_seq.hpp \
+ /usr/include/boost/preprocessor/slot.hpp \
+ /usr/include/boost/preprocessor/tuple.hpp \
+ /usr/include/boost/preprocessor/tuple/insert.hpp \
+ /usr/include/boost/preprocessor/tuple/to_array.hpp \
+ /usr/include/boost/preprocessor/tuple/pop_back.hpp \
+ /usr/include/boost/preprocessor/tuple/pop_front.hpp \
+ /usr/include/boost/preprocessor/tuple/push_back.hpp \
+ /usr/include/boost/preprocessor/tuple/push_front.hpp \
+ /usr/include/boost/preprocessor/tuple/remove.hpp \
+ /usr/include/boost/preprocessor/tuple/replace.hpp \
+ /usr/include/boost/preprocessor/variadic.hpp \
+ /usr/include/boost/preprocessor/variadic/to_array.hpp \
+ /usr/include/boost/preprocessor/variadic/to_list.hpp \
+ /usr/include/boost/preprocessor/variadic/to_seq.hpp \
+ /usr/include/boost/preprocessor/variadic/to_tuple.hpp \
+ /usr/include/boost/preprocessor/wstringize.hpp \
+ /usr/include/boost/parameter/is_argument_pack.hpp \
+ /usr/include/boost/parameter/aux_/is_tagged_argument.hpp \
+ /usr/include/boost/parameter/config.hpp \
+ /usr/include/boost/parameter/aux_/arg_list.hpp \
+ /usr/include/boost/parameter/aux_/void.hpp \
+ /usr/include/boost/parameter/aux_/yesno.hpp \
+ /usr/include/boost/mp11/integral.hpp /usr/include/boost/mp11/version.hpp \
+ /usr/include/boost/parameter/aux_/result_of0.hpp \
+ /usr/include/boost/parameter/aux_/use_default_tag.hpp \
+ /usr/include/boost/mp11/utility.hpp \
+ /usr/include/boost/mp11/detail/mp_list.hpp \
+ /usr/include/boost/mp11/detail/mp_fold.hpp \
+ /usr/include/boost/mp11/detail/config.hpp \
+ /usr/include/boost/parameter/aux_/default.hpp \
+ /usr/include/boost/mp11/list.hpp \
+ /usr/include/boost/mp11/detail/mp_is_list.hpp \
+ /usr/include/boost/mp11/detail/mp_append.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/nullptr.hpp \
+ /usr/include/boost/parameter/aux_/is_maybe.hpp \
+ /usr/include/boost/parameter/aux_/tagged_argument_fwd.hpp \
+ /usr/include/boost/parameter/aux_/parameter_requirements.hpp \
+ /usr/include/boost/parameter/aux_/pack/parameter_requirements.hpp \
+ /usr/include/boost/parameter/aux_/augment_predicate.hpp \
+ /usr/include/boost/parameter/keyword_fwd.hpp \
+ /usr/include/boost/parameter/aux_/lambda_tag.hpp \
+ /usr/include/boost/parameter/aux_/has_nested_template_fn.hpp \
+ /usr/include/boost/parameter/value_type.hpp \
+ /usr/include/boost/parameter/aux_/is_placeholder.hpp \
+ /usr/include/boost/mp11/bind.hpp /usr/include/boost/mp11/algorithm.hpp \
+ /usr/include/boost/mp11/set.hpp /usr/include/boost/mp11/function.hpp \
+ /usr/include/boost/mp11/detail/mp_count.hpp \
+ /usr/include/boost/mp11/detail/mp_plus.hpp \
+ /usr/include/boost/mp11/detail/mp_min_element.hpp \
+ /usr/include/boost/mp11/detail/mp_void.hpp \
+ /usr/include/boost/mp11/detail/mp_copy_if.hpp \
+ /usr/include/boost/mp11/detail/mp_remove_if.hpp \
+ /usr/include/boost/mp11/detail/mp_map_find.hpp \
+ /usr/include/boost/mp11/detail/mp_with_index.hpp \
+ /usr/include/boost/mp11/integer_sequence.hpp \
+ /usr/include/boost/mpl/count_fwd.hpp \
+ /usr/include/boost/mpl/order_fwd.hpp \
+ /usr/include/boost/parameter/name.hpp \
+ /usr/include/boost/parameter/aux_/name.hpp \
+ /usr/include/boost/parameter/binding.hpp \
+ /usr/include/boost/parameter/keyword.hpp \
+ /usr/include/boost/parameter/aux_/tag.hpp \
+ /usr/include/boost/parameter/aux_/unwrap_cv_reference.hpp \
+ /usr/include/boost/parameter/aux_/tagged_argument.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/qualifier.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/is_binary.hpp \
+ /usr/include/boost/parameter/template_keyword.hpp \
+ /usr/include/boost/parameter/aux_/template_keyword.hpp \
+ /usr/include/boost/graph/detail/d_ary_heap.hpp \
+ /usr/include/boost/shared_array.hpp \
+ /usr/include/boost/smart_ptr/shared_array.hpp \
+ /usr/include/boost/property_map/shared_array_property_map.hpp \
+ /usr/include/boost/graph/detail/mpi_include.hpp \
+ /usr/include/boost/implicit_cast.hpp /usr/include/boost/parameter.hpp \
+ /usr/include/boost/parameter/parameters.hpp \
+ /usr/include/boost/parameter/aux_/pack/make_arg_list.hpp \
+ /usr/include/boost/parameter/aux_/pack/unmatched_argument.hpp \
+ /usr/include/boost/parameter/aux_/pack/tag_type.hpp \
+ /usr/include/boost/parameter/deduced.hpp \
+ /usr/include/boost/parameter/aux_/use_default.hpp \
+ /usr/include/boost/parameter/required.hpp \
+ /usr/include/boost/parameter/optional.hpp \
+ /usr/include/boost/parameter/aux_/pack/is_named_argument.hpp \
+ /usr/include/boost/parameter/aux_/pack/insert_tagged.hpp \
+ /usr/include/boost/parameter/aux_/set.hpp \
+ /usr/include/boost/parameter/aux_/pack/deduce_tag.hpp \
+ /usr/include/boost/parameter/aux_/pack/tag_deduced.hpp \
+ /usr/include/boost/parameter/aux_/pack/make_parameter_spec_items.hpp \
+ /usr/include/boost/parameter/aux_/pack/make_deduced_items.hpp \
+ /usr/include/boost/parameter/aux_/pack/deduced_item.hpp \
+ /usr/include/boost/parameter/aux_/pack/satisfies.hpp \
+ /usr/include/boost/parameter/aux_/pack/as_parameter_requirements.hpp \
+ /usr/include/boost/parameter/aux_/pack/predicate.hpp \
+ /usr/include/boost/parameter/aux_/always_true_predicate.hpp \
+ /usr/include/boost/parameter/aux_/pack/make_items.hpp \
+ /usr/include/boost/parameter/aux_/pack/item.hpp \
+ /usr/include/boost/parameter/aux_/pack/tag_keyword_arg.hpp \
+ /usr/include/boost/parameter/aux_/pack/tag_template_keyword_arg.hpp \
+ /usr/include/boost/parameter/are_tagged_arguments.hpp \
+ /usr/include/boost/parameter/nested_keyword.hpp \
+ /usr/include/boost/parameter/macros.hpp \
+ /usr/include/boost/parameter/match.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/seq_enum.hpp \
+ /usr/include/boost/parameter/compose.hpp \
+ /usr/include/boost/parameter/preprocessor.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/forwarding_overloads.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/parenthesized_type.hpp \
+ /usr/include/boost/parameter/aux_/pp_impl/argument_pack.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/function_name.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/is_nullary.hpp \
+ /usr/include/boost/preprocessor/detail/is_nullary.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/function_forward_match.hpp \
+ /usr/include/boost/parameter/aux_/pp_impl/match.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/arity_range.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/argument_specs.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/specification.hpp \
+ /usr/include/boost/parameter/aux_/pp_impl/unwrap_predicate.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/parenthesized_return_type.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/flatten.hpp \
+ /usr/include/boost/preprocessor/detail/split.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/for_each.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/function_dispatch_layer.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/split_args.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/function_dispatch_tuple.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/function_cast.hpp \
+ /usr/include/boost/parameter/preprocessor_no_spec.hpp \
+ /usr/include/boost/parameter/aux_/preprocessor/impl/no_spec_overloads.hpp \
+ /usr/include/boost/tti/has_member_function.hpp \
+ /usr/include/boost/function_types/property_tags.hpp \
+ /usr/include/boost/mpl/bitxor.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/bitxor.hpp \
+ /usr/include/boost/function_types/detail/pp_tags/preprocessed.hpp \
+ /usr/include/boost/function_types/detail/pp_loop.hpp \
+ /usr/include/boost/function_types/detail/encoding/def.hpp \
+ /usr/include/boost/function_types/detail/encoding/aliases_def.hpp \
+ /usr/include/boost/function_types/detail/pp_cc_loop/preprocessed.hpp \
+ /usr/include/boost/function_types/detail/pp_tags/cc_tag.hpp \
+ /usr/include/boost/function_types/detail/encoding/aliases_undef.hpp \
+ /usr/include/boost/function_types/detail/encoding/undef.hpp \
+ /usr/include/boost/tti/detail/ddeftype.hpp \
+ /usr/include/boost/tti/detail/dmem_fun.hpp \
+ /usr/include/boost/function_types/is_member_function_pointer.hpp \
+ /usr/include/boost/function_types/components.hpp \
+ /usr/include/boost/mpl/remove.hpp /usr/include/boost/mpl/remove_if.hpp \
+ /usr/include/boost/function_types/config/config.hpp \
+ /usr/include/boost/function_types/config/compiler.hpp \
+ /usr/include/boost/function_types/config/cc_names.hpp \
+ /usr/include/boost/mpl/vector/vector30.hpp \
+ /usr/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector30.hpp \
+ /usr/include/boost/function_types/detail/class_transform.hpp \
+ /usr/include/boost/function_types/detail/pp_variate_loop/preprocessed.hpp \
+ /usr/include/boost/function_types/detail/pp_arity_loop.hpp \
+ /usr/include/boost/function_types/detail/components_impl/arity20_0.hpp \
+ /usr/include/boost/function_types/detail/components_impl/arity10_0.hpp \
+ /usr/include/boost/function_types/detail/components_impl/arity20_1.hpp \
+ /usr/include/boost/function_types/detail/components_impl/arity10_1.hpp \
+ /usr/include/boost/function_types/detail/components_as_mpl_sequence.hpp \
+ /usr/include/boost/function_types/detail/retag_default_cc.hpp \
+ /usr/include/boost/mpl/bitand.hpp \
+ /usr/include/boost/mpl/aux_/preprocessed/gcc/bitand.hpp \
+ /usr/include/boost/function_types/detail/pp_retag_default_cc/preprocessed.hpp \
+ /usr/include/boost/tti/detail/dcomp_mem_fun.hpp \
+ /usr/include/boost/tti/detail/dftclass.hpp \
+ /usr/include/boost/function_types/parameter_types.hpp \
+ /usr/include/boost/blank.hpp /usr/include/boost/blank_fwd.hpp \
+ /usr/include/boost/detail/templated_streams.hpp \
+ /usr/include/boost/mpl/pop_front.hpp \
+ /usr/include/boost/mpl/aux_/pop_front_impl.hpp \
+ /usr/include/boost/function_types/is_callable_builtin.hpp \
+ /usr/include/boost/tti/detail/dmacro_sunfix.hpp \
+ /usr/include/boost/tti/detail/dnullptr.hpp \
+ /usr/include/boost/tti/gen/namespace_gen.hpp \
+ /usr/include/boost/tti/detail/denclosing_type.hpp \
+ /usr/include/boost/tti/detail/dptmf.hpp \
+ /usr/include/boost/function_types/member_function_pointer.hpp \
+ /usr/include/boost/function_types/detail/synthesize.hpp \
+ /usr/include/boost/function_types/detail/cv_traits.hpp \
+ /usr/include/boost/function_types/detail/synthesize_impl/arity20_0.hpp \
+ /usr/include/boost/function_types/detail/synthesize_impl/arity10_0.hpp \
+ /usr/include/boost/function_types/detail/synthesize_impl/arity20_1.hpp \
+ /usr/include/boost/function_types/detail/synthesize_impl/arity10_1.hpp \
+ /usr/include/boost/function_types/detail/to_sequence.hpp \
+ /usr/include/boost/tti/gen/has_member_function_gen.hpp \
+ /usr/include/boost/graph/detail/empty_header.hpp \
+ /usr/include/boost/graph/filtered_graph.hpp \
+ /usr/include/boost/graph/detail/set_adaptor.hpp \
+ /usr/include/boost/iterator/filter_iterator.hpp \
+ /usr/include/boost/pending/disjoint_sets.hpp \
+ /usr/include/boost/pending/detail/disjoint_sets.hpp \
  /usr/include/boost/graph/graphviz.hpp \
  /usr/include/boost/graph/subgraph.hpp \
  /usr/include/boost/iterator/indirect_iterator.hpp \
@@ -1363,8 +1716,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/mpl/list/aux_/preprocessed/plain/list10.hpp \
  /usr/include/boost/mpl/list/aux_/preprocessed/plain/list20.hpp \
  /usr/include/boost/mpl/aux_/preprocessed/gcc/list.hpp \
- /usr/include/boost/mpl/remove_if.hpp /usr/include/c++/11/stdlib.h \
- /usr/include/c++/11/math.h /usr/include/boost/config/no_tr1/complex.hpp \
+ /usr/include/c++/11/stdlib.h /usr/include/c++/11/math.h \
+ /usr/include/boost/config/no_tr1/complex.hpp \
  /usr/include/boost/math/special_functions/detail/fp_traits.hpp \
  /usr/include/boost/math/special_functions/fpclassify.hpp \
  /usr/include/boost/math/tools/real_cast.hpp \
@@ -1394,33 +1747,15 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/preprocessor/enum_params.hpp \
  /usr/include/boost/smart_ptr.hpp /usr/include/boost/scoped_array.hpp \
  /usr/include/boost/smart_ptr/scoped_array.hpp \
- /usr/include/boost/shared_ptr.hpp /usr/include/boost/shared_array.hpp \
- /usr/include/boost/smart_ptr/shared_array.hpp \
  /usr/include/boost/weak_ptr.hpp \
  /usr/include/boost/smart_ptr/weak_ptr.hpp \
  /usr/include/boost/intrusive_ptr.hpp \
  /usr/include/boost/smart_ptr/intrusive_ptr.hpp \
  /usr/include/boost/enable_shared_from_this.hpp \
  /usr/include/boost/smart_ptr/enable_shared_from_this.hpp \
- /usr/include/boost/make_shared.hpp \
- /usr/include/boost/smart_ptr/make_shared.hpp \
- /usr/include/boost/smart_ptr/make_shared_object.hpp \
- /usr/include/boost/smart_ptr/detail/sp_forward.hpp \
- /usr/include/boost/smart_ptr/make_shared_array.hpp \
- /usr/include/boost/core/default_allocator.hpp \
- /usr/include/boost/smart_ptr/allocate_shared_array.hpp \
- /usr/include/boost/core/allocator_access.hpp \
- /usr/include/boost/core/alloc_construct.hpp \
- /usr/include/boost/core/noinit_adaptor.hpp \
- /usr/include/boost/core/first_scalar.hpp \
- /usr/include/boost/type_traits/is_bounded_array.hpp \
- /usr/include/boost/type_traits/is_unbounded_array.hpp \
  /usr/include/boost/graph/overloading.hpp \
  /usr/include/boost/graph/dll_import_export.hpp \
  /usr/include/boost/graph/compressed_sparse_row_graph.hpp \
- /usr/include/boost/graph/filtered_graph.hpp \
- /usr/include/boost/graph/detail/set_adaptor.hpp \
- /usr/include/boost/iterator/filter_iterator.hpp \
  /usr/include/boost/graph/detail/indexed_properties.hpp \
  /usr/include/boost/iterator/counting_iterator.hpp \
  /usr/include/boost/detail/numeric_traits.hpp \
@@ -1635,8 +1970,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/fusion/algorithm/transformation/pop_back.hpp \
  /usr/include/boost/fusion/iterator/iterator_adapter.hpp \
  /usr/include/boost/fusion/mpl/pop_front.hpp \
- /usr/include/boost/mpl/pop_front.hpp \
- /usr/include/boost/mpl/aux_/pop_front_impl.hpp \
  /usr/include/boost/fusion/algorithm/transformation/pop_front.hpp \
  /usr/include/boost/fusion/mpl/push_back.hpp \
  /usr/include/boost/fusion/mpl/push_front.hpp \
@@ -1670,7 +2003,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/graph/detail/is_distributed_selector.hpp \
  /usr/include/boost/property_map/transform_value_property_map.hpp \
  /usr/include/boost/mpl/print.hpp \
- /usr/include/boost/graph/detail/mpi_include.hpp \
  /usr/include/boost/spirit/include/classic_multi_pass.hpp \
  /usr/include/boost/spirit/home/classic/iterator/multi_pass.hpp \
  /usr/include/boost/spirit/home/classic/namespace.hpp \
@@ -1703,8 +2035,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/xpressive/detail/detail_fwd.hpp \
  /usr/include/boost/xpressive/xpressive_fwd.hpp \
  /usr/include/boost/proto/proto_fwd.hpp \
- /usr/include/boost/preprocessor/repetition/enum_params_with_a_default.hpp \
- /usr/include/boost/preprocessor/repetition/enum_trailing_binary_params.hpp \
  /usr/include/boost/xpressive/detail/core/matchers.hpp \
  /usr/include/boost/xpressive/detail/core/matcher/alternate_end_matcher.hpp \
  /usr/include/boost/xpressive/detail/core/quant_style.hpp \
@@ -1725,7 +2055,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/proto/detail/preprocessed/generate_by_value.hpp \
  /usr/include/boost/proto/detail/as_expr.hpp \
  /usr/include/boost/proto/detail/deduce_domain.hpp \
- /usr/include/boost/preprocessor/iteration/local.hpp \
  /usr/include/boost/proto/detail/deduce_domain_n.hpp \
  /usr/include/boost/proto/detail/preprocessed/deduce_domain_n.hpp \
  /usr/include/boost/proto/transform/pass_through.hpp \
@@ -1807,7 +2136,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/xpressive/detail/core/matcher/range_matcher.hpp \
  /usr/include/boost/xpressive/detail/core/matcher/regex_byref_matcher.hpp \
  /usr/include/boost/xpressive/detail/core/adaptor.hpp \
- /usr/include/boost/implicit_cast.hpp \
  /usr/include/boost/xpressive/detail/core/matcher/regex_matcher.hpp \
  /usr/include/boost/xpressive/detail/core/matcher/repeat_begin_matcher.hpp \
  /usr/include/boost/xpressive/detail/core/matcher/repeat_end_matcher.hpp \
@@ -1819,8 +2147,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/xpressive/detail/core/regex_domain.hpp \
  /usr/include/boost/proto/core.hpp /usr/include/boost/proto/tags.hpp \
  /usr/include/boost/proto/eval.hpp /usr/include/boost/proto/expr.hpp \
- /usr/include/boost/preprocessor/selection/max.hpp \
- /usr/include/boost/preprocessor/repetition/enum_trailing.hpp \
  /usr/include/boost/proto/detail/funop.hpp \
  /usr/include/boost/proto/detail/preprocessed/funop.hpp \
  /usr/include/boost/proto/detail/basic_expr.hpp \
@@ -1901,18 +2227,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/proto/detail/poly_function_traits.hpp \
  /usr/include/boost/proto/detail/preprocessed/poly_function_traits.hpp \
  /usr/include/boost/proto/detail/deprecated.hpp \
- /usr/include/boost/preprocessor/comparison/greater.hpp \
- /usr/include/boost/preprocessor/comparison/less.hpp \
- /usr/include/boost/preprocessor/comparison/not_equal.hpp \
- /usr/include/boost/preprocessor/tuple/to_list.hpp \
- /usr/include/boost/preprocessor/tuple/size.hpp \
- /usr/include/boost/preprocessor/seq/to_tuple.hpp \
- /usr/include/boost/preprocessor/seq/pop_back.hpp \
- /usr/include/boost/preprocessor/seq/first_n.hpp \
- /usr/include/boost/preprocessor/seq/detail/split.hpp \
- /usr/include/boost/preprocessor/seq/push_back.hpp \
- /usr/include/boost/preprocessor/seq/push_front.hpp \
- /usr/include/boost/preprocessor/list/for_each_i.hpp \
  /usr/include/boost/proto/detail/unpack_expr_.hpp \
  /usr/include/boost/proto/detail/preprocessed/unpack_expr_.hpp \
  /usr/include/boost/proto/detail/make_expr_.hpp \
@@ -1922,7 +2236,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/proto/detail/make_expr.hpp \
  /usr/include/boost/proto/detail/preprocessed/make_expr.hpp \
  /usr/include/boost/proto/matches.hpp \
- /usr/include/boost/preprocessor/repetition/enum_shifted.hpp \
  /usr/include/boost/proto/transform/when.hpp \
  /usr/include/boost/mpl/map.hpp /usr/include/boost/mpl/limits/map.hpp \
  /usr/include/boost/mpl/map/map20.hpp \
@@ -1931,7 +2244,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/mpl/map/aux_/at_impl.hpp \
  /usr/include/boost/mpl/map/aux_/tag.hpp \
  /usr/include/boost/mpl/aux_/order_impl.hpp \
- /usr/include/boost/mpl/order_fwd.hpp \
  /usr/include/boost/mpl/map/aux_/insert_impl.hpp \
  /usr/include/boost/mpl/map/aux_/item.hpp \
  /usr/include/boost/mpl/map/aux_/map0.hpp \
@@ -1981,10 +2293,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/proto/detail/lambda_matches.hpp \
  /usr/include/boost/proto/detail/preprocessed/lambda_matches.hpp \
  /usr/include/boost/proto/extends.hpp \
- /usr/include/boost/preprocessor/seq/for_each.hpp \
  /usr/include/boost/proto/detail/remove_typename.hpp \
  /usr/include/boost/preprocessor/expand.hpp \
- /usr/include/boost/preprocessor/detail/is_unary.hpp \
  /usr/include/boost/proto/detail/extends_funop_const.hpp \
  /usr/include/boost/proto/detail/extends_funop.hpp \
  /usr/include/boost/proto/literal.hpp \
@@ -2042,309 +2352,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: \
  /usr/include/boost/xpressive/regex_token_iterator.hpp \
  /usr/include/boost/foreach.hpp \
  /usr/include/boost/graph/detail/read_graphviz_new.hpp \
- /usr/include/boost/graph/detail/empty_header.hpp \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/deterministic.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomized.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomGeographicalThresholdGraph.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/graph_generators/randomHierarchy.h \
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/DfsAcyclicSubgraph.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/AcyclicSubgraphModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationLayout.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/LayoutModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/packing/CCLayoutPackModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/CrossingMinimizationModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EdgeTypePatterns.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/NodeTypePatterns.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/EmbedderModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/extended_graph_alg.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DisjointSets.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/PriorityQueue.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/PairingHeap.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/heap/HeapBase.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/BoyerMyrvold.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/ExtractKuratowskis.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/KuratowskiSubdivision.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/LayoutPlanRepModule.h \
- /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h \
- /usr/include/boost/graph/maximum_weighted_matching.hpp \
- /usr/include/boost/graph/max_cardinality_matching.hpp \
- /usr/include/boost/graph/visitors.hpp \
- /usr/include/boost/graph/depth_first_search.hpp \
- /usr/include/boost/graph/named_function_params.hpp \
- /usr/include/boost/preprocessor.hpp \
- /usr/include/boost/preprocessor/library.hpp \
- /usr/include/boost/preprocessor/arithmetic.hpp \
- /usr/include/boost/preprocessor/arithmetic/div.hpp \
- /usr/include/boost/preprocessor/arithmetic/mul.hpp \
- /usr/include/boost/preprocessor/array.hpp \
- /usr/include/boost/preprocessor/array/enum.hpp \
- /usr/include/boost/preprocessor/array/insert.hpp \
- /usr/include/boost/preprocessor/array/push_back.hpp \
- /usr/include/boost/preprocessor/array/detail/get_data.hpp \
- /usr/include/boost/preprocessor/facilities/is_1.hpp \
- /usr/include/boost/preprocessor/facilities/is_empty.hpp \
- /usr/include/boost/preprocessor/facilities/is_empty_variadic.hpp \
- /usr/include/boost/preprocessor/punctuation/is_begin_parens.hpp \
- /usr/include/boost/preprocessor/punctuation/detail/is_begin_parens.hpp \
- /usr/include/boost/preprocessor/facilities/detail/is_empty.hpp \
- /usr/include/boost/preprocessor/variadic/has_opt.hpp \
- /usr/include/boost/preprocessor/variadic/detail/has_opt.hpp \
- /usr/include/boost/preprocessor/array/pop_back.hpp \
- /usr/include/boost/preprocessor/repetition/deduce_z.hpp \
- /usr/include/boost/preprocessor/array/pop_front.hpp \
- /usr/include/boost/preprocessor/array/push_front.hpp \
- /usr/include/boost/preprocessor/array/remove.hpp \
- /usr/include/boost/preprocessor/array/replace.hpp \
- /usr/include/boost/preprocessor/array/reverse.hpp \
- /usr/include/boost/preprocessor/tuple/reverse.hpp \
- /usr/include/boost/preprocessor/array/to_list.hpp \
- /usr/include/boost/preprocessor/array/to_seq.hpp \
- /usr/include/boost/preprocessor/tuple/to_seq.hpp \
- /usr/include/boost/preprocessor/array/to_tuple.hpp \
- /usr/include/boost/preprocessor/comparison.hpp \
- /usr/include/boost/preprocessor/comparison/equal.hpp \
- /usr/include/boost/preprocessor/comparison/greater_equal.hpp \
- /usr/include/boost/preprocessor/config/limits.hpp \
- /usr/include/boost/preprocessor/control.hpp \
- /usr/include/boost/preprocessor/debug.hpp \
- /usr/include/boost/preprocessor/debug/assert.hpp \
- /usr/include/boost/preprocessor/debug/line.hpp \
- /usr/include/boost/preprocessor/facilities.hpp \
- /usr/include/boost/preprocessor/facilities/apply.hpp \
- /usr/include/boost/preprocessor/facilities/check_empty.hpp \
- /usr/include/boost/preprocessor/facilities/va_opt.hpp \
- /usr/include/boost/preprocessor/iteration.hpp \
- /usr/include/boost/preprocessor/iteration/self.hpp \
- /usr/include/boost/preprocessor/list.hpp \
- /usr/include/boost/preprocessor/list/append.hpp \
- /usr/include/boost/preprocessor/list/at.hpp \
- /usr/include/boost/preprocessor/list/rest_n.hpp \
- /usr/include/boost/preprocessor/list/cat.hpp \
- /usr/include/boost/preprocessor/list/enum.hpp \
- /usr/include/boost/preprocessor/list/filter.hpp \
- /usr/include/boost/preprocessor/list/first_n.hpp \
- /usr/include/boost/preprocessor/list/for_each.hpp \
- /usr/include/boost/preprocessor/list/for_each_product.hpp \
- /usr/include/boost/preprocessor/list/to_tuple.hpp \
- /usr/include/boost/preprocessor/list/size.hpp \
- /usr/include/boost/preprocessor/list/to_array.hpp \
- /usr/include/boost/preprocessor/list/to_seq.hpp \
- /usr/include/boost/preprocessor/list/transform.hpp \
- /usr/include/boost/preprocessor/logical.hpp \
- /usr/include/boost/preprocessor/logical/bitnor.hpp \
- /usr/include/boost/preprocessor/logical/bitor.hpp \
- /usr/include/boost/preprocessor/logical/bitxor.hpp \
- /usr/include/boost/preprocessor/logical/nor.hpp \
- /usr/include/boost/preprocessor/logical/or.hpp \
- /usr/include/boost/preprocessor/logical/xor.hpp \
- /usr/include/boost/preprocessor/punctuation.hpp \
- /usr/include/boost/preprocessor/punctuation/paren.hpp \
- /usr/include/boost/preprocessor/punctuation/paren_if.hpp \
- /usr/include/boost/preprocessor/punctuation/remove_parens.hpp \
- /usr/include/boost/preprocessor/tuple/enum.hpp \
- /usr/include/boost/preprocessor/repetition.hpp \
- /usr/include/boost/preprocessor/repetition/deduce_r.hpp \
- /usr/include/boost/preprocessor/repetition/enum_params_with_defaults.hpp \
- /usr/include/boost/preprocessor/repetition/enum_shifted_binary_params.hpp \
- /usr/include/boost/preprocessor/selection.hpp \
- /usr/include/boost/preprocessor/selection/min.hpp \
- /usr/include/boost/preprocessor/seq.hpp \
- /usr/include/boost/preprocessor/seq/filter.hpp \
- /usr/include/boost/preprocessor/seq/fold_right.hpp \
- /usr/include/boost/preprocessor/seq/reverse.hpp \
- /usr/include/boost/preprocessor/seq/for_each_product.hpp \
- /usr/include/boost/preprocessor/seq/insert.hpp \
- /usr/include/boost/preprocessor/seq/rest_n.hpp \
- /usr/include/boost/preprocessor/seq/pop_front.hpp \
- /usr/include/boost/preprocessor/seq/remove.hpp \
- /usr/include/boost/preprocessor/seq/replace.hpp \
- /usr/include/boost/preprocessor/seq/subseq.hpp \
- /usr/include/boost/preprocessor/seq/to_array.hpp \
- /usr/include/boost/preprocessor/seq/to_list.hpp \
- /usr/include/boost/preprocessor/seq/detail/binary_transform.hpp \
- /usr/include/boost/preprocessor/variadic/detail/is_single_return.hpp \
- /usr/include/boost/preprocessor/seq/variadic_seq_to_seq.hpp \
- /usr/include/boost/preprocessor/slot.hpp \
- /usr/include/boost/preprocessor/tuple.hpp \
- /usr/include/boost/preprocessor/tuple/insert.hpp \
- /usr/include/boost/preprocessor/tuple/to_array.hpp \
- /usr/include/boost/preprocessor/tuple/pop_back.hpp \
- /usr/include/boost/preprocessor/tuple/pop_front.hpp \
- /usr/include/boost/preprocessor/tuple/push_back.hpp \
- /usr/include/boost/preprocessor/tuple/push_front.hpp \
- /usr/include/boost/preprocessor/tuple/remove.hpp \
- /usr/include/boost/preprocessor/tuple/replace.hpp \
- /usr/include/boost/preprocessor/variadic.hpp \
- /usr/include/boost/preprocessor/variadic/to_array.hpp \
- /usr/include/boost/preprocessor/variadic/to_list.hpp \
- /usr/include/boost/preprocessor/variadic/to_seq.hpp \
- /usr/include/boost/preprocessor/variadic/to_tuple.hpp \
- /usr/include/boost/preprocessor/wstringize.hpp \
- /usr/include/boost/parameter/is_argument_pack.hpp \
- /usr/include/boost/parameter/aux_/is_tagged_argument.hpp \
- /usr/include/boost/parameter/config.hpp \
- /usr/include/boost/parameter/aux_/arg_list.hpp \
- /usr/include/boost/parameter/aux_/void.hpp \
- /usr/include/boost/parameter/aux_/yesno.hpp \
- /usr/include/boost/mp11/integral.hpp /usr/include/boost/mp11/version.hpp \
- /usr/include/boost/parameter/aux_/result_of0.hpp \
- /usr/include/boost/parameter/aux_/use_default_tag.hpp \
- /usr/include/boost/mp11/utility.hpp \
- /usr/include/boost/mp11/detail/mp_list.hpp \
- /usr/include/boost/mp11/detail/mp_fold.hpp \
- /usr/include/boost/mp11/detail/config.hpp \
- /usr/include/boost/parameter/aux_/default.hpp \
- /usr/include/boost/mp11/list.hpp \
- /usr/include/boost/mp11/detail/mp_is_list.hpp \
- /usr/include/boost/mp11/detail/mp_append.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/nullptr.hpp \
- /usr/include/boost/parameter/aux_/is_maybe.hpp \
- /usr/include/boost/parameter/aux_/tagged_argument_fwd.hpp \
- /usr/include/boost/parameter/aux_/parameter_requirements.hpp \
- /usr/include/boost/parameter/aux_/pack/parameter_requirements.hpp \
- /usr/include/boost/parameter/aux_/augment_predicate.hpp \
- /usr/include/boost/parameter/keyword_fwd.hpp \
- /usr/include/boost/parameter/aux_/lambda_tag.hpp \
- /usr/include/boost/parameter/aux_/has_nested_template_fn.hpp \
- /usr/include/boost/parameter/value_type.hpp \
- /usr/include/boost/parameter/aux_/is_placeholder.hpp \
- /usr/include/boost/mp11/bind.hpp /usr/include/boost/mp11/algorithm.hpp \
- /usr/include/boost/mp11/set.hpp /usr/include/boost/mp11/function.hpp \
- /usr/include/boost/mp11/detail/mp_count.hpp \
- /usr/include/boost/mp11/detail/mp_plus.hpp \
- /usr/include/boost/mp11/detail/mp_min_element.hpp \
- /usr/include/boost/mp11/detail/mp_void.hpp \
- /usr/include/boost/mp11/detail/mp_copy_if.hpp \
- /usr/include/boost/mp11/detail/mp_remove_if.hpp \
- /usr/include/boost/mp11/detail/mp_map_find.hpp \
- /usr/include/boost/mp11/detail/mp_with_index.hpp \
- /usr/include/boost/mp11/integer_sequence.hpp \
- /usr/include/boost/mpl/count_fwd.hpp \
- /usr/include/boost/parameter/name.hpp \
- /usr/include/boost/parameter/aux_/name.hpp \
- /usr/include/boost/parameter/binding.hpp \
- /usr/include/boost/parameter/keyword.hpp \
- /usr/include/boost/parameter/aux_/tag.hpp \
- /usr/include/boost/parameter/aux_/unwrap_cv_reference.hpp \
- /usr/include/boost/parameter/aux_/tagged_argument.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/qualifier.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/is_binary.hpp \
- /usr/include/boost/parameter/template_keyword.hpp \
- /usr/include/boost/parameter/aux_/template_keyword.hpp \
- /usr/include/boost/graph/detail/d_ary_heap.hpp \
- /usr/include/boost/property_map/shared_array_property_map.hpp \
- /usr/include/boost/parameter.hpp \
- /usr/include/boost/parameter/parameters.hpp \
- /usr/include/boost/parameter/aux_/pack/make_arg_list.hpp \
- /usr/include/boost/parameter/aux_/pack/unmatched_argument.hpp \
- /usr/include/boost/parameter/aux_/pack/tag_type.hpp \
- /usr/include/boost/parameter/deduced.hpp \
- /usr/include/boost/parameter/aux_/use_default.hpp \
- /usr/include/boost/parameter/required.hpp \
- /usr/include/boost/parameter/optional.hpp \
- /usr/include/boost/parameter/aux_/pack/is_named_argument.hpp \
- /usr/include/boost/parameter/aux_/pack/insert_tagged.hpp \
- /usr/include/boost/parameter/aux_/set.hpp \
- /usr/include/boost/parameter/aux_/pack/deduce_tag.hpp \
- /usr/include/boost/parameter/aux_/pack/tag_deduced.hpp \
- /usr/include/boost/parameter/aux_/pack/make_parameter_spec_items.hpp \
- /usr/include/boost/parameter/aux_/pack/make_deduced_items.hpp \
- /usr/include/boost/parameter/aux_/pack/deduced_item.hpp \
- /usr/include/boost/parameter/aux_/pack/satisfies.hpp \
- /usr/include/boost/parameter/aux_/pack/as_parameter_requirements.hpp \
- /usr/include/boost/parameter/aux_/pack/predicate.hpp \
- /usr/include/boost/parameter/aux_/always_true_predicate.hpp \
- /usr/include/boost/parameter/aux_/pack/make_items.hpp \
- /usr/include/boost/parameter/aux_/pack/item.hpp \
- /usr/include/boost/parameter/aux_/pack/tag_keyword_arg.hpp \
- /usr/include/boost/parameter/aux_/pack/tag_template_keyword_arg.hpp \
- /usr/include/boost/parameter/are_tagged_arguments.hpp \
- /usr/include/boost/parameter/nested_keyword.hpp \
- /usr/include/boost/parameter/macros.hpp \
- /usr/include/boost/parameter/match.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/seq_enum.hpp \
- /usr/include/boost/parameter/compose.hpp \
- /usr/include/boost/parameter/preprocessor.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/forwarding_overloads.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/parenthesized_type.hpp \
- /usr/include/boost/parameter/aux_/pp_impl/argument_pack.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/function_name.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/is_nullary.hpp \
- /usr/include/boost/preprocessor/detail/is_nullary.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/function_forward_match.hpp \
- /usr/include/boost/parameter/aux_/pp_impl/match.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/arity_range.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/argument_specs.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/specification.hpp \
- /usr/include/boost/parameter/aux_/pp_impl/unwrap_predicate.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/parenthesized_return_type.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/flatten.hpp \
- /usr/include/boost/preprocessor/detail/split.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/for_each.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/function_dispatch_layer.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/split_args.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/function_dispatch_tuple.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/function_cast.hpp \
- /usr/include/boost/parameter/preprocessor_no_spec.hpp \
- /usr/include/boost/parameter/aux_/preprocessor/impl/no_spec_overloads.hpp \
- /usr/include/boost/tti/has_member_function.hpp \
- /usr/include/boost/function_types/property_tags.hpp \
- /usr/include/boost/mpl/bitxor.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/bitxor.hpp \
- /usr/include/boost/function_types/detail/pp_tags/preprocessed.hpp \
- /usr/include/boost/function_types/detail/pp_loop.hpp \
- /usr/include/boost/function_types/detail/encoding/def.hpp \
- /usr/include/boost/function_types/detail/encoding/aliases_def.hpp \
- /usr/include/boost/function_types/detail/pp_cc_loop/preprocessed.hpp \
- /usr/include/boost/function_types/detail/pp_tags/cc_tag.hpp \
- /usr/include/boost/function_types/detail/encoding/aliases_undef.hpp \
- /usr/include/boost/function_types/detail/encoding/undef.hpp \
- /usr/include/boost/tti/detail/ddeftype.hpp \
- /usr/include/boost/tti/detail/dmem_fun.hpp \
- /usr/include/boost/function_types/is_member_function_pointer.hpp \
- /usr/include/boost/function_types/components.hpp \
- /usr/include/boost/mpl/remove.hpp \
- /usr/include/boost/function_types/config/config.hpp \
- /usr/include/boost/function_types/config/compiler.hpp \
- /usr/include/boost/function_types/config/cc_names.hpp \
- /usr/include/boost/mpl/vector/vector30.hpp \
- /usr/include/boost/mpl/vector/aux_/preprocessed/typeof_based/vector30.hpp \
- /usr/include/boost/function_types/detail/class_transform.hpp \
- /usr/include/boost/function_types/detail/pp_variate_loop/preprocessed.hpp \
- /usr/include/boost/function_types/detail/pp_arity_loop.hpp \
- /usr/include/boost/function_types/detail/components_impl/arity20_0.hpp \
- /usr/include/boost/function_types/detail/components_impl/arity10_0.hpp \
- /usr/include/boost/function_types/detail/components_impl/arity20_1.hpp \
- /usr/include/boost/function_types/detail/components_impl/arity10_1.hpp \
- /usr/include/boost/function_types/detail/components_as_mpl_sequence.hpp \
- /usr/include/boost/function_types/detail/retag_default_cc.hpp \
- /usr/include/boost/mpl/bitand.hpp \
- /usr/include/boost/mpl/aux_/preprocessed/gcc/bitand.hpp \
- /usr/include/boost/function_types/detail/pp_retag_default_cc/preprocessed.hpp \
- /usr/include/boost/tti/detail/dcomp_mem_fun.hpp \
- /usr/include/boost/tti/detail/dftclass.hpp \
- /usr/include/boost/function_types/parameter_types.hpp \
- /usr/include/boost/blank.hpp /usr/include/boost/blank_fwd.hpp \
- /usr/include/boost/detail/templated_streams.hpp \
- /usr/include/boost/function_types/is_callable_builtin.hpp \
- /usr/include/boost/tti/detail/dmacro_sunfix.hpp \
- /usr/include/boost/tti/detail/dnullptr.hpp \
- /usr/include/boost/tti/gen/namespace_gen.hpp \
- /usr/include/boost/tti/detail/denclosing_type.hpp \
- /usr/include/boost/tti/detail/dptmf.hpp \
- /usr/include/boost/function_types/member_function_pointer.hpp \
- /usr/include/boost/function_types/detail/synthesize.hpp \
- /usr/include/boost/function_types/detail/cv_traits.hpp \
- /usr/include/boost/function_types/detail/synthesize_impl/arity20_0.hpp \
- /usr/include/boost/function_types/detail/synthesize_impl/arity10_0.hpp \
- /usr/include/boost/function_types/detail/synthesize_impl/arity20_1.hpp \
- /usr/include/boost/function_types/detail/synthesize_impl/arity10_1.hpp \
- /usr/include/boost/function_types/detail/to_sequence.hpp \
- /usr/include/boost/tti/gen/has_member_function_gen.hpp \
- /usr/include/boost/pending/disjoint_sets.hpp \
- /usr/include/boost/pending/detail/disjoint_sets.hpp
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/layered/AcyclicSubgraphModule.h

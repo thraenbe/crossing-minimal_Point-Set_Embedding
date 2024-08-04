@@ -434,6 +434,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Skiplist.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Stopwatch.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/System.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Thread.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Timeouter.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/basic.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/comparer.h \
@@ -525,11 +526,15 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/LayoutPlanRepModule.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/NodeTypePatterns.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarSubgraphModule.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationGridLayout.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationLayout.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizerMixedInsertion.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarlayout/GridLayoutModule.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -2509,6 +2514,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/boost/xpressive/xpressive_static.hpp \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/array \
+  /usr/include/c++/11/atomic \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/backward/binders.h \
   /usr/include/c++/11/bit \
@@ -2519,6 +2525,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/c++/11/bits/allocator.h \
   /usr/include/c++/11/bits/atomic_base.h \
   /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+  /usr/include/c++/11/bits/atomic_timed_wait.h \
   /usr/include/c++/11/bits/atomic_wait.h \
   /usr/include/c++/11/bits/basic_ios.h \
   /usr/include/c++/11/bits/basic_ios.tcc \
@@ -2584,6 +2591,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/c++/11/bits/ranges_uninitialized.h \
   /usr/include/c++/11/bits/ranges_util.h \
   /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/semaphore_base.h \
   /usr/include/c++/11/bits/shared_ptr.h \
   /usr/include/c++/11/bits/shared_ptr_atomic.h \
   /usr/include/c++/11/bits/shared_ptr_base.h \
@@ -2593,6 +2601,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/c++/11/bits/std_abs.h \
   /usr/include/c++/11/bits/std_function.h \
   /usr/include/c++/11/bits/std_mutex.h \
+  /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/stl_algo.h \
   /usr/include/c++/11/bits/stl_algobase.h \
   /usr/include/c++/11/bits/stl_bvector.h \
@@ -2623,6 +2632,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/c++/11/bits/streambuf_iterator.h \
   /usr/include/c++/11/bits/string_view.tcc \
   /usr/include/c++/11/bits/stringfwd.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
   /usr/include/c++/11/bits/uniform_int_dist.h \
   /usr/include/c++/11/bits/unique_lock.h \
   /usr/include/c++/11/bits/unique_ptr.h \
@@ -2699,15 +2709,18 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/c++/11/queue \
   /usr/include/c++/11/random \
   /usr/include/c++/11/ratio \
+  /usr/include/c++/11/semaphore \
   /usr/include/c++/11/set \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/stdexcept \
   /usr/include/c++/11/stdlib.h \
+  /usr/include/c++/11/stop_token \
   /usr/include/c++/11/streambuf \
   /usr/include/c++/11/string \
   /usr/include/c++/11/string_view \
   /usr/include/c++/11/system_error \
+  /usr/include/c++/11/thread \
   /usr/include/c++/11/tr1/bessel_function.tcc \
   /usr/include/c++/11/tr1/beta_function.tcc \
   /usr/include/c++/11/tr1/ell_integral.tcc \
@@ -2746,6 +2759,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/math.h \
   /usr/include/pthread.h \
   /usr/include/sched.h \
+  /usr/include/semaphore.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \
@@ -2794,6 +2808,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/x86_64-linux-gnu/bits/sched.h \
   /usr/include/x86_64-linux-gnu/bits/select.h \
   /usr/include/x86_64-linux-gnu/bits/select2.h \
+  /usr/include/x86_64-linux-gnu/bits/semaphore.h \
   /usr/include/x86_64-linux-gnu/bits/setjmp.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
@@ -2873,6 +2888,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/syscall.h \
+  /usr/include/x86_64-linux-gnu/sys/time.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
@@ -2887,9 +2903,17 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h:
 
+/usr/include/x86_64-linux-gnu/sys/time.h:
+
 /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h:
 
+/usr/include/x86_64-linux-gnu/bits/semaphore.h:
+
+/usr/include/semaphore.h:
+
 /usr/include/c++/11/version:
+
+/usr/include/c++/11/stop_token:
 
 /usr/include/c++/11/stack:
 
@@ -2907,13 +2931,19 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/c++/11/cfloat:
 
+/usr/include/c++/11/bits/this_thread_sleep.h:
+
 /usr/include/c++/11/bits/stl_set.h:
+
+/usr/include/c++/11/bits/std_thread.h:
 
 /usr/include/c++/11/bits/quoted_string.h:
 
 /usr/include/c++/11/bits/locale_facets_nonio.tcc:
 
 /usr/include/c++/11/bits/locale_conv.h:
+
+/usr/include/c++/11/atomic:
 
 /usr/include/boost/xpressive/xpressive_static.hpp:
 
@@ -3063,7 +3093,9 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/xpressive/detail/core/finder.hpp:
 
-/usr/include/boost/mpl/push_back_fwd.hpp:
+/usr/include/boost/xpressive/detail/core/adaptor.hpp:
+
+/usr/include/boost/weak_ptr.hpp:
 
 /usr/include/boost/mpl/aux_/config/gpu.hpp:
 
@@ -3239,11 +3271,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/graph/adjacency_list.hpp:
 
+/usr/include/boost/config/detail/select_platform_config.hpp:
+
 /usr/include/boost/xpressive/detail/static/grammar.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/internal/EdgeVar.h:
-
-/usr/include/boost/config/detail/select_platform_config.hpp:
 
 /usr/include/boost/graph/adjacency_iterator.hpp:
 
@@ -3873,6 +3905,28 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/config/no_tr1/functional.hpp:
 
+/usr/include/boost/fusion/mpl/end.hpp:
+
+/usr/include/boost/fusion/view/joint_view/detail/key_of_impl.hpp:
+
+/usr/include/boost/config/no_tr1/cmath.hpp:
+
+/usr/include/boost/mpl/aux_/has_apply.hpp:
+
+/usr/include/boost/core/nvp.hpp:
+
+/usr/include/boost/mpl/insert.hpp:
+
+/usr/include/boost/proto/fusion.hpp:
+
+/usr/include/boost/config/helper_macros.hpp:
+
+/usr/include/boost/lexical_cast/detail/is_character.hpp:
+
+/usr/include/boost/fusion/view/zip_view/detail/distance_impl.hpp:
+
+/usr/include/boost/preprocessor/tuple/replace.hpp:
+
 /usr/include/boost/mpl/always.hpp:
 
 /usr/include/boost/predef/platform.h:
@@ -3958,6 +4012,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/c++/11/string:
 
 /usr/include/boost/type_index.hpp:
+
+/usr/include/boost/serialization/level.hpp:
+
+/usr/include/c++/11/bits/shared_ptr_atomic.h:
 
 /usr/include/boost/type_traits/aligned_storage.hpp:
 
@@ -4059,10 +4117,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/smart_ptr/enable_shared_from_this.hpp:
 
-/usr/include/boost/mpl/aux_/config/nttp.hpp:
-
-/usr/include/c++/11/exception:
-
 /usr/include/boost/exception/detail/shared_ptr.hpp:
 
 /usr/include/boost/fusion/container/vector/detail/value_of_impl.hpp:
@@ -4141,6 +4195,12 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/c++/11/ostream:
 
+/usr/include/boost/fusion/adapted/boost_tuple/tag_of.hpp:
+
+/usr/include/boost/mpl/aux_/O1_size_impl.hpp:
+
+/usr/include/c++/11/iterator:
+
 /usr/include/boost/type_traits/is_noncopyable.hpp:
 
 /usr/include/c++/11/bits/unordered_set.h:
@@ -4212,12 +4272,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
 
 /usr/include/features.h:
-
-/usr/include/boost/lexical_cast/detail/is_character.hpp:
-
-/usr/include/boost/fusion/view/zip_view/detail/distance_impl.hpp:
-
-/usr/include/boost/config/helper_macros.hpp:
 
 /usr/include/boost/detail/is_incrementable.hpp:
 
@@ -4411,6 +4465,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/c++/11/bits/stringfwd.h:
 
+/usr/include/boost/type_traits/detail/is_member_function_pointer_cxx_11.hpp:
+
 /usr/include/c++/11/bits/hashtable.h:
 
 /usr/include/boost/mpl/aux_/pop_back_impl.hpp:
@@ -4436,10 +4492,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/proto/detail/or_n.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/internal/config.h:
-
-/usr/include/boost/preprocessor/array/insert.hpp:
-
-/usr/include/boost/range/range_fwd.hpp:
 
 /usr/include/boost/graph/iteration_macros.hpp:
 
@@ -4627,6 +4679,16 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/parameter/required.hpp:
 
+/usr/include/c++/11/exception:
+
+/usr/include/boost/mpl/aux_/config/nttp.hpp:
+
+/usr/include/boost/mpl/push_back_fwd.hpp:
+
+/usr/include/boost/range/range_fwd.hpp:
+
+/usr/include/boost/preprocessor/array/insert.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
 /usr/include/boost/preprocessor/punctuation/remove_parens.hpp:
@@ -4749,8 +4811,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/c++/11/bits/algorithmfwd.h:
 
-/usr/include/boost/mpl/aux_/config/operators.hpp:
-
 /usr/include/c++/11/functional:
 
 /usr/include/boost/preprocessor/arithmetic/mod.hpp:
@@ -4807,10 +4867,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/row.h:
 
-/usr/include/boost/mpl/aux_/config/msvc.hpp:
-
-/usr/include/c++/11/bits/cxxabi_init_exception.h:
-
 /usr/include/boost/type_traits/has_trivial_assign.hpp:
 
 /usr/include/c++/11/backward/binders.h:
@@ -4826,16 +4882,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/c++/11/memory:
 
 /usr/include/boost/multi_index/detail/index_node_base.hpp:
-
-/usr/include/c++/11/bits/shared_ptr.h:
-
-/usr/include/boost/mpl/aux_/config/msvc_typename.hpp:
-
-/usr/include/boost/fusion/iterator/mpl/fusion_iterator.hpp:
-
-/usr/include/boost/fusion/iterator/detail/adapt_value_traits.hpp:
-
-/usr/include/boost/spirit/home/classic/iterator/multi_pass.hpp:
 
 /usr/include/c++/11/bits/deque.tcc:
 
@@ -4899,6 +4945,12 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/convar.h:
 
+/usr/include/boost/xpressive/detail/core/access.hpp:
+
+/usr/include/boost/fusion/support/tag_of.hpp:
+
+/usr/include/boost/preprocessor/tuple/insert.hpp:
+
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/active.h:
 
 /usr/include/boost/preprocessor/control/while.hpp:
@@ -4928,8 +4980,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/fusion/support/detail/segmented_fold_until_impl.hpp:
 
 /usr/include/c++/11/bits/ios_base.h:
-
-/usr/include/boost/weak_ptr.hpp:
 
 /usr/include/boost/fusion/algorithm/iteration/fold.hpp:
 
@@ -5009,6 +5059,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/c++/11/limits:
 
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarSubgraphModule.h:
+
 /usr/include/c++/11/bits/ranges_util.h:
 
 /usr/include/boost/fusion/include/value_of.hpp:
@@ -5077,23 +5129,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/proto/detail/generate_by_value.hpp:
 
-/usr/include/boost/fusion/adapted/boost_tuple/tag_of.hpp:
-
-/usr/include/c++/11/iterator:
-
-/usr/include/boost/mpl/aux_/O1_size_impl.hpp:
-
-/usr/include/boost/preprocessor/tuple/replace.hpp:
-
 /usr/include/boost/exception/detail/is_output_streamable.hpp:
 
 /usr/include/boost/mpl/aux_/order_impl.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
-
-/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraphAttributes.h:
-
-/usr/include/boost/algorithm/string/detail/formatter.hpp:
 
 /usr/include/boost/fusion/view/single_view/detail/prior_impl.hpp:
 
@@ -5108,10 +5148,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/boost/mpl/aux_/config/overload_resolution.hpp:
-
-/usr/include/c++/11/bits/ranges_algobase.h:
 
 /usr/include/boost/mpl/vector/vector10.hpp:
 
@@ -5232,6 +5268,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /home/bela/uni-tuebingen/6/bachelor/code/JSONParser.cpp:
 
 /usr/include/boost/mpl/aux_/preprocessed/gcc/inherit.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizerMixedInsertion.h:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarityModule.h:
 
@@ -5371,24 +5409,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
-/usr/include/boost/fusion/algorithm/query/find.hpp:
-
-/usr/include/c++/11/bits/stl_algobase.h:
-
-/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/NodeArray.h:
-
-/usr/include/x86_64-linux-gnu/bits/wchar.h:
-
-/usr/include/boost/function_types/detail/pp_variate_loop/preprocessed.hpp:
-
-/usr/include/boost/preprocessor/repetition/enum_shifted_params.hpp:
-
-/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/List.h:
-
-/usr/include/boost/optional/detail/optional_swap.hpp:
-
-/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/System.h:
-
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/constraint.h:
@@ -5432,16 +5452,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/predef/architecture/superh.h:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/boost/fusion/mpl/end.hpp:
-
-/usr/include/boost/fusion/view/joint_view/detail/key_of_impl.hpp:
-
-/usr/include/c++/11/bits/shared_ptr_atomic.h:
-
-/usr/include/boost/serialization/level.hpp:
-
-/usr/include/boost/config/no_tr1/cmath.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanRep.h:
 
@@ -5491,6 +5501,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /home/bela/uni-tuebingen/6/bachelor/code/matching.hpp:
 
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Thread.h:
+
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/include/boost/parameter/aux_/pack/parameter_requirements.hpp:
@@ -5498,6 +5510,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/DualGraph.h:
 
 /usr/include/boost/fusion/iterator/value_of.hpp:
+
+/usr/include/c++/11/bits/atomic_timed_wait.h:
 
 /usr/include/boost/mpl/advance_fwd.hpp:
 
@@ -5546,6 +5560,14 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterAnalysis.h:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterArray.h:
+
+/usr/include/boost/algorithm/string/detail/formatter.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/ClusterGraphAttributes.h:
+
+/usr/include/c++/11/bits/cxxabi_init_exception.h:
+
+/usr/include/boost/mpl/aux_/config/msvc.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/internal/CP_MasterBase.h:
 
@@ -5597,6 +5619,12 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/conbranchrule.h:
 
+/usr/include/boost/mpl/aux_/clear_impl.hpp:
+
+/usr/include/boost/range/rend.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/cutbuffer.inc:
+
 /usr/include/boost/mpl/aux_/preprocessed/gcc/reverse_fold_impl.hpp:
 
 /usr/include/boost/preprocessor/seq/remove.hpp:
@@ -5626,6 +5654,26 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/fusion/view/joint_view/detail/begin_impl.hpp:
 
 /usr/include/boost/predef/platform/mingw.h:
+
+/usr/include/boost/fusion/algorithm/query/find.hpp:
+
+/usr/include/c++/11/bits/stl_algobase.h:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/NodeArray.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
+/usr/include/boost/function_types/detail/pp_variate_loop/preprocessed.hpp:
+
+/usr/include/boost/preprocessor/repetition/enum_shifted_params.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/List.h:
+
+/usr/include/boost/optional/detail/optional_swap.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/System.h:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarlayout/GridLayoutModule.h:
 
 /usr/include/boost/fusion/mpl/detail/clear.hpp:
 
@@ -5779,19 +5827,21 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/mpl/find.hpp:
 
-/usr/include/boost/range/rend.hpp:
+/usr/include/c++/11/bits/shared_ptr.h:
 
-/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/cutbuffer.inc:
+/usr/include/boost/mpl/aux_/config/msvc_typename.hpp:
 
-/usr/include/boost/mpl/aux_/clear_impl.hpp:
+/usr/include/boost/fusion/iterator/mpl/fusion_iterator.hpp:
 
-/usr/include/boost/mpl/aux_/has_apply.hpp:
+/usr/include/boost/fusion/iterator/detail/adapt_value_traits.hpp:
 
-/usr/include/boost/core/nvp.hpp:
+/usr/include/boost/spirit/home/classic/iterator/multi_pass.hpp:
 
-/usr/include/boost/mpl/insert.hpp:
+/usr/include/boost/mpl/aux_/config/operators.hpp:
 
-/usr/include/boost/proto/fusion.hpp:
+/usr/include/c++/11/bits/ranges_algobase.h:
+
+/usr/include/boost/mpl/aux_/config/overload_resolution.hpp:
 
 /usr/include/boost/mpl/aux_/config/pp_counter.hpp:
 
@@ -6061,9 +6111,9 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/mpl/empty_base.hpp:
 
-/usr/include/c++/11/bits/ostream_insert.h:
-
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/pool.h:
+
+/usr/include/c++/11/bits/ostream_insert.h:
 
 /usr/include/boost/mpl/empty_fwd.hpp:
 
@@ -6331,15 +6381,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/mpl/push_front.hpp:
 
-/usr/include/boost/fusion/support/tag_of.hpp:
-
-/usr/include/boost/preprocessor/tuple/insert.hpp:
-
-/usr/include/boost/xpressive/detail/core/access.hpp:
-
 /usr/include/boost/preprocessor/array/replace.hpp:
 
 /usr/include/boost/preprocessor/variadic/size.hpp:
+
+/usr/include/c++/11/thread:
 
 /usr/include/boost/mpl/remove.hpp:
 
@@ -6508,6 +6554,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/multi_index/detail/modify_key_adaptor.hpp:
 
 /usr/include/boost/preprocessor/seq/to_list.hpp:
+
+/usr/include/c++/11/bits/semaphore_base.h:
 
 /usr/include/boost/multi_index/detail/no_duplicate_tags.hpp:
 
@@ -6962,6 +7010,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/predef/library/c/zos.h:
 
 /usr/include/boost/preprocessor/arithmetic.hpp:
+
+/usr/include/c++/11/semaphore:
 
 /usr/include/boost/predef/library/std.h:
 
@@ -7527,6 +7577,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/xpressive/detail/static/transforms/as_set.hpp:
 
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/PlanarizationGridLayout.h:
+
 /usr/include/boost/proto/transform/when.hpp:
 
 /usr/include/boost/parameter/aux_/pp_impl/argument_pack.hpp:
@@ -7558,8 +7610,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/range/iterator.hpp:
 
 /usr/include/boost/range/iterator_range.hpp:
-
-/usr/include/boost/xpressive/detail/core/adaptor.hpp:
 
 /usr/include/boost/mpl/aux_/contains_impl.hpp:
 
@@ -7682,8 +7732,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/type_traits/detail/has_binary_operator.hpp:
 
 /usr/include/boost/type_traits/detail/has_postfix_operator.hpp:
-
-/usr/include/boost/type_traits/detail/is_member_function_pointer_cxx_11.hpp:
 
 /usr/include/boost/type_traits/detail/mp_defer.hpp:
 
