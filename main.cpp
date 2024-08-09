@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 
     const std::string filepath = "../graphs/";
     const std::string outPath = "../results";
-    const std::string filename = "g4";
+    const std::string filename = "g3";
 
     Graph myGraph = read(numNodes, nodes, edges, positions, width, height, jp, filepath + filename);
 

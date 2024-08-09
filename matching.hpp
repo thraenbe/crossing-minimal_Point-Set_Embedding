@@ -21,7 +21,7 @@
 #include <boost/graph/graphviz.hpp>
 
 #include <algorithm> // For std::find
-
+#include <limits>
 
 
 
@@ -41,18 +41,17 @@ public:
     }
 
     std::vector<ogdf::DPoint> getNodePositions(const ogdf::GraphAttributes &GA) const {
-        std::cout << "test" << std::endl;
         std::vector<ogdf::DPoint> positions;
-        std::cout << "test" << std::endl;
         std::cout << GA.constGraph().nodes.size() << std::endl;
         for (ogdf::node v : GA.constGraph().nodes) {
-            std::cout << "test" << std::endl;
             positions.push_back(GA.point(v));
             std::cout << "X: " << GA.point(v).m_x << "   Y: " << GA.point(v).m_y << std::endl;
         }
         return positions;
     }
 };
+
+
 
 
 void createClusterGraph(ogdf::Graph& G,Graph& myGraph, std::vector<Node> nodes ){
@@ -76,6 +75,10 @@ void createClusterGraph(ogdf::Graph& G,Graph& myGraph, std::vector<Node> nodes )
     }
 }
 
+void springEmbedding(ogdf::Graph& G){
+
+}
+
 void crossingMinimization(ogdf::Graph& G){
     // Prepare the PlanRep and other required parameters
     ogdf::PlanRep pr(G);
@@ -86,16 +89,31 @@ void crossingMinimization(ogdf::Graph& G){
     ogdf::EdgeArray<uint32_t> *pEdgeSubGraphs = nullptr;
 
     Minimizer minimizer;
-    minimizer.callDoCall(pr, cc, pCostOrig, pForbiddenOrig, pEdgeSubGraphs, crossingNumber);
-    std::cout << "Planarized size: " << pr.nodes.size() << std::endl ; 
-    ogdf::GraphAttributes GA(pr);
-    minimizer.getNodePositions(GA);
+
+    ogdf::GraphAttributes TMP(G,  ogdf::GraphAttributes::nodeGraphics);
+
+    ogdf::PlanarizerMixedInsertion mixedInsertion;
+    mixedInsertion.call(pr, cc, crossingNumber, pCostOrig, pForbiddenOrig, pEdgeSubGraphs);
+    // minimizer.callDoCall(pr, cc, pCostOrig, pForbiddenOrig, pEdgeSubGraphs, crossingNumber);
     
+    ogdf::GraphAttributes GA(pr,  ogdf::GraphAttributes::nodeGraphics);
+    // minimizer.getNodePositions(GA);
+
+    ogdf::PlanarizationLayout pl;
+    // std::cout << "SEGME" << std::endl ;
+    // Retrieve and store the node positions in graph attributes
+
+    // Print positions of the nodes
+    for (auto v : pr.nodes) {
+        // std::cout << "SEGME" << std::endl ;
+        // std::cout << "Node " << v->index() << ": ("
+        //           << GA.x(v) << ", " << GA.y(v) << ")" << std::endl;
+    }
 }
 
-float getWeight(Point point, Node node){
-    float weight;
-    weight =  (1 / euclideanDistance(point, node.nodeToPoint()));
+int getWeight(Point point, Node node, int num){
+    int weight;
+    weight =  (int) num * (1 / (euclideanDistance(point, node.nodeToPoint()) + 1));
     return weight;
 }
 
@@ -164,38 +182,53 @@ std::vector<Point> allignBoundingBoxes(std::vector<Point> points, std::vector<No
 
 
 
-BoostGraph convertClusterToBoostGraph(std::vector<Point> points, std::vector<Node> nodes){
+BoostGraph convertClusterToBoostGraph(std::vector<Point> points, std::vector<Node> nodes, int num){
     // Add a node for each point
+    std::cout << points.size() << " " << nodes.size() << std::endl;
     points = allignBoundingBoxes(points, nodes);
     std::vector<VertexDescriptor> tmp;
     BoostGraph BoostGraph;
     for (auto point : points) {
         VertexDescriptor v = boost::add_vertex(BoostGraph);
         tmp.push_back(v);
-        std::cout << "Added vertex " << v << " for Point(" << point._x << ", " << point._y << ")\n";
+        // std::cout << "Added vertex " << v << " for Point(" << point._x << ", " << point._y << ")\n";
     }
-    for (int j = points.size(); j < points.size()+ nodes.size() ; j++){
+    for (int j = points.size(); j < points.size() + nodes.size() ; j++){
         VertexDescriptor v = boost::add_vertex(BoostGraph);
         for (int i = 0; i < tmp.size(); i++){
-            float weight = getWeight(points[i], nodes[j-points.size()]);
+            int weight = getWeight(points[i], nodes[j-points.size()], num);
             boost::add_edge(j , i , EdgeProperty(weight), BoostGraph);
-            std::cout << "Points: " << j << " " << i << "   Weight: " << weight << "  Position" << nodes[j-points.size()].getX() << " "<< points[i].GetX() << std::endl;
+            // std::cout << "Match: " << j << " " << i << "   Weight: " << weight << "  Node: " << nodes[j-points.size()].getX() << " " << nodes[j-points.size()].getY() << " " << "Point:  "<< points[i].GetX() << " " << points[i].GetY() << std::endl;
         }
     }
     return BoostGraph;
 }
 
-void minimumgWeightMatching(BoostGraph& BoostGraph){
+std::vector<size_t> minimumgWeightMatching(BoostGraph& BoostGraph){
     std::vector<VertexDescriptor> mate(boost::num_vertices(BoostGraph));
     // Find the maximum cardinality matching
-    std::cout << "max weight matching" << std::endl;
-    boost::maximum_weighted_matching(BoostGraph, &mate[0]);
+    std::cout << "Starting max weight matching..." << std::endl;
+    try {
+        boost::maximum_weighted_matching(BoostGraph, &mate[0]);
+        std::cout << "Max weight matching completed." << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Exception during matching: " << e.what() << std::endl;
+    }
 
     std::cout << "Found a weighted matching:" << std::endl;
     std::cout << "Matching size is " << boost::matching_size(BoostGraph, &mate[0])
               << ", total weight is " << boost::matching_weight_sum(BoostGraph, &mate[0])
               << std::endl;
     std::cout << std::endl;
+
+    // Print the matching result
+    for (std::size_t i = 0; i < mate.size(); ++i) {
+        if (mate[i] != BoostGraph::null_vertex() && i < mate[i]) {
+            std::cout << "Matched: " << i << " - " << mate[i] << std::endl;
+        }
+    }
+
+
 
 }
  
@@ -211,8 +244,8 @@ std::unordered_map<size_t, size_t> matching(Graph& myGraph, std::vector<vector<N
         std::cout << "B" << std::endl;
         crossingMinimization(graphClusters[i] );
         BoostGraph BoostGraph ;
-        std::cout << myGraph.pointClusters.size() << " " << myGraph.NodeClusters.size() << std::endl;
-        BoostGraph = convertClusterToBoostGraph(myGraph.pointClusters[i],myGraph.NodeClusters[i]  );
+        std::cout << myGraph.pointClusters[i].size() << " " << myGraph.NodeClusters[i].size() << std::endl;
+        BoostGraph = convertClusterToBoostGraph(myGraph.pointClusters[i],myGraph.NodeClusters[i], myGraph.nodes.size() + myGraph.edges.size() + myGraph.points.size());
         minimumgWeightMatching(BoostGraph);
         
     }
