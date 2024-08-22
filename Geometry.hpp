@@ -63,6 +63,20 @@ public:
 		return _y < other._y;
 	}
 
+	    // Distance to another point
+    double distanceTo(Point other) const {
+        return sqrt(pow(_x - other._x, 2) + pow(_y - other._y, 2));
+    }
+    
+    // Distance to a horizontal line at y = 10
+    double distanceToLineY(int yLine) const {
+        return abs(_y - yLine);
+    }
+
+	double distanceToLineX(int xLine) const {
+        return abs(_x - xLine);
+    }
+
 	double GetX() const {
 		return _x;
 	}

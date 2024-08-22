@@ -1,1 +1,1 @@
-/usr/bin/g++ -O3 -fopenmp -g CMakeFiles/PointSetCrossMin.dir/main.cpp.o CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o -o PointSetCrossMin  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libOGDF.a /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libCOIN.a -lstdc++fs
+/usr/bin/g++ -O3 -fopenmp -g CMakeFiles/PointSetCrossMin.dir/main.cpp.o CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o -o PointSetCrossMin  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libOGDF.a /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libCOIN.a -lstdc++fs /usr/lib/x86_64-linux-gnu/libxlsxwriter.so

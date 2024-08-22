@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include
+CXX_INCLUDES = -I/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include -I/usr/lib/x86_64-linux-gnu/libxlsxwriter.so
 
 CXX_FLAGS = -O3 -fopenmp -g -std=gnu++20
 

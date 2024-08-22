@@ -110,6 +110,7 @@ PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
 PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/build.make
 PointSetCrossMin: /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libOGDF.a
 PointSetCrossMin: /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libCOIN.a
+PointSetCrossMin: /usr/lib/x86_64-linux-gnu/libxlsxwriter.so
 PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable PointSetCrossMin"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PointSetCrossMin.dir/link.txt --verbose=$(VERBOSE)

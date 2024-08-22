@@ -14,6 +14,7 @@
 #include <list>
 #include <queue>
 #include <ogdf/basic/Graph.h>
+#include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/graphalg/Clusterer.h>
 #include <ogdf/basic/SList.h>
 
@@ -32,8 +33,8 @@ namespace {
 	}
 }
 struct Graph {
-	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet)
-		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet), edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)) {
+	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int width , const int height)
+		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), width(width), height(height) {
 
 		
 
@@ -46,24 +47,28 @@ struct Graph {
 			freePoints.insert(i);
 		}
 
-
-		while (!queueNodes.empty()) {
-
-
-			size_t nodeID = queueNodes.front();
-			size_t pointID = queuePoints.front();
-			queueNodes.pop();
-			queuePoints.pop();
-			mapVerticesToPoints[nodeID] = pointID ;
-
-			std::vector<size_t> adjNodes = GetAdjacentNodes(nodeID,usedNodes);
-			std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmpNodes = AppendQueue(queueNodes, adjNodes, usedNodes);
-			queueNodes = std::get<0>(tmpNodes);
-			usedNodes = std::get<1>(tmpNodes);
-			std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmp = AppendQueue( queuePoints, GetClosestPoints(adjNodes.size(), points[pointID], points) ,usedPoints);
-			queuePoints = std::get<0>(tmp); 
-			usedPoints =  std::get<1>(tmp);
+		for (size_t i = 0; i < numNodes; i++) {
+			mapVerticesToPoints[i] = i;
 		}
+
+
+		// while (!queueNodes.empty()) {
+
+
+		// 	size_t nodeID = queueNodes.front();
+		// 	size_t pointID = queuePoints.front();
+		// 	queueNodes.pop();
+		// 	queuePoints.pop();
+		// 	mapVerticesToPoints[nodeID] = pointID ;
+
+		// 	std::vector<size_t> adjNodes = GetAdjacentNodes(nodeID,usedNodes);
+		// 	std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmpNodes = AppendQueue(queueNodes, adjNodes, usedNodes);
+		// 	queueNodes = std::get<0>(tmpNodes);
+		// 	usedNodes = std::get<1>(tmpNodes);
+		// 	std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmp = AppendQueue( queuePoints, GetClosestPoints(adjNodes.size(), points[pointID], points) ,usedPoints);
+		// 	queuePoints = std::get<0>(tmp); 
+		// 	usedPoints =  std::get<1>(tmp);
+		// }
 		
 		}
 
@@ -75,6 +80,8 @@ struct Graph {
 			// map adjacent nodes to closest points
 
 	// adjacencylist representation
+	const int width; 
+	const int height;
 	const size_t numNodes;
 	const size_t numEdges;
 	const size_t numPoints;
@@ -182,13 +189,17 @@ struct Graph {
 	return crossings;
 	}
 
-	void toOgdfGraph(ogdf::Graph& ogdfGraph) const {
+	void toOgdfGraph(ogdf::Graph& ogdfGraph, ogdf::GraphAttributes& GA) const {
         std::unordered_map<size_t, ogdf::node> nodeMap;
 
         // Add nodes
         for (size_t i = 0; i < numNodes; ++i) {
             ogdf::node n = ogdfGraph.newNode();
             nodeMap[i] = n;
+			GA.x(n) = nodes[i].getX();
+			GA.y(n) = nodes[i].getY();
+			GA.label(n) = std::to_string(nodes[i].getId());
+			
         }
 
         // Add edges
@@ -201,6 +212,7 @@ struct Graph {
 	[[nodiscard]] inline std::vector<std::vector<Point>> getPointClusters(std::vector<Point>points, int numClusters){
 		std::vector<std::vector<Point>> pointClusters(numClusters);
 		for (auto point : points){
+			// std::cout << point.GetId() << " Cluster: " << point.GetCluster() << "     Postion: (" << point.GetX() << " , " << point.GetY() << ")" << std::endl;
 			pointClusters[point.GetCluster()].push_back(point);
 		}
 		return pointClusters;
@@ -245,9 +257,6 @@ struct Graph {
         }
     }
 }
-
-
-
 
 
 	void updateCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
@@ -295,8 +304,126 @@ struct Graph {
 				break;
 			}
 		}
-		
 	}
+
+int randomCrossingNumber(){
+	
+	for(int i = 0; i < nodes.size(); i++){
+		mapVerticesToPoints[i] = i;
+	}
+	return ComputeCrossings();
+}
+
+void manClustering(vector<int> clusterSizes, int xmax, int ymax){
+	// sort clustersizes ascending
+	std::cout << xmax << " " << ymax << "Sort cluster Sizes Ascending\n";
+	sort(clusterSizes.begin(), clusterSizes.end());
+
+	
+	int xmin = 0;
+	int ymin = 0;
+
+	std::vector<vector<Point>> directions(8);
+
+
+	directions[0] = points;
+
+	directions[1] = points;
+	directions[2] = points; 
+	directions[3] = points;
+	directions[4] = points;
+	directions[5] = points;
+	directions[6] = points; 
+	directions[7] = points;
+
+	vector<Point> N(points.begin(), points.end());
+	vector<Point> NE(points.begin(), points.end());
+	vector<Point> E(points.begin(), points.end());
+	vector<Point> SE(points.begin(), points.end());
+	vector<Point> S(points.begin(), points.end());
+	vector<Point> SW(points.begin(), points.end());
+	vector<Point> W(points.begin(), points.end());
+	vector<Point> NW(points.begin(), points.end());
+
+	// vector<Point> N = points;
+	// vector<Point> NE = points;
+	// vector<Point> E = points;
+	// vector<Point> SE = points;
+	// vector<Point> S = points;
+	// vector<Point> SW = points;
+	// vector<Point> W = points;
+	// vector<Point> NW = points;
+
+	std::cout << "Sort Direction Vectors \n";
+
+
+	//sort points of vector N by distance of Y to Ymax
+	sort(directions[4].begin(), directions[4].end(), [ymax](const Point& a, const Point& b) {
+        return a.distanceToLineY(ymax) < b.distanceToLineY(ymax);
+    });
+
+    // Sort points of vector NE by distance of each point to (10, 10)
+    sort(directions[0].begin(), directions[0].end(), [ymax, xmax](const Point& a, const Point& b) {
+        Point reference(0, xmax, ymax);
+        return euclideanDistance(a, reference) < euclideanDistance(b, reference);
+    });
+
+	sort(directions[5].begin(), directions[5].end(), [xmax](const Point& a, const Point& b) {
+        return a.distanceToLineX(xmax) < b.distanceToLineX(xmax);
+    });
+
+    // Sort points of vector NE by distance of each point to (10, 10)
+    sort(directions[1].begin(), directions[1].end(), [ymin, xmax](const Point& a, const Point& b) {
+        Point reference(0, xmax, ymin);
+        return a.distanceTo(reference) < b.distanceTo(reference);
+    });
+
+	sort(directions[6].begin(), directions[6].end(), [ymin](const Point& a, const Point& b) {
+        return a.distanceToLineY(ymin) < b.distanceToLineY(ymin);
+    });
+
+    // Sort points of vector NE by distance of each point to (10, 10)
+    sort(directions[2].begin(), directions[2].end(), [xmin, ymin](const Point& a, const Point& b) {
+        Point reference(0, xmin, ymin);
+        return a.distanceTo(reference) < b.distanceTo(reference);
+    });
+
+	sort(directions[7].begin(), directions[7].end(), [xmin](const Point& a, const Point& b) {
+        return a.distanceToLineX(xmin) < b.distanceToLineY(xmin);
+    });
+
+    // Sort points of vector NE by distance of each point to (10, 10)
+    sort(directions[3].begin(), directions[3].end(), [ymax, xmin](const Point& a, const Point& b) {
+        Point reference(0, xmin, ymax);
+        return a.distanceTo(reference) < b.distanceTo(reference);
+    });
+
+
+	std::cout << clusterSizes.size() << std::endl;
+	
+	int direction = 0;
+	for(int i = 0; i < clusterSizes.size(); i++){
+		direction = i % 8;
+		int s = 0;
+		int idx = 0;
+
+		while(s < clusterSizes[i] ){
+			if (freePoints.find(directions[direction][idx].GetId()) != freePoints.end()) {
+				freePoints.erase(directions[direction][idx].GetId());
+
+				directions[direction][idx].SetCluster(i);
+
+				points[directions[direction][idx].GetId()].SetCluster(i);
+				
+				s++;
+			}
+			idx++;
+		}
+	}
+
+}
+
+
 
 	/**
 	 * @brief Reduces the number of points in a cluster.
@@ -323,7 +450,7 @@ struct Graph {
 			}
 			for (const auto& pair : countMap) {
 				if(pair.second != (double)1){
-					std::cout << i << " Value: " << pair.first << ", Count: " << pair.second << " ;" << std::endl;
+					// std::cout << i << " Value: " << pair.first << ", Count: " << pair.second << " ;" << std::endl;
 				}
 			
 			}
@@ -345,6 +472,11 @@ struct Graph {
 			
 			clusterIndex++;
 		}
+
+        std::sort(nodeClusters.begin(), nodeClusters.end(), [](const std::vector<Node>& a, const std::vector<Node>& b) {
+        return a.size() < b.size();
+        });
+
 		return nodeClusters;
 
 
