@@ -153,18 +153,39 @@ std::vector<int> computation( int clustering_automatic_threshold, double cluster
 
     clusterSizes = computeClusterSizes(myGraph, clusterSizes, clusters.size());
 
-    for (auto cluster : clusterSizes) {
-        std::cout << "Cluster size " << cluster  << std::endl;
-    }
-    
+
     std::cout << "Creating Cluster Graph\n";
-    Graph ClusterGraph = createClusterGraph(myGraph, myGraph.NodeClusters.size());
+    std::pair<Graph, std::vector<int>> pair = createClusteringGraph(myGraph, myGraph.NodeClusters.size());
     std::cout << "Matching Cluster Graph\n";
 
-    matchClusters(ClusterGraph);
+    matchClusters(pair.first, pair.second);
+    
+
+    std::cout << "Old Cluster Sizes: " << std::endl;
+
+    for (auto cluster : clusterSizes) {
+        std::cout << ", " << cluster ;
+    }
+    std::cout << std::endl;
+
+    clusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
+
+    std::cout << "New Cluster Sizes: " << std::endl;
+
+    for (int i = 0; i < clusterSizes.size(); i++) {
+        std::cout << ", " << clusterSizes[i] ;
+    }
+    std::cout << std::endl;
+    for (int i = 0; i < clusterSizes.size(); i++) {
+        std::cout << ", " << myGraph.NodeClusters[i].size() ;
+    }
+    std::cout << std::endl;
 
 
 
+    assert(pair.first.NodeClusters[0].size() == myGraph.NodeClusters[0].size());
+
+    std::cout << "Clusters Succesfully assigned" << std::endl;
 
     // myGraph.kMeans(myGraph.points,clusters.size() , clusterSizes);
     myGraph.manClustering(clusterSizes, myGraph.width, myGraph.height);
@@ -183,22 +204,24 @@ std::vector<int> computation( int clustering_automatic_threshold, double cluster
 
 
     // Apply a layout algorithm
-    ogdf::PlanarizationLayout layout;
+    // ogdf::PlanarizationLayout layout;
     
-    layout.call(GA);
+    // layout.call(GA);
 
     // Export the graph to a SVG file
-    ogdf::GraphIO::write(GA, "../results/output.svg", ogdf::GraphIO::drawSVG);
+    // ogdf::GraphIO::write(GA, "../results/output.svg", ogdf::GraphIO::drawSVG);
 
 
-    ogdf::GraphIO::write(G, "../results/clustered_graph.gml");
-    std::cout << " Graph was written back succesfully " << std::endl ;
+    // ogdf::GraphIO::write(G, "../results/clustered_graph.gml");
+    // std::cout << " Graph was written back succesfully " << std::endl ;
 
-    std::vector<int> crossingTypes;
-    crossingTypes.push_back( crossings);
-    crossingTypes.push_back(  myGraph.randomCrossingNumber());
+    std::vector<int> results;
+    results.push_back( crossings);
+    std::cout << " Compute Random Cossing Number: \n";   
+    results.push_back(  myGraph.randomCrossingNumber());
+    results.push_back( clusterSizes.size());
 
-    return crossingTypes;
+    return results;
 
 
 }
@@ -211,28 +234,37 @@ int main(int argc, char* argv[]) {
     int kk_des_edge_len;
     int kk_global_iterations;
     double kk_stop_tolerance;
-
+    std::vector<int> crossingVector;
     int crossings;
     int randomCrossings;
+
+    std::cout << "opening Workbook" << std::endl;
 
     lxw_workbook  *workbook  = workbook_new("../results/results.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
-    // Write some data.
-    worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
-    worksheet_write_string(worksheet, 1, 0, "Crossings", NULL);
-    worksheet_write_string(worksheet, 2, 0, "RandomCrossings", NULL);
-    for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
+    worksheet_write_string(worksheet, 0, 1, "RandomCrossings", NULL);
+    worksheet_write_number(worksheet, 0 , 2, randomCrossings, NULL);
+
+    // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
     for(double j = 0.1; j < 1; j = j + 0.1){
         clustering_stop_idx = j;
-        for( int i = 0; i < 6; i++){
-            graphfile = "g" + std::to_string(i+1);
-            crossings = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphfile).front() ;
-            randomCrossings = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphfile)[1] ;
+        worksheet_write_string(worksheet, j*10*4, 0, "Graph", NULL);
+        worksheet_write_string(worksheet, j*10*4 +1, 0, "Crossings", NULL);
+        
+        for( int i = 1; i < 290; i++){
+            if (i == 25 || i == 28 || i == 31 ){
+                i++;
+            }
+            graphfile = "rand_" + std::to_string(i+1);
 
-            worksheet_write_number(worksheet, j*10*4 , i + 1, i+1, NULL);
-            worksheet_write_number(worksheet, j*10*4 +1 , i + 1, crossings, NULL);
-            worksheet_write_number(worksheet, j*10*4 +2 , i + 1, randomCrossings, NULL);
+            crossingVector = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphfile);
+            crossings = crossingVector[0];
+            randomCrossings = crossingVector[1];
+
+            worksheet_write_number(worksheet, j*10*3 , i + 1, i+1, NULL);
+            worksheet_write_number(worksheet, j*10*3 +1 , i + 1, crossings, NULL);
+            std::cout << "Graph " << i+1 << " computed successful" << std::endl;
         }
     }
 

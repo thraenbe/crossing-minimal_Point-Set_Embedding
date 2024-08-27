@@ -14,11 +14,13 @@
 #include <ogdf/planarity/PlanarizerMixedInsertion.h>
 #include <ogdf/planarity/CrossingMinimizationModule.h>
 #include <ogdf/energybased/SpringEmbedderKK.h>
+#include <ogdf/basic/EdgeArray.h>
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/maximum_weighted_matching.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/graph/graphviz.hpp>
 
 #include <algorithm> // For std::find
@@ -31,7 +33,12 @@
 
 // Define the Boost graph type
 
-typedef boost::property< boost::edge_weight_t, float, boost::property< boost::edge_index_t, int > >EdgeProperty;
+using Weight = // boost::multiprecision::cpp_dec_float_50;
+    boost::multiprecision::number<
+        boost::multiprecision::cpp_dec_float<50>,
+        boost::multiprecision::et_off >;
+
+typedef boost::property< boost::edge_weight_t, Weight, boost::property< boost::edge_index_t, int > >EdgeProperty;
 typedef boost::adjacency_list< boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, EdgeProperty > BoostGraph;
 typedef boost::graph_traits<BoostGraph>::vertex_descriptor VertexDescriptor;
 
@@ -82,9 +89,66 @@ void createClusterGraph(ogdf::Graph& G, ogdf::GraphAttributes& GA, Graph& myGrap
     }
 }
 
+void createClusterGraph(ogdf::Graph& G, ogdf::GraphAttributes& GA, Graph& myGraph, std::vector<int> edgeWeights){
+    std::vector<Node> nodes = myGraph.nodes;
+    std::vector<size_t> tmp;
+    std::unordered_map<int, ogdf::node> nodeMap;
+    for (auto node : nodes){
+        ogdf::node newNode = G.newNode();
+        GA.x(newNode) = node.getX();
+        GA.y(newNode) = node.getY();
+        GA.label(newNode) = std::to_string(node.getId());
+        tmp.push_back(node.getId());
+        nodeMap[node.getId()] = newNode;
+    }
+    for (auto edge : myGraph.edges){
+        G.newEdge(nodeMap[edge.first], nodeMap[edge.second]);
+        
+    }
+}
+
+void springEmbedding(ogdf::Graph& G, ogdf::GraphAttributes& GA, std::vector<int> edgeWeights){
+    // Instantiate the Kamada-Kawai spring embedder
+    ogdf::SpringEmbedderKK KK;
+    ogdf::EdgeArray<double>eLength(G);
+    int idx =0 ;
+    for(auto e : eLength){
+        e = 100 * (1/ (1 + edgeWeights[idx] ));
+        idx++;
+    }
+    
+
+    // Set parameters (optional)
+    // KK.setMaxGlobalIterations(10);
+    // KK.setStopTolerance(1e-4);
+    // KK.setDesLength(30.0); // Set desired edge length
+
+    std::cout << "Positions before Spring Embedder:" << std::endl;
+    for (ogdf::node n : G.nodes) {
+        std::cout << "Node " << GA.label(n) << " position: (" << GA.x(n) << ", " << GA.y(n) << ");    " ;
+    }
+    std::cout << std::endl;
+    // Apply the layout algorithm
+    if (ogdf::isConnected(G)){        
+        KK.call(GA, eLength);
+    }
+
+    std::cout << std::endl;
+
+    // Print node positions
+    std::cout << "Positions after Spring Embedder:" << std::endl;
+    for (ogdf::node n : G.nodes) {
+        std::cout << "Node " << GA.label(n) << " position: (" << GA.x(n) << ", " << GA.y(n) << ");    " ;
+    }
+    std::cout << std::endl;
+    std::cout << std::endl;
+    
+}
+
 void springEmbedding(ogdf::Graph& G, ogdf::GraphAttributes& GA){
     // Instantiate the Kamada-Kawai spring embedder
     ogdf::SpringEmbedderKK KK;
+    
 
     // Set parameters (optional)
     // KK.setMaxGlobalIterations(10);
@@ -125,9 +189,15 @@ void springEmbedding(ogdf::Graph& G, ogdf::GraphAttributes& GA){
 // }
 
 
-long getWeight(Point point, Node node, int num){
-    long weight;
-    weight =  (long) num * (1 / (euclideanDistance(point, node.nodeToPoint()) + 1));
+float getWeight(Point point, Node node, int num){
+    float weight;
+    // std::cout << euclideanDistance(point, node.nodeToPoint()) << std::endl;
+    weight = (float) num * 2147483648 * (1 / (euclideanDistance(point, node.nodeToPoint()) + 1));
+    if (weight == 0){
+        weight += 1;
+    }
+
+    assert(weight != 0);
     return weight;
 }
 
@@ -213,9 +283,14 @@ BoostGraph convertClusterToBoostGraph(std::vector<Point> points, std::vector<Nod
     for (int j = points.size(); j < allignedNodes.size() + points.size() ; j++){
         VertexDescriptor v = boost::add_vertex(BoostGraph);
         for (int i = 0; i < tmp.size(); i++){
-            long weight = getWeight(points[i], allignedNodes[j-points.size()], num);
+            float weight = getWeight(points[i], allignedNodes[j-points.size()], num)/10000;
+            if (weight == 0){
+                weight += 1;
+            }
+
+            assert(weight != 0);
             boost::add_edge(j , i , EdgeProperty(weight), BoostGraph);
-            // std::cout << "Match: " << j << " " << i << "   Weight: " << weight << "  Node: " << nodes[j-points.size()].getX() << " " << nodes[j-points.size()].getY() << " " << "Point:  "<< allignedNodes[i].getX() << " " << allignedNodes[i].getY() << std::endl;
+            // std::cout << "Match: " << j << " " << i <<"  NUM: " << num << "   Weight: " << weight << "  Node: " << nodes[j-points.size()].getX() << " " << nodes[j-points.size()].getY() << " " << "Point:  "<< allignedNodes[i].getX() << " " << allignedNodes[i].getY() << std::endl;
         }
     }
     return BoostGraph;
@@ -276,6 +351,15 @@ void mapMatching(std::vector<size_t> mate, Graph& myGraph, int cluster){
         int nodeId = myGraph.NodeClusters[cluster][i].getId();
         int pointId = myGraph.pointClusters[cluster][mate[i+myGraph.pointClusters[cluster].size()]].GetId() ;
         myGraph.mapVerticesToPoints[nodeId] = pointId; 
+    }
+}
+
+void mapMatching(std::vector<size_t> mate, Graph& myGraph){
+    
+    for (int i = 0; i < myGraph.nodes.size(); i++){
+        int nodeId = myGraph.nodes[i].getId();
+        int pointId = mate[i+myGraph.nodes.size()] ;
+        myGraph.mapVerticesToPoints[nodeId] = pointId; 
         // std::cout << "Matched Node: " << nodeId << " with Point: " << pointId << std::endl; 
     }
 }
@@ -293,11 +377,11 @@ void ogdfToNodes(ogdf::Graph& G, ogdf::GraphAttributes& GA, Graph& myGraph, int 
     }
 }
 
-std::vector<int> computeVirtualClusterSizes(int numberOfClusters, int numberOfNodes){
-    assert(numberOfClusters < numberOfNodes);
+std::vector<int> computeVirtualClusterSizes(int numberOfClusters, int numberOfPoints){
+    assert(numberOfClusters < numberOfPoints);
 
-    int rest = numberOfNodes % numberOfClusters;
-    int q = (numberOfNodes - rest) / numberOfClusters;
+    int rest = numberOfPoints % numberOfClusters;
+    int q = (numberOfPoints - rest) / numberOfClusters;
 
     std::vector<int> virtualClusterSizes(numberOfClusters);
     for (int i = 0; i < numberOfClusters; i++){
@@ -339,13 +423,14 @@ std::vector<Node> addNodesToClusterGraph(std::vector<Point> centroids){
     }
     return clusterNodes;
 }
+
 std::pair<std::vector<Edge>, std::vector<int>> addEdgesToClusterGraph(std::vector<vector<int>> edgeWeightsArray){
     //Add all possible edges to the Graph
     std::vector<Edge> edges;
     std::vector<int> edgeWeights;
     
     for (size_t i = 0; i < edgeWeightsArray.size(); ++i) {
-        for (size_t j = 0; j + i < edgeWeightsArray.size(); ++j) {
+        for (size_t j = i + 1; j < edgeWeightsArray.size(); ++j) {
             Edge edge;
             edge.first = i;
             edge.second = j;
@@ -380,9 +465,9 @@ std::vector<vector<int>> compEdgeWeightToClusterGraph(Graph myGraph, int numOfCl
     return edgeWeights;
 }
 
-Graph createClusterGraph(Graph& myGraph, int numberOfClusters){
+std::pair<Graph, std::vector<int>> createClusteringGraph(Graph& myGraph, int numberOfClusters){
     std::cout << "compute virtual sizes\n";
-    std::vector<int> virtualClusterSizes = computeVirtualClusterSizes(numberOfClusters, myGraph.nodes.size());
+    std::vector<int> virtualClusterSizes = computeVirtualClusterSizes(numberOfClusters, myGraph.points.size());
     std::cout << "virtual local clustering \n";
 
     myGraph.manClustering(virtualClusterSizes, myGraph.width, myGraph.height);
@@ -397,22 +482,25 @@ Graph createClusterGraph(Graph& myGraph, int numberOfClusters){
     std::vector<int> edgeWeights = edgePair.second;
     Graph ClusterGraph(numberOfClusters, clusterNodes, clusterEdges, centroids, myGraph.width, myGraph.height);
     ClusterGraph.NodeClusters.push_back(ClusterGraph.nodes);
+    std::cout << "Initial Cluster Layout Graph:      Edges: " << clusterEdges.size() << "     edgeWeights: " << edgeWeights.size() << "   Nodes: " << centroids.size() << std::endl;
 
-    return ClusterGraph;
-
+    return std::make_pair(ClusterGraph, edgeWeights);
 }
 
 
-void matchClusters(Graph& ClusterGraph){
+void matchClusters(Graph& ClusterGraph, std::vector<int> edgeWeights){
     
     std::vector<size_t> mate;
     ogdf::Graph G;
     ogdf::GraphAttributes GA = ogdf::GraphAttributes(G, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics | ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle | ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
-    std::vector<Point> centroids;
-    BoostGraph BoostGraph = BoostGraph;
+    
+    BoostGraph BoostGraph;
         std::cout << "creating cluster Graph \n";
-    createClusterGraph(G, GA, ClusterGraph, ClusterGraph.nodes );
-    springEmbedding(G, GA); //TODO Add weights of edges
+    createClusterGraph(G, GA, ClusterGraph, edgeWeights );
+    std::cout << " Number of edges: " << edgeWeights.size() << std::endl;
+
+
+    springEmbedding(G, GA, edgeWeights); //TODO Add weights of edges
     std::cout << "finished Spring Embedding \n";
     ogdfToNodes(G, GA, ClusterGraph, 0);
 
@@ -424,7 +512,7 @@ void matchClusters(Graph& ClusterGraph){
     for(int i = 0; i < mate.size(); i++){
         std::cout << mate[i] << std::endl;
     }
-    mapMatching(mate, ClusterGraph, 0);
+    mapMatching(mate, ClusterGraph);
 
 }
  

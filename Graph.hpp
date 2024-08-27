@@ -42,33 +42,14 @@ struct Graph {
 		queuePoints.push(0);
 		
 
-		// Assign all other points as free 
-		for (size_t i = 0; i < numPoints;++i) {
-			freePoints.insert(i);
-		}
+		// // Assign all other points as free 
+		// for (size_t i = 0; i < numPoints;++i) {
+		// 	freePoints.insert(i);
+		// }
 
 		for (size_t i = 0; i < numNodes; i++) {
 			mapVerticesToPoints[i] = i;
 		}
-
-
-		// while (!queueNodes.empty()) {
-
-
-		// 	size_t nodeID = queueNodes.front();
-		// 	size_t pointID = queuePoints.front();
-		// 	queueNodes.pop();
-		// 	queuePoints.pop();
-		// 	mapVerticesToPoints[nodeID] = pointID ;
-
-		// 	std::vector<size_t> adjNodes = GetAdjacentNodes(nodeID,usedNodes);
-		// 	std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmpNodes = AppendQueue(queueNodes, adjNodes, usedNodes);
-		// 	queueNodes = std::get<0>(tmpNodes);
-		// 	usedNodes = std::get<1>(tmpNodes);
-		// 	std::tuple<std::queue<size_t>,std::unordered_set<size_t>> tmp = AppendQueue( queuePoints, GetClosestPoints(adjNodes.size(), points[pointID], points) ,usedPoints);
-		// 	queuePoints = std::get<0>(tmp); 
-		// 	usedPoints =  std::get<1>(tmp);
-		// }
 		
 		}
 
@@ -86,7 +67,7 @@ struct Graph {
 	const size_t numEdges;
 	const size_t numPoints;
 	std::vector<Node> nodes;
-	std::vector<Point>points;
+	std::vector<Point> points;
 	const std::vector<Edge>edges;
 	const std::vector<std::vector<size_t>>adjList;
 
@@ -102,6 +83,7 @@ struct Graph {
 
 	std::vector<std::vector<Point>> pointClusters;
     std::vector<std::vector<Node>> NodeClusters;
+	
 
 	[[nodiscard]] inline std::tuple<std::queue<size_t>,std::unordered_set<size_t>> AppendQueue( std::queue<size_t> queue,  std::vector<size_t> vector, std::unordered_set<size_t> used){
 		for (const auto& element : vector) {
@@ -173,19 +155,26 @@ struct Graph {
 		if (AreAdjacent(lhs, rhs)) {
 			return 0;
 		}
+		//std::cout << "                     Final Positon: " <<  GetConstPosOfNode(lhs.first).GetX() << ", " << GetConstPosOfNode(lhs.first).GetY() << std::endl;
 		return DoIntersect(GetConstPosOfNode(lhs.first), GetConstPosOfNode(lhs.second), GetConstPosOfNode(rhs.first), GetConstPosOfNode(rhs.second), numNodes);
 	}
 	
 	[[nodiscard]] inline int ComputeCrossings() const {
 		int crossings{ 0 };
+		int tmp = 0;
+		int counter = 0;
 		// #pragma omp parallel for reduction (+:crossings) <- use this if you want to parallelize the code
 		for (size_t i = 0; i < numEdges - 1; ++i) {
 			const auto& edge = edges[i];
 			for (size_t j = i + 1; j < numEdges; ++j) {
-				crossings += DoEdgesIntersect(edge,edges[j]);
-		}
-		
+				tmp = DoEdgesIntersect(edge,edges[j]);
+				crossings += tmp;
+				if (tmp > 1){
+					counter += 1;
+				}
+		}	
 	}
+	std::cout << " Collinear Crossings: " << counter << std::endl;
 	return crossings;
 	}
 
@@ -217,11 +206,6 @@ struct Graph {
 		}
 		return pointClusters;
 	}
-
-
-    // [[nodiscard]] inline std::vector<std::vector<Point>> getNodeClusters(ogdf::SList<ogdf::SimpleCluster *> clusters){
-
-	// }
 
 
 	void initializeCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
@@ -314,10 +298,25 @@ int randomCrossingNumber(){
 	return ComputeCrossings();
 }
 
+std::vector<int> assignClusters(Graph& G, std::vector<int> clusterSizes){
+	std::vector<int> newClusterSizes(clusterSizes.size());
+	std::vector<vector<Node>> newNodeClusters(G.NodeClusters.size()) ;
+    std::cout << mapVerticesToPoints.size() << " " << NodeClusters.size() << " " << G.NodeClusters.size()<< " "  << clusterSizes.size() << std::endl;
+
+ 	for (int i = 0; i < mapVerticesToPoints.size(); i++){
+		newNodeClusters[i] = G.NodeClusters[mapVerticesToPoints[i]];
+		newClusterSizes[i] = clusterSizes[mapVerticesToPoints[i]];
+	}
+	G.NodeClusters = newNodeClusters;
+	NodeClusters = newNodeClusters;
+	std::cout << "test" << std::endl;
+	return newClusterSizes;
+}
+
 void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	// sort clustersizes ascending
-	std::cout << xmax << " " << ymax << "Sort cluster Sizes Ascending\n";
-	sort(clusterSizes.begin(), clusterSizes.end());
+	std::cout << xmax << " " << ymax << "\n";
+
 
 	
 	int xmin = 0;
@@ -344,15 +343,6 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	vector<Point> SW(points.begin(), points.end());
 	vector<Point> W(points.begin(), points.end());
 	vector<Point> NW(points.begin(), points.end());
-
-	// vector<Point> N = points;
-	// vector<Point> NE = points;
-	// vector<Point> E = points;
-	// vector<Point> SE = points;
-	// vector<Point> S = points;
-	// vector<Point> SW = points;
-	// vector<Point> W = points;
-	// vector<Point> NW = points;
 
 	std::cout << "Sort Direction Vectors \n";
 
@@ -398,30 +388,43 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
         return a.distanceTo(reference) < b.distanceTo(reference);
     });
 
+	assert(freePoints.empty());
 
-	std::cout << clusterSizes.size() << std::endl;
 	
-	int direction = 0;
-	for(int i = 0; i < clusterSizes.size(); i++){
-		direction = i % 8;
-		int s = 0;
-		int idx = 0;
 
-		while(s < clusterSizes[i] ){
-			if (freePoints.find(directions[direction][idx].GetId()) != freePoints.end()) {
-				freePoints.erase(directions[direction][idx].GetId());
-
-				directions[direction][idx].SetCluster(i);
-
-				points[directions[direction][idx].GetId()].SetCluster(i);
-				
-				s++;
-			}
-			idx++;
-		}
+	for (size_t i = 0; i < numPoints;++i) {
+		freePoints.insert(i);
 	}
 
-}
+	
+	int direction = 0;
+		for(int i = 0; i < clusterSizes.size(); i++){
+			direction = i % 8;
+			int s = 0;
+			int idx = 0;
+			std::cout << "Starting While Loop: " << i << std::endl;
+
+			while(s < clusterSizes[i] ){
+				assert(directions[direction].size() > idx);
+				std::cout << "IF" << std::endl;
+				if (freePoints.find(directions[direction][idx].GetId()) != freePoints.end()) {
+					std::cout << "Erase Point" << std::endl;	
+					freePoints.erase(directions[direction][idx].GetId());
+					std::cout << "Point erased successully" << std::endl;
+					directions[direction][idx].SetCluster(i);
+					std::cout << "Point cluster set " << std::endl;
+					points[directions[direction][idx].GetId()].SetCluster(i);
+					std::cout << "Original set" << std::endl;
+					s++;
+				}
+				idx++;
+				
+
+			}
+		}
+		assert(freePoints.empty());
+
+	}
 
 
 
@@ -472,10 +475,6 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 			
 			clusterIndex++;
 		}
-
-        std::sort(nodeClusters.begin(), nodeClusters.end(), [](const std::vector<Node>& a, const std::vector<Node>& b) {
-        return a.size() < b.size();
-        });
 
 		return nodeClusters;
 
