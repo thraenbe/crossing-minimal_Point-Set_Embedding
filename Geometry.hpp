@@ -1,8 +1,5 @@
 #pragma once
 #include <cmath>
-#include <map>
-#include <vector>
-
 // Required geometry for this contest -> points are on integer coordinates
 using size_t = std::size_t;
 using namespace std;
@@ -12,35 +9,34 @@ class Point {
 
 public:
 	Point() = default;
-	    Point(int id, double x, double y, int cluster = 0) :  _id(id), _x(x), _y(y), _cluster(cluster) {}
-
+	    Point(const size_t id, const double x, const double y, const int cluster = 0) :  _id(id), _x(x), _y(y), _cluster(cluster) {};
     // SetPosition methods
     void SetPosition(const std::pair<double, double>& newPos) noexcept {
         _x = newPos.first;
         _y = newPos.second;
     }
-    void SetPosition(double x, double y) noexcept {
+    void SetPosition(const double x, const double y) noexcept {
         _x = x;
         _y = y;
 	}
 
     // SetCluster method
-    void SetCluster(int cluster) noexcept {
+    void SetCluster(const size_t cluster) noexcept {
         _cluster = cluster;
     }
 
     // GetCluster method
-    int GetCluster() const noexcept {
+    [[nodiscard]] size_t GetCluster() const noexcept {
         return _cluster;
     }
 	Point operator+ (const Point& other) const
 	{
-		return Point(_x + other._x, _y + other._y , _id);
+		return {_id,_x + other._x, _y + other._y , };
 	}
 
 	Point operator- (const Point& other) const
 	{
-		return Point(_x - other._x, _y - other._y, _id);
+		return {_id,_x - other._x, _y - other._y};
 	}
 
 	void operator+=(const Point& other) {
@@ -63,35 +59,41 @@ public:
 		return _y < other._y;
 	}
 
-	    // Distance to another point
-    double distanceTo(Point other) const {
+
+	// Distance to another point
+    [[nodiscard]]double distanceTo(const Point& other) const {
         return sqrt(pow(_x - other._x, 2) + pow(_y - other._y, 2));
     }
+
+	// Squared Distance to another point -> since the square is monotonically increasing, we can use this if we simply want to sort.
+	[[nodiscard]]double squaredDistanceTo(const Point& other) const {
+	    	return pow(_x - other._x, 2) + pow(_y - other._y, 2);
+	    }
     
     // Distance to a horizontal line at y = 10
-    double distanceToLineY(int yLine) const {
+    [[nodiscard]] double distanceToLineY(const int yLine) const {
         return abs(_y - yLine);
     }
 
-	double distanceToLineX(int xLine) const {
+	[[nodiscard]] double distanceToLineX(const int xLine) const {
         return abs(_x - xLine);
     }
 
-	double GetX() const {
+	[[nodiscard]] double GetX() const {
 		return _x;
 	}
-	double GetY() const {
+	[[nodiscard]] double GetY() const {
 		return _y;
 	}
 
-	int GetId() const  {
+	[[nodiscard]] size_t GetId() const  {
 		return _id;
 	}
 	
 	double _x{ 0 };
 	double _y{ 0 };
-	int _id{ 0 };
-	int _cluster{0};
+	size_t _id{ 0 };
+	size_t _cluster{0};
 	};
 
 using Segment = std::pair<Point, Point>;
@@ -104,13 +106,12 @@ using Segment = std::pair<Point, Point>;
 	return lhs._x * rhs._y - lhs._y * rhs._x;
 }
 	// Distance.
-[[nodiscard]] inline int L1Dist(const Point& lhs, const Point& rhs) {
+[[nodiscard]] inline double L1Dist(const Point& lhs, const Point& rhs) {
 	return std::abs(lhs._x - rhs._x) + std::abs(lhs._y + rhs._y);
 }
 [[nodiscard]] inline double L2DistSquared(const Point& lhs, const Point& rhs) {
 	return DotProd(lhs - rhs, lhs - rhs);
 }
-
 [[nodiscard]] inline double L2Dist(const Point& lhs, const Point& rhs) {
 	return std::sqrt(L2DistSquared(lhs, rhs));
 }
@@ -151,12 +152,12 @@ using Segment = std::pair<Point, Point>;
 }
 
 
-// Returns orientation for tripple of points
+// Returns orientation for triple of points
 [[nodiscard]] inline int Orientation(const Point& p1, const Point& p2, const Point& p3)
 {
-	int val = (p2._y - p1._y) * (p3._x - p2._x)
+	const double val = (p2._y - p1._y) * (p3._x - p2._x)
 		- (p2._x - p1._x) * (p3._y - p2._y);
-	if (val == 0)
+	if (val == 0.0)
 		return 0;
 	return (val > 0) ? 1 : 2;
 }
@@ -194,15 +195,8 @@ using Segment = std::pair<Point, Point>;
 [[nodiscard]] inline bool DoIntersect(const Segment& lhs, const Segment& rhs, int numNodes) {
 	return DoIntersect(lhs.first, lhs.second, rhs.first, rhs.second, numNodes);
 }
-[[nodiscard]] inline int sqr(int number) {
-    return number * number;
-}
 
-[[nodiscard]] inline float euclideanDistance(const Point& p, const Point& q ){
-	return sqrt(sqr(p._x - q._x) + sqr(p._y - q._y));
-}
-
-[[nodiscard]] inline float computeGradient(const Point& p, const Point& q ){
+[[nodiscard]] inline double computeGradient(const Point& p, const Point& q ){
 	double gradient;
 	if (p._x != q._x){ 
 		gradient =  (double)(p._y - q._y) / (double)(p._x - q._x);
