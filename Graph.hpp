@@ -326,6 +326,8 @@ std::vector<vector<Point>> sortDirectionVectors(std::vector<vector<Point>> direc
 
 	int xmin = 0;
 	int ymin = 0;
+	int ymax = height;
+	int xmax = width;
 
 	//sort points of vector N by distance of Y to Ymax
 	sort(directions[4].begin(), directions[4].end(), [ymax](const Point& a, const Point& b) {
