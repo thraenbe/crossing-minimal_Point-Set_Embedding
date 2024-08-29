@@ -379,7 +379,7 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
     });
 
 	sort(directions[7].begin(), directions[7].end(), [xmin](const Point& a, const Point& b) {
-        return a.distanceToLineX(xmin) < b.distanceToLineY(xmin);
+        return a.distanceToLineX(xmin) < b.distanceToLineX(xmin);
     });
 
     // Sort points of vector NE by distance of each point to (10, 10)
@@ -388,40 +388,71 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
         return a.distanceTo(reference) < b.distanceTo(reference);
     });
 
+	std::cout << "Finished Direction Vectors \n";
+
+	    // Print the entire matrix
+    for (int i = 0; i < 8; ++i) {
+        std::cout << "Direction " << i << ":\n";
+        for (const auto& point : directions[i]) {
+            std::cout << point.GetId() << " ";
+        }
+        std::cout << "\n";
+    }
+	std::cout << "Points: \n";
+        for (const auto& point : points) {
+            std::cout << point.GetId() << " ";
+        }
+        std::cout << "\n";
+
+
 	assert(freePoints.empty());
 
-	
+	assert(points.size() == numPoints);
 
-	for (size_t i = 0; i < numPoints;++i) {
-		freePoints.insert(i);
+
+	for (size_t i = 0; i < points.size();++i) {
+		freePoints.insert(i).second;
 	}
 
+	assert(freePoints.size() == numPoints);
+
+	std::cout << "FreePoints reassigned \n";
+	int count = 0;
+	for(auto cluster : clusterSizes){
+		count += cluster;
+	}
+	assert(count == points.size());
 	
 	int direction = 0;
 		for(int i = 0; i < clusterSizes.size(); i++){
 			direction = i % 8;
+			assert(directions[direction].size() == points.size());
 			int s = 0;
-			int idx = 0;
 			std::cout << "Starting While Loop: " << i << std::endl;
 
-			while(s < clusterSizes[i] ){
+			for(int idx = 0; idx < points.size(); idx++){
 				assert(directions[direction].size() > idx);
-				std::cout << "IF" << std::endl;
-				if (freePoints.find(directions[direction][idx].GetId()) != freePoints.end()) {
-					std::cout << "Erase Point" << std::endl;	
-					freePoints.erase(directions[direction][idx].GetId());
-					std::cout << "Point erased successully" << std::endl;
-					directions[direction][idx].SetCluster(i);
-					std::cout << "Point cluster set " << std::endl;
-					points[directions[direction][idx].GetId()].SetCluster(i);
-					std::cout << "Original set" << std::endl;
+				assert(s < clusterSizes[i]);
+				int point = directions[direction][idx].GetId();
+				std::cout << point << " " << points[point].GetId() << std::endl;
+				assert(point == points[point].GetId());
+				if (freePoints.contains(point)) {
+					std::cout << s ;	
+					assert(freePoints.contains(point));
+					freePoints.erase(point);
+					// std::cout << "Point erased successully" << std::endl;
+					points[point].SetCluster(i);
+					// std::cout << "Original set" << std::endl;
 					s++;
-				}
-				idx++;
-				
-
+				}		
+				if (s == clusterSizes[i]){
+					break;
+				}		
 			}
+			std::cout << std::endl;
+			std::cout << std::endl;
 		}
+		std::cout << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
 		assert(freePoints.empty());
 
 	}
