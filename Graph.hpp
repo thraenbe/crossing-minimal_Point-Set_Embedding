@@ -33,10 +33,17 @@ namespace {
 	}
 }
 struct Graph {
-	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int width , const int height)
+	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, int width , int height)
 		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), width(width), height(height) {
 
-		
+		width = std::max_element(nodes.begin(), nodes.end(), [](const Point& a, const Point& b) {
+        return a._x < b._x;
+	    })->_x;
+
+	    height = std::max_element(nodes.begin(), nodes.end(), [](const Point& a, const Point& b) {
+        return a._y < b._y;
+	    })->_y;
+
 
 		queueNodes.push(0);
 		queuePoints.push(0);
@@ -61,8 +68,8 @@ struct Graph {
 			// map adjacent nodes to closest points
 
 	// adjacencylist representation
-	const int width; 
-	const int height;
+	int width; 
+	int height;
 	const size_t numNodes;
 	const size_t numEdges;
 	const size_t numPoints;
@@ -313,39 +320,12 @@ std::vector<int> assignClusters(Graph& G, std::vector<int> clusterSizes){
 	return newClusterSizes;
 }
 
-void manClustering(vector<int> clusterSizes, int xmax, int ymax){
-	// sort clustersizes ascending
-	std::cout << xmax << " " << ymax << "\n";
+
+std::vector<vector<Point>> sortDirectionVectors(std::vector<vector<Point>> directions){
 
 
-	
 	int xmin = 0;
 	int ymin = 0;
-
-	std::vector<vector<Point>> directions(8);
-
-
-	directions[0] = points;
-
-	directions[1] = points;
-	directions[2] = points; 
-	directions[3] = points;
-	directions[4] = points;
-	directions[5] = points;
-	directions[6] = points; 
-	directions[7] = points;
-
-	vector<Point> N(points.begin(), points.end());
-	vector<Point> NE(points.begin(), points.end());
-	vector<Point> E(points.begin(), points.end());
-	vector<Point> SE(points.begin(), points.end());
-	vector<Point> S(points.begin(), points.end());
-	vector<Point> SW(points.begin(), points.end());
-	vector<Point> W(points.begin(), points.end());
-	vector<Point> NW(points.begin(), points.end());
-
-	std::cout << "Sort Direction Vectors \n";
-
 
 	//sort points of vector N by distance of Y to Ymax
 	sort(directions[4].begin(), directions[4].end(), [ymax](const Point& a, const Point& b) {
@@ -388,21 +368,56 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
         return a.distanceTo(reference) < b.distanceTo(reference);
     });
 
-	std::cout << "Finished Direction Vectors \n";
+	return directions;
 
-	    // Print the entire matrix
-    for (int i = 0; i < 8; ++i) {
-        std::cout << "Direction " << i << ":\n";
-        for (const auto& point : directions[i]) {
-            std::cout << point.GetId() << " ";
-        }
-        std::cout << "\n";
-    }
-	std::cout << "Points: \n";
-        for (const auto& point : points) {
-            std::cout << point.GetId() << " ";
-        }
-        std::cout << "\n";
+}
+
+	/**
+	 * @brief Clusters all points locally into the given clusterSizes.
+	 *
+	 * @param clusterSizes Vector with size of number of Clusters.
+	 * @param xmax width.
+	 * @param ymax height.
+	 */
+void manClustering(vector<int> clusterSizes, int xmax, int ymax){
+	// sort clustersizes ascending
+	std::cout << xmax << " " << ymax << "\n";
+
+
+	
+	int xmin = 0;
+	int ymin = 0;
+
+	std::vector<vector<Point>> directions(8);
+
+
+	directions[0] = points;
+
+	directions[1] = points;
+	directions[2] = points; 
+	directions[3] = points;
+	directions[4] = points;
+	directions[5] = points;
+	directions[6] = points; 
+	directions[7] = points;
+
+	std::cout << "Sort Direction Vectors \n";
+
+	std::cout << "Finished Sorting Direction Vectors \n";
+
+	// Print the entire matrix
+    // for (int i = 0; i < 8; ++i) {
+    //     std::cout << "Direction " << i << ":\n";
+    //     for (const auto& point : directions[i]) {
+    //         std::cout << point.GetId() << " ";
+    //     }
+    //     std::cout << "\n";
+    // }
+	// std::cout << "Points: \n";
+    //     for (const auto& point : points) {
+    //         std::cout << point.GetId() << " ";
+    //     }
+    //     std::cout << "\n";
 
 
 	assert(freePoints.empty());
@@ -428,7 +443,7 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 			direction = i % 8;
 			assert(directions[direction].size() == points.size());
 			int s = 0;
-			std::cout << "Starting While Loop: " << i << std::endl;
+			// std::cout << "Starting While Loop: " << i << std::endl;
 
 			for(int idx = 0; idx < points.size(); idx++){
 				assert(directions[direction].size() > idx);

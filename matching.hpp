@@ -472,8 +472,6 @@ std::pair<Graph, std::vector<int>> createClusteringGraph(Graph& myGraph, int num
 
     myGraph.manClustering(virtualClusterSizes, myGraph.width, myGraph.height);
 
-    std::cout << "compute centroids \n";
-
     myGraph.pointClusters = myGraph.getPointClusters(myGraph.points, numberOfClusters);
     std::vector<Point> centroids = computeCentroids(myGraph.pointClusters);
     std::vector<Node> clusterNodes = addNodesToClusterGraph(centroids);
