@@ -2,6 +2,7 @@
 #include <cmath>
 #include <map>
 #include <vector>
+#include <iostream>
 
 // Required geometry for this contest -> points are on integer coordinates
 using size_t = std::size_t;
@@ -198,8 +199,30 @@ using Segment = std::pair<Point, Point>;
     return number * number;
 }
 
-[[nodiscard]] inline float euclideanDistance(const Point& p, const Point& q ){
-	return sqrt(sqr(p._x - q._x) + sqr(p._y - q._y));
+[[nodiscard]] inline double euclideanDistance(const Point& p, const Point& q ){
+
+	assert(std::isfinite(p._x) && std::isfinite(p._y));
+    assert(std::isfinite(q._x) && std::isfinite(q._y));
+
+	double a = p._x - q._x;
+	double b = p._y - q._y;
+
+	double distanceSquared = a*a + b*b;
+	if (distanceSquared < 0){
+		return 100000000;
+	}
+    
+    // Check if the squared distance is non-negative and finite
+    assert(distanceSquared >= 0);
+	assert(std::isfinite(distanceSquared));
+	std::cout << distanceSquared << std::endl;
+
+    double distance = std::sqrt(distanceSquared);
+	std::cout << distance << std::endl;
+	assert(distance >= 0);
+
+	return distance;
+
 }
 
 [[nodiscard]] inline float computeGradient(const Point& p, const Point& q ){

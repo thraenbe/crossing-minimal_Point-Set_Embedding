@@ -33,14 +33,14 @@ namespace {
 	}
 }
 struct Graph {
-	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, int width , int height)
-		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), width(width), height(height) {
+	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int org_width , const int org_height)
+		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), org_width(org_width), org_height(org_height) {
 
-		width = std::max_element(nodes.begin(), nodes.end(), [](const Point& a, const Point& b) {
+		width = std::max_element(nodes.begin(), nodes.end(), [](const Node& a, const Node& b) {
         return a._x < b._x;
 	    })->_x;
 
-	    height = std::max_element(nodes.begin(), nodes.end(), [](const Point& a, const Point& b) {
+	    height = std::max_element(nodes.begin(), nodes.end(), [](const Node& a, const Node& b) {
         return a._y < b._y;
 	    })->_y;
 
@@ -70,6 +70,8 @@ struct Graph {
 	// adjacencylist representation
 	int width; 
 	int height;
+	const int org_width;
+	const int org_height;
 	const size_t numNodes;
 	const size_t numEdges;
 	const size_t numPoints;
@@ -451,10 +453,9 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 				assert(directions[direction].size() > idx);
 				assert(s < clusterSizes[i]);
 				int point = directions[direction][idx].GetId();
-				std::cout << point << " " << points[point].GetId() << std::endl;
 				assert(point == points[point].GetId());
 				if (freePoints.contains(point)) {
-					std::cout << s ;	
+					// std::cout << s ;	
 					assert(freePoints.contains(point));
 					freePoints.erase(point);
 					// std::cout << "Point erased successully" << std::endl;
@@ -466,8 +467,8 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 					break;
 				}		
 			}
-			std::cout << std::endl;
-			std::cout << std::endl;
+			// std::cout << std::endl;
+			// std::cout << std::endl;
 		}
 		std::cout << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
 		assert(freePoints.empty());
