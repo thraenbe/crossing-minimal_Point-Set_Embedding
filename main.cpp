@@ -22,7 +22,7 @@ Graph read(size_t numNodes,std::vector<Node> nodes, std::vector<std::pair<size_t
     const auto m = edges.size();
     const auto f = positions.size();
 
-	std::cout << "#Nodes : " << n << "   #Edges: " << m << "    #Positions: " << f << "     #Width: " << width << "    height: " << height << std::endl ;
+	std::cout << "\n #Nodes : " << n << "   #Edges: " << m << "    #Positions: " << f << "     #Width: " << width << "    height: " << height << std::endl ;
     assert(f >= n);
 
     Graph G(n, nodes, edges, positions, width, height);
@@ -113,7 +113,8 @@ std::vector<int> computation( int clustering_automatic_threshold, double cluster
     CG.setStopIndex(clustering_stop_idx); // 0.6
     CG.setAutomaticThresholds(clustering_automatic_threshold); // 10
     CG.computeClustering(clusters);
-    // std::cout << " Number of Clusters: " << clusters.size() << " Cluster Graph Clusters: " << ClusterGraph.numberOfClusters()<<  std::endl ;
+
+  // std::cout << " Number of Clusters: " << clusters.size() << " Cluster Graph Clusters: " << ClusterGraph.numberOfClusters()<<  std::endl ;
     std::vector<size_t> clusterSizes;
     myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
 
@@ -128,16 +129,16 @@ std::vector<int> computation( int clustering_automatic_threshold, double cluster
     matchClusters(pair.first, pair.second);
     
 
-    std::cout << "Old Cluster Sizes: " << std::endl;
+    // std::cout << "Old Cluster Sizes: " << std::endl;
 
-    for (auto cluster : clusterSizes) {
-        std::cout << ", " << cluster ;
-    }
-    std::cout << std::endl;
+    // for (auto cluster : clusterSizes) {
+    //     std::cout << ", " << cluster ;
+    // }
+    // std::cout << std::endl;
 
     const auto newClusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
 
-    std::cout << "New Cluster Sizes: " << std::endl;
+    // std::cout << "New Cluster Sizes: " << std::endl;
 
     for (const auto c: newClusterSizes)
     {
@@ -185,9 +186,9 @@ std::vector<int> computation( int clustering_automatic_threshold, double cluster
 
     std::vector<int> results;
     results.push_back( crossings);
-    std::cout << " Compute Random Cossing Number: \n";   
-    results.push_back(  myGraph.randomCrossingNumber());
-    results.push_back( clusterSizes.size());
+    results.push_back( myGraph.nodes.size());
+    results.push_back( myGraph.NodeClusters.size());
+    results.push_back( (int) myGraph.nodes.size() / myGraph.NodeClusters.size());
 
     return results;
 
@@ -199,19 +200,58 @@ int main(int argc, char* argv[]) {
     const string graphFile{"g9"};     // n = 1200.
     int clustering_automatic_threshold = 10;
     double clustering_stop_idx = 0.6;
-    // TODO:: the following are currently unused - remove in case they are not required.
+
+  // TODO:: the following are currently unused - remove in case they are not required.
     int kk_des_edge_len{1};
     int kk_global_iterations{100};
     double kk_stop_tolerance{.1};
 
     const std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    const auto crossingVector = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphFile);
+    // const auto crossingVector = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphFile);
     const std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-    const auto crossings = crossingVector[0];
-    std::cout << crossings << std::endl;
-    const auto randomCrossings = crossingVector[1];
-    std::cout << randomCrossings << std::endl;
+
+
+    std::cout << "opening Workbook" << std::endl;
+
+    lxw_workbook  *workbook  = workbook_new("../results/results.xlsx");
+    lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
+
+    worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
+    worksheet_write_string(worksheet, 0, 1, "Parameter", NULL);
+    worksheet_write_string(worksheet, 0, 2, "Crossings", NULL);
+    worksheet_write_string(worksheet, 0, 3, "Number of Nodes", NULL);
+    worksheet_write_string(worksheet, 0, 4, "Number Of Clusters", NULL);
+    worksheet_write_string(worksheet, 0, 5, "Average Cluster Size", NULL);
+
+
+    // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
+
+    
+    for( int i = 0; i < 149; i++){
+        worksheet_write_number(worksheet, i*5 +2 , 0, i, NULL);
+
+
+        for(double j = 0; j < 1; j = j + 0.1){
+            clustering_stop_idx = j;
+
+            graphfile = "rand_" + std::to_string(i+1);
+
+            crossingVector = computation(clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphfile);
+            crossings = crossingVector[0];
+            randomCrossings = crossingVector[1];
+
+            worksheet_write_number(worksheet, i*5 +2 + j*10, j*10 , j, NULL);
+            worksheet_write_number(worksheet, i*5 +2 + j*10, j*10 + 1, crossingVector[0], NULL);
+            worksheet_write_number(worksheet, i*5 +2 + j*10, j*10 + 2, crossingVector[1], NULL);
+            worksheet_write_number(worksheet, i*5 +2 + j*10, j*10 + 3, crossingVector[2], NULL);
+            worksheet_write_number(worksheet, i*5 +2 + j*10, j*10 + 4, crossingVector[3], NULL);
+
+            std::cout << "Graph " << i+1 << " computed successful" << std::endl;
+        }
+    }
+
+    workbook_close(workbook);
 
     return 0;
 

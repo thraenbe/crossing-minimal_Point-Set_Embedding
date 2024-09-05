@@ -33,10 +33,17 @@ namespace {
 	}
 }
 struct Graph {
-	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int width , const int height)
-		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), width(width), height(height) {
+	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int org_width , const int org_height)
+		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), org_width(org_width), org_height(org_height) {
 
-		
+		width = std::max_element(nodes.begin(), nodes.end(), [](const Node& a, const Node& b) {
+        return a._x < b._x;
+	    })->_x;
+
+	    height = std::max_element(nodes.begin(), nodes.end(), [](const Node& a, const Node& b) {
+        return a._y < b._y;
+	    })->_y;
+
 
 		queueNodes.push(0);
 		queuePoints.push(0);
@@ -61,8 +68,10 @@ struct Graph {
 			// map adjacent nodes to closest points
 
 	// adjacencylist representation
-	const int width; 
-	const int height;
+	int width; 
+	int height;
+	const int org_width;
+	const int org_height;
 	const size_t numNodes;
 	const size_t numEdges;
 	const size_t numPoints;
@@ -348,25 +357,35 @@ void sortDirectionVectors(std::vector<vector<Point>>& directions){
     std::ranges::sort(directions[2], [&reference](const Point& a, const Point& b) {
         return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
-
+  
 	std::ranges::sort(directions[7], [xmin](const Point& a, const Point& b) {
+    
         return a.distanceToLineX(xmin) < b.distanceToLineX(xmin);
     });
 
-    // Sort points of vector NE by distance of each point to (10, 10)
 	reference._y = ymax;
     std::ranges::sort(directions[3], [&reference](const Point& a, const Point& b) {
         return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
 }
+  
+  
+  
 
 
-void manClustering(const vector<size_t>& clusterSizes, int xmax, int ymax){
+	/**
+	 * @brief Clusters all points locally into the given clusterSizes.
+	 *
+	 * @param clusterSizes Vector with size of number of Clusters.
+	 * @param xmax width.
+	 * @param ymax height.
+	 */
+void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	// sort clustersizes ascending
 	std::cout << xmax << " " << ymax << "\n";
 
 
-
+	
 	int xmin = 0;
 	int ymin = 0;
 
@@ -374,12 +393,13 @@ void manClustering(const vector<size_t>& clusterSizes, int xmax, int ymax){
 
 
 	directions[0] = points;
+
 	directions[1] = points;
-	directions[2] = points;
+	directions[2] = points; 
 	directions[3] = points;
 	directions[4] = points;
 	directions[5] = points;
-	directions[6] = points;
+	directions[6] = points; 
 	directions[7] = points;
 
 	std::cout << "Sort Direction Vectors \n";
@@ -402,8 +422,8 @@ void manClustering(const vector<size_t>& clusterSizes, int xmax, int ymax){
 
 
 	assert(freePoints.empty());
-	assert(points.size() == numPoints);
 
+	assert(points.size() == numPoints);
 
 	for (size_t i = 0; i < points.size();++i) {
 		freePoints.insert(i).second;
@@ -412,7 +432,8 @@ void manClustering(const vector<size_t>& clusterSizes, int xmax, int ymax){
 	assert(freePoints.size() == numPoints);
 
 	std::cout << "FreePoints reassigned \n";
-	const size_t count = std::accumulate(clusterSizes.begin(),clusterSizes.end(),(size_t)0);
+
+  const size_t count = std::accumulate(clusterSizes.begin(),clusterSizes.end(),(size_t)0);
 	assert(count == points.size());
 
 	int direction = 0;
