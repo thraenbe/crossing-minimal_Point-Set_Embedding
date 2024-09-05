@@ -1,17 +1,17 @@
 #pragma once
 #include <utility>
 #include <tuple>
-#include <map>
+
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
-#include <iterator>
+
 #include <algorithm>
 #include "Geometry.hpp"
 #include "Node.hpp"
 #include <cassert>
 #include <iostream>
-#include <list>
+
 #include <queue>
 #include <ogdf/basic/Graph.h>
 #include <ogdf/basic/GraphAttributes.h>
@@ -96,20 +96,19 @@ struct Graph {
 
 	[[nodiscard]] inline std::tuple<std::queue<size_t>,std::unordered_set<size_t>> AppendQueue( std::queue<size_t> queue,  std::vector<size_t> vector, std::unordered_set<size_t> used){
 		for (const auto& element : vector) {
-			if (used.find(element) == used.end() ) {
+			if (used.contains(element)) {
 				queue.push(element);
 				used.insert(element);
 			}
     	}
-		return std::make_tuple(queue, used) ;
+		return {queue, used};
 	}
 
 
-	[[nodiscard]] inline std::vector<size_t> GetAdjacentNodes( size_t nodeID,  std::unordered_set<size_t> usedNodes){
+	[[nodiscard]] inline std::vector<size_t> GetAdjacentNodes(const size_t nodeID,  std::unordered_set<size_t> usedNodes){
 		std::vector<size_t> adjNodes;
-		// std::cout << " GetAdjacentNodes " << std::endl;
-		for (const auto& idx : adjList[nodeID]){
-			if (usedNodes.find(idx) == usedNodes.end() ) {
+		for (const auto idx : adjList[nodeID]){
+			if (usedNodes.contains(idx)) {
 				adjNodes.push_back(idx) ;
 			}
 		}
@@ -118,26 +117,28 @@ struct Graph {
 	
 
 
-	[[nodiscard]] inline std::vector<size_t> GetClosestPoints( size_t adjSize, const Point& p1, const std::vector<Point>points ){
-		std::vector<std::tuple<float, Point , size_t>> closestPoints;
-	    for (const auto& q : freePoints) {
-			Point p2 = points[q];
-			float dis = euclideanDistance(p1,  p2);
-			closestPoints.push_back(std::make_tuple(dis, p2, q));
+	[[nodiscard]] inline std::vector<size_t> GetClosestPoints( const size_t adjSize, const Point& p1, const std::vector<Point>&points ){
+		std::vector<std::tuple<double, Point , size_t>> closestPoints;
+	    for (const auto q : freePoints) {
+			const Point& p2 = points[q];
+			const double dis = L2DistSquared(p1,  p2);
+			closestPoints.emplace_back(dis, p2, q);
 		}
-		std::sort(closestPoints.begin(), closestPoints.end());
+		std::ranges::sort(closestPoints);
 
 		// only printing
+		/*
 		for(const auto& tuple : closestPoints) {
         	// std::cout << "Tuple: " << std::get<0>(tuple) << ", " << std::get<2>(tuple) << std::endl;
 			
     	}
+    	*/
 		std::vector<size_t> indices(adjSize);
 		int idx = 0;
 		int i = 0;
 		while(i < adjSize){
-			int element = std::get<2>(closestPoints[i]);
-			if (usedPoints.find(element) == usedPoints.end() )
+			const auto element = std::get<2>(closestPoints[i]);
+			if (usedPoints.contains(element))
 			{
 				indices[idx] = element;
 				usedPoints.insert(element);
@@ -194,9 +195,9 @@ struct Graph {
         for (size_t i = 0; i < numNodes; ++i) {
             ogdf::node n = ogdfGraph.newNode();
             nodeMap[i] = n;
-			GA.x(n) = nodes[i].getX();
-			GA.y(n) = nodes[i].getY();
-			GA.label(n) = std::to_string(nodes[i].getId());
+			GA.x(n) = nodes[i].GetX();
+			GA.y(n) = nodes[i].GetY();
+			GA.label(n) = std::to_string(nodes[i].GetId());
 			
         }
 
@@ -207,9 +208,9 @@ struct Graph {
     }
 
 
-	[[nodiscard]] inline std::vector<std::vector<Point>> getPointClusters(std::vector<Point>points, int numClusters){
+	[[nodiscard]] inline std::vector<std::vector<Point>> getPointClusters(const std::vector<Point>& points, size_t numClusters){
 		std::vector<std::vector<Point>> pointClusters(numClusters);
-		for (auto point : points){
+		for (const auto& point : points){
 			// std::cout << point.GetId() << " Cluster: " << point.GetCluster() << "     Postion: (" << point.GetX() << " , " << point.GetY() << ")" << std::endl;
 			pointClusters[point.GetCluster()].push_back(point);
 		}
@@ -217,31 +218,30 @@ struct Graph {
 	}
 
 
-	void initializeCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
+	void initializeCentroids(vector<Point>& centroids, const vector<Point>& points, const size_t k) {
 		for (int i = 0; i < k; ++i) {
 			centroids[i] = points[i];
 		}
 	}
 
 	
-	void balancedAssignClusters(vector<Point>& points, const vector<Point>& centroids, vector<int> targetClusterSizes) {
-	int k = targetClusterSizes.size();
-    vector<vector<pair<double, int>>> distances(points.size(), vector<pair<double, int>>(k));
-
+	void balancedAssignClusters(vector<Point>& points, const vector<Point>& centroids, vector<size_t> targetClusterSizes) {
+	const size_t k = targetClusterSizes.size();
+    vector<vector<pair<double, size_t>>> squaredDistances(points.size(), vector<pair<double, size_t>>(k));
     // Calculate distances from each point to each centroid
     for (int i = 0; i < points.size(); ++i) {
         for (int j = 0; j < k; ++j) {
-            distances[i][j] = {euclideanDistance(points[i], centroids[j]), j};
+            squaredDistances[i][j] = {L2DistSquared(points[i], centroids[j]), j};
         }
-        sort(distances[i].begin(), distances[i].end());
+        std::ranges::sort(squaredDistances);
     }
 
     // Create a balanced assignment
-    vector<int> clusterSizes(k, 0);
+    vector<size_t> clusterSizes(k, 0);
 
-    for (int i = 0; i < points.size(); ++i) {
-        for (int j = 0; j < k; ++j) {
-            int cluster = distances[i][j].second;
+    for (size_t i = 0; i < points.size(); ++i) {
+        for (size_t j = 0; j < k; ++j) {
+            const auto cluster = squaredDistances[i][j].second;
             if (clusterSizes[cluster] < targetClusterSizes[cluster]) {
                 points[i].SetCluster(cluster);
                 clusterSizes[cluster]++;
@@ -252,7 +252,7 @@ struct Graph {
 }
 
 
-	void updateCentroids(vector<Point>& centroids, const vector<Point>& points, int k) {
+	void updateCentroids(vector<Point>& centroids, const vector<Point>& points, const size_t k) {
 		vector<int> count(k, 0);
 		vector<Point> newCentroids(k, {0, 0, 0});
 		
@@ -274,14 +274,14 @@ struct Graph {
 
 	bool hasConverged(const vector<Point>& centroids, const vector<Point>& oldCentroids) {
 		for (int i = 0; i < centroids.size(); ++i) {
-			if (euclideanDistance(centroids[i], oldCentroids[i]) > 1) {
+			if (L2DistSquared(centroids[i], oldCentroids[i]) > 1) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	void kMeans( vector<Point>& points, int k, vector<int> clusterSizes) {
+	void kMeans( vector<Point>& points, const int k, const vector<size_t>& clusterSizes) {
 		vector<Point> centroids(k);
 		initializeCentroids(centroids, points, k);
 
@@ -307,8 +307,8 @@ int randomCrossingNumber(){
 	return ComputeCrossings();
 }
 
-std::vector<int> assignClusters(Graph& G, std::vector<int> clusterSizes){
-	std::vector<int> newClusterSizes(clusterSizes.size());
+std::vector<size_t> assignClusters(Graph& G, const std::vector<size_t>& clusterSizes){
+	std::vector<size_t> newClusterSizes(clusterSizes.size());
 	std::vector<vector<Node>> newNodeClusters(G.NodeClusters.size()) ;
     std::cout << mapVerticesToPoints.size() << " " << NodeClusters.size() << " " << G.NodeClusters.size()<< " "  << clusterSizes.size() << std::endl;
 
@@ -318,13 +318,11 @@ std::vector<int> assignClusters(Graph& G, std::vector<int> clusterSizes){
 	}
 	G.NodeClusters = newNodeClusters;
 	NodeClusters = newNodeClusters;
-	std::cout << "test" << std::endl;
 	return newClusterSizes;
 }
 
 
-std::vector<vector<Point>> sortDirectionVectors(std::vector<vector<Point>> directions){
-
+void sortDirectionVectors(std::vector<vector<Point>>& directions){
 
 	int xmin = 0;
 	int ymin = 0;
@@ -332,49 +330,48 @@ std::vector<vector<Point>> sortDirectionVectors(std::vector<vector<Point>> direc
 	int xmax = width;
 
 	//sort points of vector N by distance of Y to Ymax
-	sort(directions[4].begin(), directions[4].end(), [ymax](const Point& a, const Point& b) {
+	std::ranges::sort(directions[4], [ymax](const Point& a, const Point& b) {
         return a.distanceToLineY(ymax) < b.distanceToLineY(ymax);
     });
-
+	Point reference(0, xmax, ymax);
     // Sort points of vector NE by distance of each point to (10, 10)
-    sort(directions[0].begin(), directions[0].end(), [ymax, xmax](const Point& a, const Point& b) {
-        Point reference(0, xmax, ymax);
-        return euclideanDistance(a, reference) < euclideanDistance(b, reference);
+    std::ranges::sort(directions[0], [&reference](const Point& a, const Point& b) {
+        return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
-
-	sort(directions[5].begin(), directions[5].end(), [xmax](const Point& a, const Point& b) {
+	std::ranges::sort(directions[5], [xmax](const Point& a, const Point& b) {
         return a.distanceToLineX(xmax) < b.distanceToLineX(xmax);
     });
 
     // Sort points of vector NE by distance of each point to (10, 10)
-    sort(directions[1].begin(), directions[1].end(), [ymin, xmax](const Point& a, const Point& b) {
-        Point reference(0, xmax, ymin);
-        return a.distanceTo(reference) < b.distanceTo(reference);
+	reference._y = ymin;
+    std::ranges::sort(directions[1], [&reference](const Point& a, const Point& b) {
+        return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
 
-	sort(directions[6].begin(), directions[6].end(), [ymin](const Point& a, const Point& b) {
+	std::ranges::sort(directions[6], [ymin](const Point& a, const Point& b) {
         return a.distanceToLineY(ymin) < b.distanceToLineY(ymin);
     });
 
     // Sort points of vector NE by distance of each point to (10, 10)
-    sort(directions[2].begin(), directions[2].end(), [xmin, ymin](const Point& a, const Point& b) {
-        Point reference(0, xmin, ymin);
-        return a.distanceTo(reference) < b.distanceTo(reference);
+	reference._x = xmin;
+    std::ranges::sort(directions[2], [&reference](const Point& a, const Point& b) {
+        return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
-
-	sort(directions[7].begin(), directions[7].end(), [xmin](const Point& a, const Point& b) {
+  
+	std::ranges::sort(directions[7], [xmin](const Point& a, const Point& b) {
+    
         return a.distanceToLineX(xmin) < b.distanceToLineX(xmin);
     });
 
-    // Sort points of vector NE by distance of each point to (10, 10)
-    sort(directions[3].begin(), directions[3].end(), [ymax, xmin](const Point& a, const Point& b) {
-        Point reference(0, xmin, ymax);
-        return a.distanceTo(reference) < b.distanceTo(reference);
+	reference._y = ymax;
+    std::ranges::sort(directions[3], [&reference](const Point& a, const Point& b) {
+        return a.squaredDistanceTo(reference) < b.squaredDistanceTo(reference);
     });
-
-	return directions;
-
 }
+  
+  
+  
+
 
 	/**
 	 * @brief Clusters all points locally into the given clusterSizes.
@@ -406,7 +403,7 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	directions[7] = points;
 
 	std::cout << "Sort Direction Vectors \n";
-
+	sortDirectionVectors(directions);
 	std::cout << "Finished Sorting Direction Vectors \n";
 
 	// Print the entire matrix
@@ -428,7 +425,6 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 
 	assert(points.size() == numPoints);
 
-
 	for (size_t i = 0; i < points.size();++i) {
 		freePoints.insert(i).second;
 	}
@@ -436,39 +432,33 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	assert(freePoints.size() == numPoints);
 
 	std::cout << "FreePoints reassigned \n";
-	int count = 0;
-	for(auto cluster : clusterSizes){
-		count += cluster;
-	}
-	assert(count == points.size());
-	
-	int direction = 0;
-		for(int i = 0; i < clusterSizes.size(); i++){
-			direction = i % 8;
-			assert(directions[direction].size() == points.size());
-			int s = 0;
-			// std::cout << "Starting While Loop: " << i << std::endl;
 
-			for(int idx = 0; idx < points.size(); idx++){
-				assert(directions[direction].size() > idx);
+  const size_t count = std::accumulate(clusterSizes.begin(),clusterSizes.end(),(size_t)0);
+	assert(count == points.size());
+
+	int direction = 0;
+		for(auto i = 0; i < clusterSizes.size(); ++i){
+			direction = i % 8;
+			const auto& currentDirection = directions[direction];
+			assert(directions[direction].size() == points.size());
+			size_t s = 0;
+			// std::cout << "Starting While Loop: " << i << std::endl;
+			for(auto idx = 0; idx < points.size(); ++idx){
+				assert(currentDirection.size() > idx);
 				assert(s < clusterSizes[i]);
-				int point = directions[direction][idx].GetId();
-				assert(point == points[point].GetId());
-				if (freePoints.contains(point)) {
-					// std::cout << s ;	
-					assert(freePoints.contains(point));
-					freePoints.erase(point);
-					// std::cout << "Point erased successully" << std::endl;
-					points[point].SetCluster(i);
-					// std::cout << "Original set" << std::endl;
+				const auto& currentPoint = currentDirection[idx].GetId();
+				assert(currentPoint == points[currentPoint].GetId());
+				if (freePoints.contains(currentPoint)) {
+					freePoints.erase(currentPoint);
+					points[currentPoint].SetCluster(i);
 					s++;
-				}		
+				}
 				if (s == clusterSizes[i]){
 					break;
-				}		
+				}
 			}
-			// std::cout << std::endl;
-			// std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
 		}
 		std::cout << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
 		assert(freePoints.empty());
@@ -483,21 +473,20 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 	 * This function reduces the number of points in a cluster by deleting collinear points.
 	 * @param points the points of a certain cluster
 	 */
-	void reductCluster(std::vector<Point> points, int newNumPoints){
-		vector<vector<double>> radialGradient(points.size(), vector<double> (points.size())) ; 
-		for(int i = 0; i < points.size() ; i++){ 
-			for(int j = 0; j < points.size(); j++) { 
-				if (i == j){
-					radialGradient[i][j] = - std::numeric_limits<double>::infinity();
-				}
-				else{ 
-				radialGradient[i][j] = computeGradient(points[i],points[j]);
-				}
+	void reductCluster(const std::vector<Point>& points, const int newNumPoints){
+		vector<vector<double>> radialGradient(points.size(), vector<double> (points.size(),std::numeric_limits<double>::infinity())) ;
+		const size_t numPoints = points.size();
+		for(int i = 0; i < numPoints-1; ++i){
+			for(int j = i+1; j < numPoints; ++j) {
+				const auto grad = computeGradient(points[i],points[j]);
+				radialGradient[i][j] = grad;
+				radialGradient[j][i] = -grad;
 			}
 		}
+		// TODO: missing functionality
 		std::unordered_map<double, int> countMap;
-		for (int i = 0; i < points.size(); ++i){
-			for (int j = 0; j < points.size(); ++j) {
+		for (int i = 0; i < numPoints; ++i){
+			for (int j = 0; j < numPoints; ++j) {
 				countMap[radialGradient[i][j]]++;
 			}
 			for (const auto& pair : countMap) {
@@ -510,15 +499,15 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 		}
 	}
 
-	std::vector<vector<Node>> assignClustersToNodes(ogdf::SList<ogdf::SimpleCluster *> clusters){
+	std::vector<vector<Node>> assignClustersToNodes(const ogdf::SList<ogdf::SimpleCluster *>& clusters){
 		int clusterIndex = 0;
 		std::vector<vector<Node>> nodeClusters(clusters.size());
-		std::vector<int> clusterSizes; 
-		for (auto cluster : clusters) {
+		std::vector<size_t> clusterSizes;
+		for (auto* cluster : clusters) {
 			clusterSizes.push_back(cluster->m_size);
 
-			for (ogdf::node v : cluster->nodes()) {
-				nodes[v->index()].setCluster(clusterIndex);
+			for (const ogdf::node& v : cluster->nodes()) {
+				nodes[v->index()].SetCluster(clusterIndex);
 				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
 			}
 			

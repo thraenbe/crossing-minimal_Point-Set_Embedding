@@ -14,13 +14,13 @@ void JSONParser::jsonToGraph(size_t& numNodes,std::vector<Node>& nodes ,std::vec
     std::ifstream is(filepath+".json");
     is >> j;
     for (auto const& p : j["points"]) {
-        points.push_back({p["id"],p["x"], p["y"]});
+        points.emplace_back(p["id"],p["x"],p["y"]);
     }
     for (auto const& e : j["edges"]) {
         edges.push_back({ e["source"],e["target"] });
     }
     for (auto const& n : j["nodes"]){
-        nodes.push_back({n["id"],n["x"],n["y"]});
+        nodes.emplace_back(n["id"],n["x"],n["y"]);
     }
     numNodes = j["nodes"].size();
     width = j["width"];
@@ -39,8 +39,8 @@ void JSONParser::graphToJson(Graph& G, const std::string& filepath, const std::s
     for (size_t i = 0; i < G.numNodes; i++){
         const auto& node = G.nodes[i]; 
         j["nodes"].push_back({ {"id", i},
-                              {"x", node.getX()},
-                              {"y", node.getY()}});
+                              {"x", node.GetX()},
+                              {"y", node.GetY()}});
     }
 
     for (auto const& [src,target] : G.edges) {
