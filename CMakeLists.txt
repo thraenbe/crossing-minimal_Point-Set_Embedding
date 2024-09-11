@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 project(PointSetCrossMin)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)  # Enforce C++20 standard
+set(CMAKE_CXX_EXTENSIONS OFF)    
 
 set(BOOST_ROOT "~/boost-ver/boost_1_85_0")
 find_package(Boost REQUIRED)
@@ -24,6 +26,8 @@ add_executable(PointSetCrossMin
         Graph.hpp
         matching.hpp
         Node.hpp
+        switch-crossmin.hpp
+        rtree.h
         )
 
 target_include_directories(PointSetCrossMin PRIVATE ogdf/include ${Boost_INCLUDE_DIRS} ${LIBXLSXWRITER_LIBRARIES})

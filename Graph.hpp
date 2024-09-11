@@ -1,22 +1,24 @@
 #pragma once
+#include "Geometry.hpp"
+#include "Node.hpp"
+
 #include <utility>
 #include <tuple>
-
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
-
 #include <algorithm>
-#include "Geometry.hpp"
-#include "Node.hpp"
 #include <cassert>
 #include <iostream>
-
+#include <ranges>
 #include <queue>
+
 #include <ogdf/basic/Graph.h>
 #include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/graphalg/Clusterer.h>
 #include <ogdf/basic/SList.h>
+#include <ranges>
+
 
 using size_t = std::size_t;
 using Edge = std::pair<size_t,size_t>;
@@ -94,61 +96,54 @@ struct Graph {
     std::vector<std::vector<Node>> NodeClusters;
 	
 
-	[[nodiscard]] inline std::tuple<std::queue<size_t>,std::unordered_set<size_t>> AppendQueue( std::queue<size_t> queue,  std::vector<size_t> vector, std::unordered_set<size_t> used){
-		for (const auto& element : vector) {
-			if (used.contains(element)) {
-				queue.push(element);
-				used.insert(element);
-			}
-    	}
-		return {queue, used};
-	}
+	// [[nodiscard]] inline std::tuple<std::queue<size_t>,std::unordered_set<size_t>> AppendQueue( std::queue<size_t> queue,  std::vector<size_t> vector, std::unordered_set<size_t> used){
+	// 	for (const auto& element : vector) {
+	// 		if (used.contains(element)) {
+	// 			queue.push(element);
+	// 			used.insert(element);
+	// 		}
+    // 	}
+	// 	return {queue, used};
+	// }
 
 
-	[[nodiscard]] inline std::vector<size_t> GetAdjacentNodes(const size_t nodeID,  std::unordered_set<size_t> usedNodes){
-		std::vector<size_t> adjNodes;
-		for (const auto idx : adjList[nodeID]){
-			if (usedNodes.contains(idx)) {
-				adjNodes.push_back(idx) ;
-			}
-		}
-		return adjNodes;
-    }
+	// [[nodiscard]] inline std::vector<size_t> GetAdjacentNodes(const size_t nodeID,  std::unordered_set<size_t> usedNodes){
+	// 	std::vector<size_t> adjNodes;
+	// 	for (const auto idx : adjList[nodeID]){
+	// 		if (usedNodes.contains(idx)) {
+	// 			adjNodes.push_back(idx) ;
+	// 		}
+	// 	}
+	// 	return adjNodes;
+    // }
 	
 
 
-	[[nodiscard]] inline std::vector<size_t> GetClosestPoints( const size_t adjSize, const Point& p1, const std::vector<Point>&points ){
-		std::vector<std::tuple<double, Point , size_t>> closestPoints;
-	    for (const auto q : freePoints) {
-			const Point& p2 = points[q];
-			const double dis = L2DistSquared(p1,  p2);
-			closestPoints.emplace_back(dis, p2, q);
-		}
-		std::ranges::sort(closestPoints);
+	// [[nodiscard]] inline std::vector<size_t> GetClosestPoints( const size_t adjSize, const Point& p1, const std::vector<Point>&points ){
+	// 	std::vector<std::tuple<double, Point , size_t>> closestPoints;
+	//     for (const auto q : freePoints) {
+	// 		const Point& p2 = points[q];
+	// 		const double dis = L2DistSquared(p1,  p2);
+	// 		closestPoints.emplace_back(dis, p2, q);
+	// 	}
+	// 	std::ranges::sort(closestPoints);
 
-		// only printing
-		/*
-		for(const auto& tuple : closestPoints) {
-        	// std::cout << "Tuple: " << std::get<0>(tuple) << ", " << std::get<2>(tuple) << std::endl;
-			
-    	}
-    	*/
-		std::vector<size_t> indices(adjSize);
-		int idx = 0;
-		int i = 0;
-		while(i < adjSize){
-			const auto element = std::get<2>(closestPoints[i]);
-			if (usedPoints.contains(element))
-			{
-				indices[idx] = element;
-				usedPoints.insert(element);
-				freePoints.erase(element);
-				idx++;
-			}
-			i++;
-		}
-		return indices;
-	}
+	// 	std::vector<size_t> indices(adjSize);
+	// 	int idx = 0;
+	// 	int i = 0;
+	// 	while(i < adjSize){
+	// 		const auto element = std::get<2>(closestPoints[i]);
+	// 		if (usedPoints.contains(element))
+	// 		{
+	// 			indices[idx] = element;
+	// 			usedPoints.insert(element);
+	// 			freePoints.erase(element);
+	// 			idx++;
+	// 		}
+	// 		i++;
+	// 	}
+	// 	return indices;
+	// }
 
 
 	// Point query.
@@ -169,10 +164,10 @@ struct Graph {
 		return DoIntersect(GetConstPosOfNode(lhs.first), GetConstPosOfNode(lhs.second), GetConstPosOfNode(rhs.first), GetConstPosOfNode(rhs.second), numNodes);
 	}
 	
-	[[nodiscard]] inline int ComputeCrossings() const {
+	[[nodiscard]] inline int ComputeCrossings(int& counter) const {
 		int crossings{ 0 };
 		int tmp = 0;
-		int counter = 0;
+		counter = 0;
 		// #pragma omp parallel for reduction (+:crossings) <- use this if you want to parallelize the code
 		for (size_t i = 0; i < numEdges - 1; ++i) {
 			const auto& edge = edges[i];
@@ -299,12 +294,11 @@ struct Graph {
 		}
 	}
 
-int randomCrossingNumber(){
-	
+int randomCrossingNumber(int& counter){
 	for(int i = 0; i < nodes.size(); i++){
 		mapVerticesToPoints[i] = i;
 	}
-	return ComputeCrossings();
+	return ComputeCrossings(counter);
 }
 
 std::vector<size_t> assignClusters(Graph& G, const std::vector<size_t>& clusterSizes){
@@ -380,7 +374,7 @@ void sortDirectionVectors(std::vector<vector<Point>>& directions){
 	 * @param xmax width.
 	 * @param ymax height.
 	 */
-void manClustering(vector<int> clusterSizes, int xmax, int ymax){
+void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 	// sort clustersizes ascending
 	std::cout << xmax << " " << ymax << "\n";
 
@@ -433,7 +427,8 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 
 	std::cout << "FreePoints reassigned \n";
 
-  const size_t count = std::accumulate(clusterSizes.begin(),clusterSizes.end(),(size_t)0);
+    const size_t count = std::accumulate(clusterSizes.begin(),clusterSizes.end(),(size_t)0);
+		std::cout << count << points.size() <<  " ----------------------------- \n";
 	assert(count == points.size());
 
 	int direction = 0;
@@ -460,7 +455,7 @@ void manClustering(vector<int> clusterSizes, int xmax, int ymax){
 			std::cout << std::endl;
 			std::cout << std::endl;
 		}
-		std::cout << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
+		std::cout << "Clustering Complete" << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
 		assert(freePoints.empty());
 
 	}
