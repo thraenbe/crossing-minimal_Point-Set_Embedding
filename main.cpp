@@ -1,5 +1,5 @@
-#include"JSONParser.hpp"
-#include"matching.hpp"
+#include "JSONParser.hpp"
+#include "matching.hpp"
 #include "switch-crossmin.hpp"
 #include <iostream>
 #include <cassert>
@@ -173,7 +173,7 @@ void girvanNewman(ogdf::Graph &G, int desiredClusters, std::vector<ogdf::List<og
 }
 
 
-std::vector<size_t> computeClusterSizes(const Graph& myGraph, const std::vector<size_t>& initialSizes, size_t numClusters){
+std::vector<size_t> computeClusterSizes( Graph& myGraph, const std::vector<size_t>& initialSizes, size_t numClusters){
     std::vector<size_t>newClusterSizes(initialSizes.size(),0);
     auto tmpPoints = (myGraph.numPoints - myGraph.numNodes);
     const size_t quotient = tmpPoints / numClusters  ;
@@ -224,7 +224,7 @@ std::vector<ogdf::List<ogdf::node>> createOgdfGraph(ogdf::Graph& G, ogdf::GraphA
     return ogdfClusters;
 }
 
-ogdf::List<ogdf::node> getFreeOgdfPositions(const Graph & myGraph,ogdf::Graph& G, ogdf::GraphAttributes& GA){
+ogdf::List<ogdf::node> getFreeOgdfPositions( Graph & myGraph,ogdf::Graph& G, ogdf::GraphAttributes& GA){
 ogdf::List<ogdf::node> freePositions;
     std::vector<int> usedPoints;
     std::vector<int> freePoints;
@@ -258,8 +258,42 @@ ogdf::List<ogdf::node> freePositions;
 
 }
 
+void nodeClusteringFallback( Graph& myGraph, int& numberOfClusters){
+    std::cout << "start Fallback Clustering \n";
+    int fallBackClusterSize = (int) myGraph.numNodes/10;
+    std::vector<std::vector<Node>> fallBackClusters(fallBackClusterSize);
+    int count = 0;
+    int cluster = 0;
+    for(int i = 0; i < myGraph.numNodes; i++){
+        if (count == 10){
+            count = 0;
+            cluster++;
+        }
+        Node& node = myGraph.nodes[i];
+        node.SetCluster(cluster);
+        fallBackClusters[cluster].push_back(node);
+        count++;
+    }
+    std::cout << " finished Fallback Clustering \n";
+    myGraph.NodeClusters = fallBackClusters;
+    numberOfClusters = fallBackClusters.size();
+}
+void nodeClustering( Graph& myGraph, ogdf::Graph& G, int& numberOfClusters, const int clustering_stop_idx, const int clustering_automatic_threshold){
+    ogdf::SList<ogdf::SimpleCluster *> clusters;
+    ogdf::Clusterer CG(G);
+    CG.setRecursive(false);
+    CG.setStopIndex(clustering_stop_idx); // 0.6
+    CG.setAutomaticThresholds(clustering_automatic_threshold); // 10
 
-std::vector<size_t> computation( const int numberOfSamples, const int numberOfOuterLoopsMove, const int numberOfOuterLoopsSwitch,const int clustering_automatic_threshold, const double clustering_stop_idx, const int kk_des_edge_len, const int kk_global_iterations, const double kk_stop_tolerance, const string& graphfile ){
+    CG.computeClustering(clusters);
+    std::cout << " Number of Clusters: " << clusters.size()<<  std::endl ;
+    myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
+    
+    numberOfClusters = clusters.size();
+
+}
+
+std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int numberOfSamples, const int numberOfOuterLoopsMove, const int numberOfOuterLoopsSwitch, int clustering_automatic_threshold, const double clustering_stop_idx, const int kk_des_edge_len, const int kk_global_iterations, const double kk_stop_tolerance, const string& graphfile ){
     std::vector<size_t> results(15,0);
     ogdf::Graph secondG; 
     ogdf::GraphAttributes secondGA(secondG, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics | ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle | ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate | ogdf::GraphAttributes::nodeWeight);
@@ -291,72 +325,24 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     /*
      *2. Compute cluster graph C(G)
      */
-    ogdf::SList<ogdf::SimpleCluster *> clusters;
-    ogdf::Clusterer CG(G);
-    /*
-    double avgCIdx = CG.averageCIndex();
 
-    for (ogdf::node v : G.nodes) {
-        double CIdx = CG.computeCIndex(G, v); 
-    }
-    std::cout << avgCIdx << std::endl;
-    */
-    CG.setRecursive(false);
-    CG.setStopIndex(clustering_stop_idx); // 0.6
-    CG.setAutomaticThresholds(clustering_automatic_threshold); // 10
     std::cout << "start clustering \n";
-    int desiredClusters = (int) numNodes;
-    std::vector<ogdf::List<ogdf::node>> girvanNewmanClusters;
-    ogdf::ModifiedNibbleClusterer MNC;
-    ogdf::NodeArray< long > clusterNum  ;
-    MNC.setMaxClusterSize(200);
     int numberOfClusters;
 
     if(myGraph.edges.size() > 1){
-        // std::cout << "start MNC \n";
-        // int numClusters = MNC.call(G, clusterNum);
-        // myGraph.NodeClusters = myGraph.assignClustersToNodes(clusterNum, numClusters);
-        // std::cout << "finished MNC \n" ;
-        std::cout << "start Fallback Clustering \n";
-        int fallBackClusterSize = (int) myGraph.numNodes/10;
-         std::cout << "start Fallback Clustering \n";
-        std::vector<std::vector<Node>> fallBackClusters(fallBackClusterSize);
-         std::cout << "start Fallback Clustering \n";
-        int count = 0;
-        int cluster = 0;
-        for(int i = 0; i < myGraph.numNodes; i++){
-            if (count == 10){
-                count = 0;
-                cluster++;
-            }
-            Node node = myGraph.nodes[i];
-            node.SetCluster(cluster);
-            fallBackClusters[cluster].push_back(node);
-            count++;
-        }
-        std::cout << " finished Fallback Clustering \n";
-        myGraph.NodeClusters = fallBackClusters;
-        numberOfClusters = fallBackClusters.size();
-        
+        nodeClusteringFallback(myGraph, numberOfClusters);
     }
     else{
-        
-        CG.computeClustering(clusters);
-        std::cout << " Number of Clusters: " << clusters.size()<<  std::endl ;
-        myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
-        numberOfClusters = clusters.size();
+        nodeClustering(myGraph, G, numberOfClusters, clustering_stop_idx, clustering_automatic_threshold);
     }
     std::vector<size_t> clusterSizes;
-
-
-    printVector(myGraph.NodeClusters);
 
     for (const auto& cluster : myGraph.NodeClusters){
         clusterSizes.push_back(cluster.size());
     }
 
     /*
-     *4. Match ClusterGraph
+     *3. Match ClusterGraph
      */
 
     std::cout << "Creating Cluster Graph\n";
@@ -367,8 +353,6 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
     matchClusters(pair.first, pair.second);
 
-
-
     const auto newClusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
     auto augmentedClusterSizes = computeClusterSizes(myGraph, newClusterSizes, numberOfClusters);
 
@@ -376,12 +360,14 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
     std::cout << "Clusters Succesfully assigned" << std::endl;
 
-    // myGraph.kMeans(myGraph.points,clusters.size() , clusterSizes);
+    /*
+     *4. Cluster Points and Match
+     */
+
     myGraph.manClustering(augmentedClusterSizes, myGraph.width, myGraph.height);
     std::cout << "Local Clustering Succesful" << std::endl;
 
     myGraph.reductCluster(myGraph.points, clusterSizes[0]);
-    printVector(myGraph.NodeClusters);
 
     std::cout << "Get Point Clusters" << std::endl;
 
@@ -393,7 +379,7 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     int collinear = 0;
     
     /*
-     *4. Swaping and Moving Nodes to reduce Crossings
+     *5. Swaping and Moving Nodes to reduce Crossings
      */
 
 
@@ -407,10 +393,10 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     std::cout << "Starting Iterative Crossing Minimization (SWITCH)\n";
     for (int i = 0 ; i < myGraph.NodeClusters.size(); i++){
         iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, ogdfCluster[i], myGraph.numNodes);
-        std::cout << "    Completed Local Crossmin for Cluster: " << i ;
+        std::cout << "    Completed Local Crossmin for Cluster: " << i  << std::endl;
     }
     std::cout << std::endl << std::endl;
-    std::cout << "Completed Iterative Crossing Minimization (SWITCH)\n";
+    std::cout << "Completed Iterative Crossing Minimization (Local)\n";
     for (const auto &n : crossminG.nodes){
         auto nodeId = n->index();
         auto pointId = std::stoi(crossminGA.label(n));
@@ -425,17 +411,17 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     crossminG.allNodes(allNodes);
     
     if (ogdfFreePoints.size() > 0 ){ 
-        std::cout << "Starting Iterative Crossing Minimization (MOVE)\n";
-        for (int i = 0; i < 1 ; i++){
+        std::cout << "Starting Iterative Crossing Minimization (Global)\n";
+        for (int i = 0; i < numberOfOuterLoopsGlobal  ; i++){
             iterativeCrossMinMove(crossminG, crossminGA, secondGA, numberOfOuterLoopsMove, numberOfSamples, ogdfFreePoints, myGraph.numNodes );
             iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
-            std::cout << "     Completed Global Crossmin for Iteration: " << i ;
+            std::cout << "     Completed Global Crossmin for Iteration: " << i << " of " << numberOfOuterLoopsGlobal << std::endl; ;
         }
         std::cout << std::endl << std::endl;
     }
     else{
-        std::cout << "Skipped Iterative Crossing Minimization (MOVE)\n";
-        for (int i = 0; i < 1 ; i++){
+        std::cout << "Skipped Iterative Crossing Minimization (Global)\n";
+        for (int i = 0; i < numberOfOuterLoopsGlobal ; i++){
             iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
         }
     }
@@ -449,6 +435,11 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
         // std::cout << "NODE: " << nodeId << "   PointId: " << pointId << std::endl;
         myGraph.mapVerticesToPoints.at(nodeId) = pointId;
     }
+
+    /*
+        6. Write Back
+    */
+
     std::cout << "Finished Iterative Crossing Minimization (MOVE)\n";
     results[6] = myGraph.ComputeCrossings(collinear);    
     results[10] = collinear;
@@ -478,9 +469,12 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
 
 int main(int argc, char* argv[]) {
-    const string graphFile{"g9"};     // n = 1200.
-    int clustering_automatic_threshold = 150;
+    string graphFile{"g9"};     // n = 1200.
+    int clustering_automatic_threshold = 15;
     double clustering_stop_idx = 0.6;
+    int numberOfOuterLoopsMove = 1;
+    int numberOfOuterLoopsSwitch = 1;
+    int numberOfOuterLoopsGlobal = 1;
 
   // TODO:: the following are currently unused - remove in case they are not required.
     int kk_des_edge_len{1};
@@ -494,7 +488,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "opening Workbook" << std::endl;
 
-    lxw_workbook  *workbook  = workbook_new("../results/results-300-altClustering.xlsx");
+    lxw_workbook  *workbook  = workbook_new("../results/results-fallback-clustering.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
     worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
@@ -511,24 +505,29 @@ int main(int argc, char* argv[]) {
     // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
 
     int idx = 1;
-    for( int i = 300; i < 301; i++){
-        idx++;
+    for( int i = 25; i < 150; i++){
         worksheet_write_number(worksheet, i*10 + 1, 0, i, NULL);
+        idx++;
         for (int k = 1 ; k < 1.5; k++){ 
-            for(double j = 1; j < 1.5; j++){
-                for(int p = 1; p < 2.3; p += 1 ){ 
-                    int numberOfOuterLoopsSwitch = k;
-                    auto numberOfOuterLoopsMove = j;
-                    int numberOfSamples = p;
+            for(double j = 0; j < 51; j += 5){ 
+                for(int p = 1; p < 1.3; p += 1 ){ 
+                    clustering_automatic_threshold = j;
+                    int numberOfSamples = 1;
 
 
                     string graphfile = "rand_" + std::to_string(i+1);
 
-                    auto crossingVector = computation(numberOfSamples, numberOfOuterLoopsMove, numberOfOuterLoopsSwitch ,clustering_automatic_threshold, clustering_stop_idx, kk_des_edge_len, kk_global_iterations, kk_stop_tolerance, graphfile);
+                    auto crossingVector = computation(numberOfOuterLoopsGlobal, numberOfSamples, numberOfOuterLoopsMove, numberOfOuterLoopsSwitch , 
+                                                        clustering_automatic_threshold, 
+                                                        clustering_stop_idx, 
+                                                        kk_des_edge_len, 
+                                                        kk_global_iterations, 
+                                                        kk_stop_tolerance, 
+                                                        graphfile);
 
 
                     worksheet_write_number(worksheet,  idx, 1 , j, NULL);
-                    worksheet_write_number(worksheet,  idx, 2, k, NULL);
+                    worksheet_write_number(worksheet,  idx, 2, p, NULL);
                     worksheet_write_number(worksheet,  idx, 3, crossingVector[0], NULL);
                     worksheet_write_number(worksheet,  idx, 4, crossingVector[1], NULL);
                     worksheet_write_number(worksheet,  idx, 5, crossingVector[2], NULL);

@@ -498,10 +498,7 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 	std::vector<vector<Node>> assignClustersToNodes(const ogdf::SList<ogdf::SimpleCluster *>& clusters){
 		int clusterIndex = 0;
 		std::vector<vector<Node>> nodeClusters(clusters.size());
-		std::vector<size_t> clusterSizes;
 		for (auto* cluster : clusters) {
-			clusterSizes.push_back(cluster->m_size);
-
 			for (const ogdf::node& v : cluster->nodes()) {
 				nodes[v->index()].SetCluster(clusterIndex);
 				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
@@ -514,42 +511,6 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 
 
     }
-		std::vector<vector<Node>> assignClustersToNodes(const std::vector<std::vector<ogdf::node>>& clusters){
-		int clusterIndex = 0;
-		std::vector<vector<Node>> nodeClusters(clusters.size());
-		std::vector<size_t> clusterSizes;
-		for (auto cluster : clusters) {
-			clusterSizes.push_back(cluster.size());
-
-			for (const ogdf::node& v : cluster) {
-				nodes[v->index()].SetCluster(clusterIndex);
-				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
-			}
-			
-			clusterIndex++;
-		}
-
-		return nodeClusters;
-
-
-    }
-	std::vector<vector<Node>> assignClustersToNodes(const ogdf::NodeArray< long > clusters, const int numClusters){
-		// Create a vector of vectors to hold the nodes for each cluster
-    	std::vector<std::vector<Node>> clusteredNodes(numClusters);
-
-    	// Iterate through all nodes in the graph
-		long idx = 0;
-    	for (long clusterIndex : clusters) {
-			// Ensure the cluster index is within bounds
-        if (clusterIndex >= 0 && clusterIndex < numClusters) {
-            clusteredNodes[clusterIndex].push_back(nodes[idx]);
-        }
-		idx++;
-    	}
-
-    return clusteredNodes;
-	}
-
 };
 
 

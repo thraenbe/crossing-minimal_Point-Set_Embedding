@@ -176,7 +176,7 @@ void springEmbedding(const ogdf::Graph& G, ogdf::GraphAttributes& GA){
 //         return a._y < b._y;
 //     })->_y;
 
-//     iterativeCrossMin(G, GA, maxXNodes, maxYNodes, 100, 100 );
+//     iterativeCrossMin(G, GA, maxXNodes, maxYNodes, 10, 10, nodes.size() );
 // }
 
 
@@ -444,6 +444,7 @@ namespace
         for(auto i = 0; i < myGraph.NodeClusters.size(); ++i){
             for(const auto& node : myGraph.NodeClusters[i]){
                 for(auto target : myGraph.adjList[node._id]){
+                    // std::cout << "Cluster: " << node.GetCluster() << " " << myGraph.nodes[target].GetCluster() << std::endl;
                     if (node.GetCluster() != myGraph.nodes[target].GetCluster()){
                         edgeWeights[node.GetCluster()][myGraph.nodes[target].GetCluster()] += 1;
                     }

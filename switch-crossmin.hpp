@@ -149,14 +149,14 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
             ogdf::node m_node;
             unsigned int cr_before = 0;
             unsigned int cr_after = 0;
-            
-            for (auto const &a : n->adjEntries) { // Edge n->m counted twice ?
-                getEdgeCrossingsWithRTree(RTree, G, GA, a->theEdge(), cr_before, numNodes);
-            }
-
             ogdf::List<ogdf::edge> n_adjEdges;
             ogdf::List<ogdf::edge> m_adjEdges;
             n->adjEdges(n_adjEdges);
+            #pragma omp parallel for reduction(+:cr_before)
+            for (int idx = 0; idx < n_adjEdges.size(); ++idx) {
+                getEdgeCrossingsWithRTree(RTree, G, GA, *n_adjEdges.get(idx), cr_before, numNodes);
+            }
+
             for (int i = 0; i < randomSamples.size(); ++i) {
                 const auto &m = *nodesToSwitch.get(i) ;
                 if (n == m ) {
@@ -166,10 +166,12 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
 
                 removeFromRTree(RTree, G, GA, m);
                 insertIntoRTree(RTree, G, GA, n);
-                
-                for (auto const &a : m_adjEdges) { // Edge n->m counted twice ?
-                    getEdgeCrossingsWithRTree(RTree, G, GA, a, cr_before, numNodes);
+
+                #pragma omp parallel for reduction(+:cr_before)
+                for (int idx = 0; idx < m_adjEdges.size(); ++idx) {
+                    getEdgeCrossingsWithRTree(RTree, G, GA, *m_adjEdges.get(idx), cr_before, numNodes);
                 }
+
                 insertIntoRTree(RTree, G, GA, m);
                 removeFromRTree(RTree, G, GA, n);
 
@@ -333,3 +335,56 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
 
 
 
+void iterativeCrossMin(const ogdf::Graph &G, ogdf::GraphAttributes &GA, const int xdim, const int ydim, const int numberOfOuterLoops, const int numberOfPositionSamples, const int numNodes) {
+    // initialize RTree data struct to speed up crossing computation
+    RTree<int, int, 2, float> RTree;
+    for (auto const &e : G.edges) {
+        int px = (int) GA.x(e->source());
+        int py = (int) GA.y(e->source());
+        int qx = (int) GA.x(e->target());
+        int qy = (int) GA.y(e->target());
+        Rect rect(std::min(px, qx), std::min(py, qy), std::max(px, qx), std::max(py, qy));
+        RTree.Insert(rect.min, rect.max, e->index());
+    }
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    //
+    // Outer loop
+    //
+    ogdf::Array<ogdf::node, int> nodes;
+    G.allNodes(nodes);
+    std::uniform_int_distribution<> noderange(0, G.numberOfNodes() - 1);
+    // we only sample integer points here
+    std::uniform_int_distribution<> xrange(0, xdim);
+    std::uniform_int_distribution<> yrange(0, ydim);
+    for (int l = 0; l < numberOfOuterLoops; l++) {
+        for (auto const &n : G.nodes) {
+            removeFromRTree(RTree, G, GA, n);
+            int x = (int)GA.x(n);
+            int y = (int)GA.y(n);
+            unsigned int cr_before = 0;
+            unsigned int cr_after = 0;
+            for (auto const &a : n->adjEntries) {
+                getEdgeCrossingsWithRTree(RTree, G, GA, a->theEdge(), cr_before, numNodes);
+            }
+            ogdf::List<ogdf::edge> adjEdges;
+            n->adjEdges(adjEdges);
+            for (int i = 0; i < numberOfPositionSamples; ++i) {
+                GA.x(n) = xrange(gen);
+                GA.y(n) = yrange(gen);
+                #pragma omp parallel for reduction(+:cr_after)
+                for (int i = 0; i < adjEdges.size(); ++i) {
+                    getEdgeCrossingsWithRTree(RTree, G, GA, *adjEdges.get(i), cr_after, numNodes);
+                }
+                if (cr_after <= cr_before) {
+                    cr_before = cr_after;
+                    x = (int)GA.x(n);
+                    y = (int)GA.y(n);
+                }
+            }
+            GA.x(n) = x;
+            GA.y(n) = y;
+            insertIntoRTree(RTree, G, GA, n);
+        }
+    }
+}
