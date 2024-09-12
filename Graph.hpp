@@ -168,7 +168,7 @@ struct Graph {
 		int crossings{ 0 };
 		int tmp = 0;
 		counter = 0;
-		// #pragma omp parallel for reduction (+:crossings) <- use this if you want to parallelize the code
+		#pragma omp parallel for reduction (+:crossings) //<- use this if you want to parallelize the code
 		for (size_t i = 0; i < numEdges - 1; ++i) {
 			const auto& edge = edges[i];
 			for (size_t j = i + 1; j < numEdges; ++j) {
@@ -177,10 +177,10 @@ struct Graph {
 				if (tmp > 1){
 					counter += 1;
 				}
-		}	
-	}
-	std::cout << " Collinear Crossings: " << counter << std::endl;
-	return crossings;
+			}	
+		}
+		std::cout << " Collinear Crossings: " << counter << std::endl;
+		return crossings;
 	}
 
 	void toOgdfGraph(ogdf::Graph& ogdfGraph, ogdf::GraphAttributes& GA) const {
@@ -513,7 +513,44 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 
 
     }
+		std::vector<vector<Node>> assignClustersToNodes(const std::vector<std::vector<ogdf::node>>& clusters){
+		int clusterIndex = 0;
+		std::vector<vector<Node>> nodeClusters(clusters.size());
+		std::vector<size_t> clusterSizes;
+		for (auto cluster : clusters) {
+			clusterSizes.push_back(cluster.size());
 
+			for (const ogdf::node& v : cluster) {
+				nodes[v->index()].SetCluster(clusterIndex);
+				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
+			}
+			
+			clusterIndex++;
+		}
+
+		return nodeClusters;
+
+
+    }
+	std::vector<vector<Node>> assignClustersToNodes(const ogdf::NodeArray< long > clusters, const int numClusters){
+		// Create a vector of vectors to hold the nodes for each cluster
+    	std::vector<std::vector<Node>> clusteredNodes(numClusters);
+
+    	// Iterate through all nodes in the graph
+		long idx = 0;
+    	for (long clusterIndex : clusters) {
+			// Ensure the cluster index is within bounds
+        if (clusterIndex >= 0 && clusterIndex < numClusters) {
+            clusteredNodes[clusterIndex].push_back(nodes[idx]);
+        }
+		idx++;
+    	}
+
+    return clusteredNodes;
+	}
 
 };
+
+
+
 

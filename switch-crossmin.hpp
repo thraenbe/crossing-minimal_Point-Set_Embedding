@@ -86,8 +86,36 @@ void insertIntoRTree(RTree<int, int, 2, float> &RTree, const ogdf::Graph &G, con
     }
 }
 
+bool isNumeric(const std::string &str) {
+    return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+}
 
-void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, const int numberOfOuterLoops, 
+std::vector<int> generate_random_indices(int k, int n) {
+    // Create a vector with values from 0 to n-1
+    if (k> n){
+        k = n;
+    }
+    std::vector<int> indices(n);
+    for (int i = 0; i < n; ++i) {
+        indices[i] = i;
+    }
+    
+    // Use random_device and mt19937 for randomness
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    // Shuffle the indices vector
+    std::shuffle(indices.begin(), indices.end(), gen);
+    
+    // Resize the vector to contain only the first k elements
+    indices.resize(k);
+    
+    return indices;
+}
+
+
+
+void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, const int numberOfOuterLoops, const int numberOfSamples,
                                 const ogdf::List<ogdf::node> nodesToSwitch, 
                                 const int numNodes) {
     // initialize RTree data struct to speed up crossing computation
@@ -110,6 +138,7 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
     
     for (int l = 0; l < numberOfOuterLoops; l++) {
         for (auto const &n : nodesToSwitch) {
+            auto randomSamples = generate_random_indices(numberOfSamples, nodesToSwitch.size());
             removeFromRTree(RTree, G, GA, n);
             int n_x = (int)GA.x(n);
             int n_y = (int)GA.y(n);
@@ -128,7 +157,7 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
             ogdf::List<ogdf::edge> n_adjEdges;
             ogdf::List<ogdf::edge> m_adjEdges;
             n->adjEdges(n_adjEdges);
-            for (int i = 0; i < nodesToSwitch.size(); ++i) {
+            for (int i = 0; i < randomSamples.size(); ++i) {
                 const auto &m = *nodesToSwitch.get(i) ;
                 if (n == m ) {
                     break;
@@ -174,7 +203,7 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
                     m_pointID = std::stoi(GA.label(n));
                     m_node = m;
                     assert(m_x >= 0 && m_y >= 0);
-                }else{
+                }else{ // check better results with or without else
                 tmp_x = GA.x(n);
                 tmp_y = GA.y(n);
                 GA.x(n) = GA.x(m);
@@ -198,29 +227,6 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
     }
 }
 
-bool isNumeric(const std::string &str) {
-    return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
-}
-
-std::vector<int> generate_random_indices(int k, int n) {
-    // Create a vector with values from 0 to n-1
-    std::vector<int> indices(n);
-    for (int i = 0; i < n; ++i) {
-        indices[i] = i;
-    }
-    
-    // Use random_device and mt19937 for randomness
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    
-    // Shuffle the indices vector
-    std::shuffle(indices.begin(), indices.end(), gen);
-    
-    // Resize the vector to contain only the first k elements
-    indices.resize(k);
-    
-    return indices;
-}
 
 
 // Ensure that nodes lie in range [0,xdim] x [0,ydim] -> will only sample positions in this box
@@ -241,13 +247,17 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
     //
     ogdf::Array<ogdf::node, int> nodes;
     G.allNodes(nodes);
-    auto randomSamples = generate_random_indices(numberOfSamples, positions.size());
     for (int l = 0; l < numberOfOuterLoops; l++) {
         for (auto const &n : G.nodes) {
+            auto randomSamples = generate_random_indices(numberOfSamples, positions.size());
             removeFromRTree(RTree, G, GA, n);
-            int x = (int)GA.x(n);
-            int y = (int)GA.y(n);
-            int pointId;
+            int n_x = (int)GA.x(n);
+            int n_y = (int)GA.y(n);
+            int n_pointId;
+            int m_x = -1;
+            int m_y = -1;
+            int m_pointId;
+            ogdf::node point;
             if (isNumeric(GA.label(n)) ){
                 int pointId =  std::stoi(GA.label(n));
                 } 
@@ -263,16 +273,12 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
             n->adjEdges(adjEdges);
             for (int idx : randomSamples) {
                 assert(idx < positions.size());
-                auto point = *positions.get(idx);
+                point = *positions.get(idx);
+
                 // Swap 
                 std::swap(GA.x(n), secondGA.x(point));
                 std::swap(GA.y(n), secondGA.y(point));
-                if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
-                    std::swap(GA.label(n), secondGA.label(point));
-                } 
-                else { 
-                    break;
-                }
+
                 
                 #pragma omp parallel for reduction(+:cr_after)
                 for (int i = 0; i < adjEdges.size(); ++i) {
@@ -281,10 +287,21 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
                 if (cr_after <= cr_before) {
                     
                     cr_before = cr_after;
-                    x = (int)GA.x(n);
-                    y = (int)GA.y(n);
+                    n_x = (int)GA.x(n);
+                    n_y = (int)GA.y(n);
+
                     if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
-                        int pointId =  std::stoi(GA.label(n));
+                        n_pointId =  std::stoi(secondGA.label(point));
+                    } 
+                    else { 
+                        break;
+                    }
+
+                    m_x = (int)secondGA.x(point);
+                    m_y = (int)secondGA.y(point);
+
+                    if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
+                        m_pointId =  std::stoi(GA.label(n));
                     } 
                     else { 
                         break;
@@ -293,16 +310,22 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
                 // Swap
                 std::swap(GA.x(n), secondGA.x(point));
                 std::swap(GA.y(n), secondGA.y(point));
-                if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
-                    std::swap(GA.label(n), secondGA.label(point));
-                } 
-                else { 
-                    break;
-                }
+                // if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
+                //     std::swap(GA.label(n), secondGA.label(point));
+                // } 
+                // else { 
+                //     break;
+                // }
             }
-            GA.x(n) = x;
-            GA.y(n) = y;
-            GA.label(n) = std::to_string( pointId);
+
+            if (m_x >= 0 && m_y >= 0){
+                GA.x(n) = n_x;
+                GA.y(n) = n_y;
+                GA.label(n) = std::to_string(n_pointId);
+                secondGA.x(point) = m_x;
+                secondGA.y(point) = m_y;
+                secondGA.label(point) = std::to_string(m_pointId);
+            }
             insertIntoRTree(RTree, G, GA, n);
         }
     }

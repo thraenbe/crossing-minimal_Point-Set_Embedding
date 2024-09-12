@@ -165,11 +165,6 @@ void springEmbedding(const ogdf::Graph& G, ogdf::GraphAttributes& GA){
 
     // Print node positions
     std::cout << "Spring Embedder completed" << std::endl;
-    // for (ogdf::node n : G.nodes) {
-    //     std::cout << "Node " << GA.label(n) << " position: (" << GA.x(n) << ", " << GA.y(n) << ");    " ;
-    // }
-    // std::cout << std::endl;
-    // std::cout << std::endl;
     
 }
 // void crossMin(ogdf::Graph& G, ogdf::GraphAttributes& GA, std::vector<Node> nodes){
@@ -269,7 +264,6 @@ namespace
         // std::cout << "Point " << allignedPoints[0].GetX() << allignedPoints[0].GetY() << "Point " << allignedPoints[1].GetX() << allignedPoints[1].GetY() << std::endl ;
         std::vector<VertexDescriptor> tmp;
         BoostGraph BoostGraph;
-        std::cout  << points.size() << " " << allignedNodes.size() << std::endl;
         assert(points.size() >=  allignedNodes.size());
         for (const auto& _ : points) {
             VertexDescriptor v = boost::add_vertex(BoostGraph);
@@ -353,7 +347,7 @@ namespace
 
     void ogdfToNodes(ogdf::Graph& G, ogdf::GraphAttributes& GA, Graph& myGraph, int cluster){
         int i = 0;
-        std::cout << "NodeCluster: " << cluster << " of " << " " << myGraph.NodeClusters.size() << std::endl;
+        std::cout << "Cluster: " << cluster << " of " << " " << myGraph.NodeClusters.size() << std::endl;
         for (ogdf::node v : G.nodes){
             myGraph.NodeClusters[cluster][i]._x = GA.x(v);
             myGraph.NodeClusters[cluster][i]._y = GA.y(v);
@@ -528,28 +522,20 @@ namespace
             createClusterGraph(graphClusters[i], graphAttributesClusters[i], myGraph, nodeClusters[i]);
             springEmbedding(graphClusters[i], graphAttributesClusters[i]);
             ogdfToNodes(graphClusters[i], graphAttributesClusters[i], myGraph, i);
-            std::cout << "print Sizes" << myGraph.points.size() << " " << myGraph.nodes.size() << " " << myGraph.NodeClusters.size() <<  " \n" ;
 
-            for(int idx = 0; idx < myGraph.NodeClusters.size(); idx++){
-                std::cout << myGraph.pointClusters[idx].size() << " " << myGraph.NodeClusters[idx].size() << std::endl;
-            }
             assert(myGraph.pointClusters[i].size() >= myGraph.NodeClusters[i].size());
             BoostGraph = convertClusterToBoostGraph(myGraph.pointClusters[i], myGraph.NodeClusters[i], myGraph.nodes.size() * myGraph.edges.size() * myGraph.points.size());
             mate = minimumWeightMatching(BoostGraph, myGraph.NodeClusters[i].size());
-                    // for (auto l : myGraph.pointClusters){
-                    //     for (auto p : l){ 
-                    //     std::cout << "ID" << p.GetId() << " C" << p.GetCluster() << std::endl; 
-                    //     }
-                    // }
+
             mapMatching(mate, myGraph, i);
             std::cout << "Matching successful! " << std::endl;
 
 
         }
-        for (int i = 0; i < myGraph.mapVerticesToPoints.size(); i++){
-            std::cout << "(" << i <<", " << myGraph.mapVerticesToPoints[i] << ");   " ;
-        }
-        std::cout << std::endl;
+        // for (int i = 0; i < myGraph.mapVerticesToPoints.size(); i++){
+        //     std::cout << "(" << i <<", " << myGraph.mapVerticesToPoints[i] << ");   " ;
+        // }
+        // std::cout << std::endl;
 
         return myGraph.mapVerticesToPoints;
     }

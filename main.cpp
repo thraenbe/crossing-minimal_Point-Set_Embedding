@@ -9,6 +9,7 @@
 #include <ogdf/graphalg/Clusterer.h>
 #include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/basic/SList.h>
+#include <ogdf/graphalg/ModifiedNibbleClusterer.h>
 #include <boost/graph/adjacency_list.hpp>
 
 #include <xlsxwriter.h>
@@ -55,6 +56,122 @@ void printVector(const std::vector<std::vector<Node>>& vec) {
         std::cout << std::endl;
     }
 }
+
+
+void calculateBetweennessCentrality(ogdf::Graph &G, ogdf::EdgeArray<double> &edgeBetweenness) {
+    ogdf::NodeArray<double> nodeBetweenness(G, 0.0);
+
+    for (ogdf::node v : G.nodes) {
+        // Single-source shortest paths (SSSP) and dependencies
+        std::stack<ogdf::node> S;
+        ogdf::NodeArray<std::vector<ogdf::node>> P(G);
+        ogdf::NodeArray<int> sigma(G, 0);
+        ogdf::NodeArray<int> d(G, -1);
+        ogdf::NodeArray<double> delta(G, 0.0);
+        sigma[v] = 1;
+        d[v] = 0;
+
+        std::queue<ogdf::node> Q;
+        Q.push(v);
+
+        while (!Q.empty()) {
+            ogdf::node w = Q.front();
+            Q.pop();
+            S.push(w);
+
+            for (ogdf::adjEntry adj : w->adjEntries) {
+                ogdf::node u = adj->twinNode();
+
+                if (d[u] < 0) {
+                    Q.push(u);
+                    d[u] = d[w] + 1;
+                }
+
+                if (d[u] == d[w] + 1) {
+                    sigma[u] += sigma[w];
+                    P[u].push_back(w);
+                }
+            }
+        }
+
+        while (!S.empty()) {
+            ogdf::node w = S.top();
+            S.pop();
+            for (ogdf::node u : P[w]) {
+                double c = ((double)sigma[u] / sigma[w]) * (1.0 + delta[w]);
+                delta[u] += c;
+
+                ogdf::edge e = u->firstAdj()->theEdge();
+                edgeBetweenness[e] += c;
+            }
+        }
+    }
+
+    for (ogdf::edge e : G.edges) {
+        edgeBetweenness[e] /= 2.0;  // Betweenness is counted twice for undirected graphs
+    }
+}
+
+// Girvan-Newman algorithm implementation
+void girvanNewman(ogdf::Graph &G, int desiredClusters, std::vector<ogdf::List<ogdf::node>> &clusters) {
+    while (true) {
+        // Step 1: Compute edge betweenness centrality
+        ogdf::EdgeArray<double> edgeBetweenness(G, 0.0);
+        calculateBetweennessCentrality(G, edgeBetweenness);
+
+        // Step 2: Find and remove the edge with the highest betweenness centrality
+        double maxBetweenness = -1.0;
+        ogdf::edge maxEdge = nullptr;
+
+        for (ogdf::edge e : G.edges) {
+            if (edgeBetweenness[e] > maxBetweenness) {
+                maxBetweenness = edgeBetweenness[e];
+                maxEdge = e;
+            }
+        }
+
+        if (maxEdge != nullptr) {
+            G.delEdge(maxEdge);
+            std::cout << "Removed edge with max betweenness: (" << maxEdge->source()->index() 
+                      << ", " << maxEdge->target()->index() << ") with centrality " 
+                      << maxBetweenness << std::endl;
+        }
+
+        // Step 3: Check connected components and store clusters
+        ogdf::NodeArray<int> component(G);  // Component array for each node
+        int numComponents = ogdf::connectedComponents(G, component);  // Get the number of components
+
+        // Clear and store clusters
+        clusters.clear();
+        clusters.resize(numComponents);
+
+        for (ogdf::node v : G.nodes) {
+            int compID = component[v];  // Get the component ID for each node
+            clusters[compID].pushBack(v);
+        }
+
+        // Print the clusters
+        std::cout << "Number of clusters: " << numComponents << std::endl;
+        for (int i = 0; i < numComponents; ++i) {
+            std::cout << "Cluster " << i << ":";
+            for (ogdf::node v : clusters[i]) {
+                std::cout << " " << v->index();
+            }
+            std::cout << std::endl;
+        }
+
+        if (numComponents >= desiredClusters) {
+            std::cout << "Reached desired number of clusters!" << std::endl;
+            break;
+        }
+
+        if (G.numberOfEdges() == 0) {
+            std::cout << "No more edges to remove." << std::endl;
+            break;
+        }
+    }
+}
+
 
 std::vector<size_t> computeClusterSizes(const Graph& myGraph, const std::vector<size_t>& initialSizes, size_t numClusters){
     std::vector<size_t>newClusterSizes(initialSizes.size(),0);
@@ -186,17 +303,57 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     CG.setRecursive(false);
     CG.setStopIndex(clustering_stop_idx); // 0.6
     CG.setAutomaticThresholds(clustering_automatic_threshold); // 10
-    CG.computeClustering(clusters);
+    std::cout << "start clustering \n";
+    int desiredClusters = (int) numNodes;
+    std::vector<ogdf::List<ogdf::node>> girvanNewmanClusters;
+    ogdf::ModifiedNibbleClusterer MNC;
+    ogdf::NodeArray< long > clusterNum  ;
+    MNC.setMaxClusterSize(200);
+    int numberOfClusters;
 
-  // std::cout << " Number of Clusters: " << clusters.size() << " Cluster Graph Clusters: " << ClusterGraph.numberOfClusters()<<  std::endl ;
+    if(myGraph.edges.size() > 100000){
+        // std::cout << "start MNC \n";
+        // int numClusters = MNC.call(G, clusterNum);
+        // myGraph.NodeClusters = myGraph.assignClustersToNodes(clusterNum, numClusters);
+        // std::cout << "finished MNC \n" ;
+        std::cout << "start Fallback Clustering \n";
+        int fallBackClusterSize = (int) myGraph.numNodes/10;
+         std::cout << "start Fallback Clustering \n";
+        std::vector<std::vector<Node>> fallBackClusters(fallBackClusterSize);
+         std::cout << "start Fallback Clustering \n";
+        int count = 0;
+        int cluster = 0;
+        for(int i = 0; i < myGraph.numNodes; i++){
+            if (count == 10){
+                count = 0;
+                cluster++;
+            }
+            Node node = myGraph.nodes[i];
+            node.SetCluster(cluster);
+            fallBackClusters[cluster].push_back(node);
+            count++;
+        }
+        std::cout << " finished Fallback Clustering \n";
+        myGraph.NodeClusters = fallBackClusters;
+        numberOfClusters = fallBackClusters.size();
+        
+    }
+    else{
+        
+        CG.computeClustering(clusters);
+        std::cout << " Number of Clusters: " << clusters.size()<<  std::endl ;
+        myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
+        numberOfClusters = clusters.size();
+    }
     std::vector<size_t> clusterSizes;
-    myGraph.NodeClusters = myGraph.assignClustersToNodes(clusters);
+
+
     printVector(myGraph.NodeClusters);
 
     for (const auto& cluster : myGraph.NodeClusters){
         clusterSizes.push_back(cluster.size());
     }
-    auto augmentedClusterSizes = computeClusterSizes(myGraph, clusterSizes, clusters.size());
+    auto augmentedClusterSizes = computeClusterSizes(myGraph, clusterSizes, numberOfClusters);
     std::cout << "Creating Cluster Graph\n";
     std::pair<Graph, std::vector<size_t>> pair = createClusteringGraph(myGraph, myGraph.NodeClusters.size());
     std::cout << "Matching Cluster Graph\n";
@@ -215,13 +372,18 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     myGraph.manClustering(augmentedClusterSizes, myGraph.width, myGraph.height);
     std::cout << "Local Clustering Succesful" << std::endl;
 
-    myGraph.reductCluster(myGraph.points,clusterSizes[0]);
+    myGraph.reductCluster(myGraph.points, clusterSizes[0]);
     printVector(myGraph.NodeClusters);
 
-    myGraph.pointClusters = myGraph.getPointClusters(myGraph.points, clusters.size());
+    std::cout << "Get Point Clusters" << std::endl;
+
+    myGraph.pointClusters = myGraph.getPointClusters(myGraph.points, numberOfClusters);
+
+    std::cout << "Start Matching" << std::endl;
 
     myGraph.mapVerticesToPoints = matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
     int collinear = 0;
+
     results[4] =  myGraph.ComputeCrossings(collinear);    
     results[8] = collinear;
     //IterativeCrossMin for Clusters
@@ -231,8 +393,10 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     auto ogdfFreePoints = getFreeOgdfPositions(myGraph, secondG, secondGA);
     std::cout << "Starting Iterative Crossing Minimization (SWITCH)\n";
     for (int i = 0 ; i < myGraph.NodeClusters.size(); i++){
-        iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, ogdfCluster[i], myGraph.numNodes);
+        iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, ogdfCluster[i], myGraph.numNodes);
+        std::cout << "    Completed Crossmin for Cluster: " << i ;
     }
+    std::cout << std::endl << std::endl;
     std::cout << "Completed Iterative Crossing Minimization (SWITCH)\n";
     for (const auto &n : crossminG.nodes){
         auto nodeId = n->index();
@@ -244,11 +408,17 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
     results[5] = myGraph.ComputeCrossings(collinear);    
     results[9] = collinear;
-
+    ogdf::List<ogdf::node> allNodes ;
+    crossminG.allNodes(allNodes);
     
     if (ogdfFreePoints.size() > 0 ){ 
         std::cout << "Starting Iterative Crossing Minimization (MOVE)\n";
+        for (int i = 0; i < 5 ; i++){
         iterativeCrossMinMove(crossminG, crossminGA, secondGA, numberOfOuterLoopsMove, numberOfSamples, ogdfFreePoints, myGraph.numNodes );
+        iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
+        std::cout << "     Completed MOVE Crossmin for Iteration: " << i ;
+        }
+        std::cout << std::endl << std::endl;
     }
     else{
         std::cout << "Skipped Iterative Crossing Minimization (MOVE)\n";
@@ -260,12 +430,12 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
         auto pointId = std::stoi(crossminGA.label(n));
         assert(nodeId < myGraph.nodes.size());
         assert(pointId < myGraph.points.size());
+        std::cout << "NODE: " << nodeId << "   PointId: " << pointId << std::endl;
         myGraph.mapVerticesToPoints.at(nodeId) = pointId;
     }
-
+    std::cout << "Finished Iterative Crossing Minimization (MOVE)\n";
     results[6] = myGraph.ComputeCrossings(collinear);    
     results[10] = collinear;
-    std::cout << "Finished Iterative Crossing Minimization (MOVE)\n";
 
     // Apply a layout algorithm
     // ogdf::PlanarizationLayout layout;
@@ -293,7 +463,7 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
 int main(int argc, char* argv[]) {
     const string graphFile{"g9"};     // n = 1200.
-    int clustering_automatic_threshold = 15;
+    int clustering_automatic_threshold = 150;
     double clustering_stop_idx = 0.6;
 
   // TODO:: the following are currently unused - remove in case they are not required.
@@ -308,7 +478,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "opening Workbook" << std::endl;
 
-    lxw_workbook  *workbook  = workbook_new("../results/results-with-move.xlsx");
+    lxw_workbook  *workbook  = workbook_new("../results/results-300.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
     worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
@@ -325,12 +495,12 @@ int main(int argc, char* argv[]) {
     // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
 
     int idx = 1;
-    for( int i = 0; i < 20; i++){
+    for( int i = 200; i < 201; i++){
         idx++;
         worksheet_write_number(worksheet, i*10 + 1, 0, i, NULL);
         for (int k = 1 ; k < 1.5; k++){ 
-            for(double j = 1; j < 4.5; j++){
-                for(int p = 10; p < 45; p += 10 ){ 
+            for(double j = 1; j < 1.5; j++){
+                for(int p = 1; p < 2.3; p += 1 ){ 
                     int numberOfOuterLoopsSwitch = k;
                     auto numberOfOuterLoopsMove = j;
                     int numberOfSamples = p;

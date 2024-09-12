@@ -483,6 +483,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/fileformats/GraphIO.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/Clusterer.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ClustererModule.h
+ /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ModifiedNibbleClusterer.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/steiner_tree/EdgeWeightedGraph.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/abacusroot.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/active.h

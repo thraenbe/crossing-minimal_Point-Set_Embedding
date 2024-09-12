@@ -481,6 +481,7 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/fileformats/GraphIO.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/Clusterer.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ClustererModule.h \
+  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ModifiedNibbleClusterer.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/steiner_tree/EdgeWeightedGraph.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/abacusroot.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/lib/abacus/active.h \
@@ -3481,11 +3482,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/graph/adjacency_list.hpp:
 
+/usr/include/boost/config/detail/select_platform_config.hpp:
+
 /usr/include/boost/xpressive/detail/static/grammar.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/cluster/internal/EdgeVar.h:
-
-/usr/include/boost/config/detail/select_platform_config.hpp:
 
 /usr/include/boost/graph/adjacency_iterator.hpp:
 
@@ -3726,10 +3727,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/fusion/iterator/detail/adapt_deref_traits.hpp:
 
 /usr/include/boost/mpl/aux_/erase_impl.hpp:
-
-/usr/include/boost/function_types/detail/synthesize_impl/arity20_0.hpp:
-
-/usr/include/boost/preprocessor/slot/detail/shared.hpp:
 
 /usr/include/boost/fusion/iterator/deref.hpp:
 
@@ -5423,6 +5420,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 
+/usr/include/boost/function_types/detail/synthesize_impl/arity20_0.hpp:
+
+/usr/include/boost/preprocessor/slot/detail/shared.hpp:
+
 /usr/include/boost/fusion/view/single_view/detail/prior_impl.hpp:
 
 /usr/include/boost/fusion/support/is_segmented.hpp:
@@ -5898,6 +5899,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/fusion/view/joint_view/joint_view_iterator.hpp:
 
 /usr/include/boost/algorithm/string/finder.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/graphalg/ModifiedNibbleClusterer.h:
+
+/usr/include/boost/type_traits/intrinsics.hpp:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/GridLayout.h:
 
@@ -7043,6 +7048,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/preprocessor/punctuation/comma_if.hpp:
 
+/usr/include/boost/type_traits/is_destructible.hpp:
+
+/usr/include/boost/serialization/split_member.hpp:
+
 /usr/include/boost/next_prior.hpp:
 
 /usr/include/boost/fusion/include/fold.hpp:
@@ -7162,10 +7171,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/type_traits/add_cv.hpp:
 
 /usr/include/boost/type_traits/add_rvalue_reference.hpp:
-
-/usr/include/boost/serialization/split_member.hpp:
-
-/usr/include/boost/type_traits/is_destructible.hpp:
 
 /usr/include/boost/mp11/detail/mp_min_element.hpp:
 
@@ -8204,8 +8209,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/type_traits/has_trivial_move_assign.hpp:
 
 /usr/include/boost/type_traits/has_unary_plus.hpp:
-
-/usr/include/boost/type_traits/intrinsics.hpp:
 
 /usr/include/alloca.h:
 
