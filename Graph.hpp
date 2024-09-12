@@ -301,6 +301,9 @@ int randomCrossingNumber(int& counter){
 	return ComputeCrossings(counter);
 }
 
+/*
+	assign Clusters for final Local Clustering from MatchCluster Values
+*/
 std::vector<size_t> assignClusters(Graph& G, const std::vector<size_t>& clusterSizes){
 	std::vector<size_t> newClusterSizes(clusterSizes.size());
 	std::vector<vector<Node>> newNodeClusters(G.NodeClusters.size()) ;
@@ -452,8 +455,6 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 					break;
 				}
 			}
-			std::cout << std::endl;
-			std::cout << std::endl;
 		}
 		std::cout << "Clustering Complete" << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
 		assert(freePoints.empty());

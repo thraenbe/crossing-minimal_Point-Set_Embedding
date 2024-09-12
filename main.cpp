@@ -177,7 +177,8 @@ std::vector<size_t> computeClusterSizes(const Graph& myGraph, const std::vector<
     std::vector<size_t>newClusterSizes(initialSizes.size(),0);
     auto tmpPoints = (myGraph.numPoints - myGraph.numNodes);
     const size_t quotient = tmpPoints / numClusters  ;
-    std::cout << tmpPoints << std::endl;
+    std::cout << "cluster Sizes  and (Inital Sizes) for final Matching" << std::endl;
+    
 
     for (int i = 0; i < initialSizes.size(); i++) {
         newClusterSizes[i] = initialSizes[i]+quotient;
@@ -311,7 +312,7 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     MNC.setMaxClusterSize(200);
     int numberOfClusters;
 
-    if(myGraph.edges.size() > 100000){
+    if(myGraph.edges.size() > 1){
         // std::cout << "start MNC \n";
         // int numClusters = MNC.call(G, clusterNum);
         // myGraph.NodeClusters = myGraph.assignClustersToNodes(clusterNum, numClusters);
@@ -353,16 +354,23 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     for (const auto& cluster : myGraph.NodeClusters){
         clusterSizes.push_back(cluster.size());
     }
-    auto augmentedClusterSizes = computeClusterSizes(myGraph, clusterSizes, numberOfClusters);
+
+    /*
+     *4. Match ClusterGraph
+     */
+
     std::cout << "Creating Cluster Graph\n";
+
+    
     std::pair<Graph, std::vector<size_t>> pair = createClusteringGraph(myGraph, myGraph.NodeClusters.size());
     std::cout << "Matching Cluster Graph\n";
 
     matchClusters(pair.first, pair.second);
-    // printVector(myGraph.NodeClusters);
+
 
 
     const auto newClusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
+    auto augmentedClusterSizes = computeClusterSizes(myGraph, newClusterSizes, numberOfClusters);
 
     assert(pair.first.NodeClusters[0].size() == myGraph.NodeClusters[0].size());
 
@@ -383,6 +391,11 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
 
     myGraph.mapVerticesToPoints = matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
     int collinear = 0;
+    
+    /*
+     *4. Swaping and Moving Nodes to reduce Crossings
+     */
+
 
     results[4] =  myGraph.ComputeCrossings(collinear);    
     results[8] = collinear;
@@ -394,7 +407,7 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     std::cout << "Starting Iterative Crossing Minimization (SWITCH)\n";
     for (int i = 0 ; i < myGraph.NodeClusters.size(); i++){
         iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, ogdfCluster[i], myGraph.numNodes);
-        std::cout << "    Completed Crossmin for Cluster: " << i ;
+        std::cout << "    Completed Local Crossmin for Cluster: " << i ;
     }
     std::cout << std::endl << std::endl;
     std::cout << "Completed Iterative Crossing Minimization (SWITCH)\n";
@@ -413,15 +426,18 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
     
     if (ogdfFreePoints.size() > 0 ){ 
         std::cout << "Starting Iterative Crossing Minimization (MOVE)\n";
-        for (int i = 0; i < 5 ; i++){
-        iterativeCrossMinMove(crossminG, crossminGA, secondGA, numberOfOuterLoopsMove, numberOfSamples, ogdfFreePoints, myGraph.numNodes );
-        iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
-        std::cout << "     Completed MOVE Crossmin for Iteration: " << i ;
+        for (int i = 0; i < 1 ; i++){
+            iterativeCrossMinMove(crossminG, crossminGA, secondGA, numberOfOuterLoopsMove, numberOfSamples, ogdfFreePoints, myGraph.numNodes );
+            iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
+            std::cout << "     Completed Global Crossmin for Iteration: " << i ;
         }
         std::cout << std::endl << std::endl;
     }
     else{
         std::cout << "Skipped Iterative Crossing Minimization (MOVE)\n";
+        for (int i = 0; i < 1 ; i++){
+            iterativeCrossMinSwitch(crossminG, crossminGA, numberOfOuterLoopsSwitch, numberOfSamples, allNodes, numNodes);
+        }
     }
 
 
@@ -430,7 +446,7 @@ std::vector<size_t> computation( const int numberOfSamples, const int numberOfOu
         auto pointId = std::stoi(crossminGA.label(n));
         assert(nodeId < myGraph.nodes.size());
         assert(pointId < myGraph.points.size());
-        std::cout << "NODE: " << nodeId << "   PointId: " << pointId << std::endl;
+        // std::cout << "NODE: " << nodeId << "   PointId: " << pointId << std::endl;
         myGraph.mapVerticesToPoints.at(nodeId) = pointId;
     }
     std::cout << "Finished Iterative Crossing Minimization (MOVE)\n";
@@ -478,7 +494,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "opening Workbook" << std::endl;
 
-    lxw_workbook  *workbook  = workbook_new("../results/results-300.xlsx");
+    lxw_workbook  *workbook  = workbook_new("../results/results-300-altClustering.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
     worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
@@ -495,7 +511,7 @@ int main(int argc, char* argv[]) {
     // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
 
     int idx = 1;
-    for( int i = 200; i < 201; i++){
+    for( int i = 300; i < 301; i++){
         idx++;
         worksheet_write_number(worksheet, i*10 + 1, 0, i, NULL);
         for (int k = 1 ; k < 1.5; k++){ 
