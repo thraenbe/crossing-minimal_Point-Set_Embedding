@@ -325,6 +325,18 @@ namespace
         }
     }
 
+    bool areValuesUnique(const std::unordered_map<size_t, size_t>& map) {
+        std::unordered_set<size_t> seenValues;
+        for (const auto& pair : map) {
+            if (seenValues.find(pair.second) != seenValues.end()) {
+                // Duplicate value found
+                return false;
+            }
+            seenValues.insert(pair.second);
+        }
+        // All values are unique
+        return true;
+    }
 
 
     void mapMatching(std::vector<size_t> mate, Graph& myGraph){
@@ -533,10 +545,9 @@ namespace
 
 
         }
-        // for (int i = 0; i < myGraph.mapVerticesToPoints.size(); i++){
-        //     std::cout << "(" << i <<", " << myGraph.mapVerticesToPoints[i] << ");   " ;
-        // }
-        // std::cout << std::endl;
+        if (!areValuesUnique(myGraph.mapVerticesToPoints)){
+            simpleAssign(myGraph, myGraph.nodes.size());
+        }
 
         return myGraph.mapVerticesToPoints;
     }

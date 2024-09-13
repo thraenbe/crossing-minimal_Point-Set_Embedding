@@ -224,6 +224,7 @@ std::vector<ogdf::List<ogdf::node>> createOgdfGraph(ogdf::Graph& G, ogdf::GraphA
     return ogdfClusters;
 }
 
+
 ogdf::List<ogdf::node> getFreeOgdfPositions( Graph & myGraph,ogdf::Graph& G, ogdf::GraphAttributes& GA){
 ogdf::List<ogdf::node> freePositions;
     std::vector<int> usedPoints;
@@ -236,13 +237,16 @@ ogdf::List<ogdf::node> freePositions;
         std::sort(usedPoints.begin(), usedPoints.end());
         int idx = 0;
         for(int i = 0; i < myGraph.points.size(); i++){
+           // std::cout << usedPoints[idx] << "   " << i << "  " << idx << std::endl;
             if(usedPoints[idx] == i ){
                 idx += 1;
             }else{
                 freePoints.push_back(i);
             }
         }
-        
+
+        // std::cout << usedPoints.size() << "  ----------------------   " << freePoints.size() << std::endl ;
+        assert(areValuesUnique(myGraph.mapVerticesToPoints));
         assert(usedPoints.size() + freePoints.size() == myGraph.points.size());
         for(auto i : freePoints){
             ogdf::node newNode = G.newNode();
@@ -329,7 +333,7 @@ std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int 
     std::cout << "start clustering \n";
     int numberOfClusters;
 
-    if(myGraph.edges.size() > 1){
+    if(myGraph.edges.size() > 1000000){
         nodeClusteringFallback(myGraph, numberOfClusters);
     }
     else{
@@ -376,6 +380,11 @@ std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int 
     std::cout << "Start Matching" << std::endl;
 
     myGraph.mapVerticesToPoints = matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
+    if (!areValuesUnique(myGraph.mapVerticesToPoints)){
+        simpleAssign(myGraph, myGraph.nodes.size());
+    }
+    assert(areValuesUnique(myGraph.mapVerticesToPoints));
+
     int collinear = 0;
     
     /*
@@ -488,7 +497,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "opening Workbook" << std::endl;
 
-    lxw_workbook  *workbook  = workbook_new("../results/results-fallback-clustering.xlsx");
+    lxw_workbook  *workbook  = workbook_new("../results/results-real-clustering.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
     worksheet_write_string(worksheet, 0, 0, "Graph", NULL);
@@ -505,11 +514,11 @@ int main(int argc, char* argv[]) {
     // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
 
     int idx = 1;
-    for( int i = 25; i < 150; i++){
+    for( int i = 45; i < 150; i++){
         worksheet_write_number(worksheet, i*10 + 1, 0, i, NULL);
         idx++;
         for (int k = 1 ; k < 1.5; k++){ 
-            for(double j = 0; j < 51; j += 5){ 
+            for(double j = 1; j < 51; j += 5){ 
                 for(int p = 1; p < 1.3; p += 1 ){ 
                     clustering_automatic_threshold = j;
                     int numberOfSamples = 1;
