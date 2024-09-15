@@ -456,6 +456,9 @@ namespace
         for(auto i = 0; i < myGraph.NodeClusters.size(); ++i){
             for(const auto& node : myGraph.NodeClusters[i]){
                 for(auto target : myGraph.adjList[node._id]){
+                    assert(target < myGraph.nodes.size());
+                    assert(target >= 0);
+                    assert(node.GetCluster() < myGraph.NodeClusters.size());
                     // std::cout << "Cluster: " << node.GetCluster() << " " << myGraph.nodes[target].GetCluster() << std::endl;
                     if (node.GetCluster() != myGraph.nodes[target].GetCluster()){
                         edgeWeights[node.GetCluster()][myGraph.nodes[target].GetCluster()] += 1;
@@ -481,9 +484,8 @@ namespace
 
         myGraph.manClustering(virtualClusterSizes, myGraph.width, myGraph.height);
 
-        std::cout << "compute centroids \n";
-
         myGraph.pointClusters = myGraph.getPointClusters(myGraph.points, numberOfClusters);
+        std::cout << "compute centroids \n";
         std::vector<Point> centroids = computeCentroids(myGraph.pointClusters);
         std::vector<Node> clusterNodes = addNodesToClusterGraph(centroids);
         std::pair<std::vector<Edge>, std::vector<size_t>> edgePair = addEdgesToClusterGraph(compEdgeWeightToClusterGraph(myGraph, numberOfClusters));
@@ -518,6 +520,7 @@ namespace
         mate = minimumWeightMatching(BoostGraph, ClusterGraph.NodeClusters[0].size());
 
         mapMatching(mate, ClusterGraph);
+        std::cout << "finished 1. mapping \n";
     }
 
 

@@ -1,5 +1,6 @@
 #include "JSONParser.hpp"
 #include "matching.hpp"
+#include "graphGrowing.hpp"
 #include "switch-crossmin.hpp"
 #include <iostream>
 #include <cassert>
@@ -176,7 +177,8 @@ void girvanNewman(ogdf::Graph &G, int desiredClusters, std::vector<ogdf::List<og
 std::vector<size_t> computeClusterSizes( Graph& myGraph, const std::vector<size_t>& initialSizes, size_t numClusters){
     std::vector<size_t>newClusterSizes(initialSizes.size(),0);
     auto tmpPoints = (myGraph.numPoints - myGraph.numNodes);
-    const size_t quotient = tmpPoints / numClusters  ;
+    std::cout << numClusters << " Check for Float \n";
+    const size_t quotient = (int) tmpPoints / numClusters  ;
     std::cout << "cluster Sizes  and (Inital Sizes) for final Matching" << std::endl;
     
 
@@ -333,8 +335,27 @@ std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int 
     std::cout << "start clustering \n";
     int numberOfClusters;
 
-    if(myGraph.edges.size() > 1000000){
+    if(myGraph.edges.size() > 130000){
         nodeClusteringFallback(myGraph, numberOfClusters);
+    }
+    else if (true){
+        std::cout << "Try Graph growing Clustering \n" ;
+        numberOfClusters = 10;
+        std::vector<std::vector<Node>> BFSClusters(numberOfClusters);
+        vector<int> membership = graphGrowingPartition(myGraph.adjList, numberOfClusters);
+
+        cout << membership.size() << "Cluster membership:\n";
+        assert(membership.size() == myGraph.nodes.size());
+        for (int i = 0; i < membership.size(); ++i) {
+            assert(i < myGraph.nodes.size());
+            assert(i >= 0);
+            int cluster = membership[i];
+            Node& node = myGraph.nodes[i];
+            // std::cout << "Node " << i << " -> Cluster " << cluster << endl;
+            node.SetCluster(cluster);
+            BFSClusters[cluster].push_back(node);
+        }
+        myGraph.NodeClusters = BFSClusters;
     }
     else{
         nodeClustering(myGraph, G, numberOfClusters, clustering_stop_idx, clustering_automatic_threshold);
@@ -342,6 +363,7 @@ std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int 
     std::vector<size_t> clusterSizes;
 
     for (const auto& cluster : myGraph.NodeClusters){
+        std::cout << cluster.size() << std::endl;
         clusterSizes.push_back(cluster.size());
     }
 
@@ -358,6 +380,7 @@ std::vector<size_t> computation( const int numberOfOuterLoopsGlobal , const int 
     matchClusters(pair.first, pair.second);
 
     const auto newClusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
+    std::cout << "assigned Clusters \n ";
     auto augmentedClusterSizes = computeClusterSizes(myGraph, newClusterSizes, numberOfClusters);
 
     assert(pair.first.NodeClusters[0].size() == myGraph.NodeClusters[0].size());
@@ -514,7 +537,7 @@ int main(int argc, char* argv[]) {
     // for(int clustering_automatic_threshold = 5; clustering_automatic_threshold < 50; clustering_automatic_threshold = clustering_automatic_threshold+5 )
 
     int idx = 1;
-    for( int i = 45; i < 150; i++){
+    for( int i = 0; i < 1; i++){
         worksheet_write_number(worksheet, i*10 + 1, 0, i, NULL);
         idx++;
         for (int k = 1 ; k < 1.5; k++){ 

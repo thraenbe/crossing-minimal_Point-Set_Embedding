@@ -28,6 +28,7 @@ add_executable(PointSetCrossMin
         Node.hpp
         switch-crossmin.hpp
         rtree.h
+        graphGrowing.hpp
         )
 
 target_include_directories(PointSetCrossMin PRIVATE ogdf/include ${Boost_INCLUDE_DIRS} ${LIBXLSXWRITER_LIBRARIES})
