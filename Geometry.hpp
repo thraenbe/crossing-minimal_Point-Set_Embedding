@@ -167,6 +167,36 @@ using Segment = std::pair<Point, Point>;
 	return (val > 0) ? 1 : 2;
 }
 
+
+// Function to compute the cross product of vectors (p1 - p) and (p2 - p)
+double crossProduct(const Point& p, const Point& p1, const Point& p2) {
+    return (p1.x - p.x) * (p2.y - p.y) - (p1.y - p.y) * (p2.x - p.x);
+}
+
+// Function to compute the angle of a point relative to p (for sorting purposes)
+double computeAngle(const Point& p, const Point& p1) {
+    return atan2(p1.y - p.y, p1.x - p.x);
+}
+
+[[nodiscard]] inline bool isCollinear(const Point& p, const std::vector<Point>& points) {
+    if (points.size() < 2) return false;
+
+    // Sort points radially around p
+    std::vector<Point> sortedPoints = points;
+    std::sort(sortedPoints.begin(), sortedPoints.end(), [&](const Point& p1, const Point& p2) {
+        return computeAngle(p, p1) < computeAngle(p, p2);
+    });
+
+    // Check if any two consecutive points are collinear with p
+    for (size_t i = 1; i < sortedPoints.size(); ++i) {
+        if (crossProduct(p, sortedPoints[i - 1], sortedPoints[i]) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // The main function that returns true if line segment 'p1q1'
 // and 'p2q2' intersect.
 [[nodiscard]] inline int DoIntersect(const Point& p1, const Point& q1, const Point& p2, const Point& q2, const int numNodes)

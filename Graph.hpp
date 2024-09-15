@@ -435,6 +435,7 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 	assert(count == points.size());
 
 	int direction = 0;
+	std::vector<Point> pointsInCurrentCluster;
 		for(auto i = 0; i < clusterSizes.size(); ++i){
 			direction = i % 8;
 			const auto& currentDirection = directions[direction];
@@ -446,10 +447,20 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 				assert(s < clusterSizes[i]);
 				const auto& currentPoint = currentDirection[idx].GetId();
 				assert(currentPoint == points[currentPoint].GetId());
-				if (freePoints.contains(currentPoint)) {
+				if (freePoints.contains(currentPoint)){
+					if (clusterSizes[i] - s < freePoints.size()) {
+						if (isCollinear(points[currentPoint], pointsInCurrentCluster )){
+							freePoints.erase(currentPoint);
+							points[currentPoint].SetCluster(i);
+							pointsInCurrentCluster.push_back(points[currentPoint]);
+							s++;
+						}
+					}else{ 
 					freePoints.erase(currentPoint);
 					points[currentPoint].SetCluster(i);
+					pointsInCurrentCluster.push_back(points[currentPoint]);
 					s++;
+					}
 				}
 				if (s == clusterSizes[i]){
 					break;
