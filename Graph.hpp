@@ -445,20 +445,21 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 			for(auto idx = 0; idx < points.size(); ++idx){
 				assert(currentDirection.size() > idx);
 				assert(s < clusterSizes[i]);
-				const auto& currentPoint = currentDirection[idx].GetId();
-				assert(currentPoint == points[currentPoint].GetId());
-				if (freePoints.contains(currentPoint)){
+				const auto& currentPointId = currentDirection[idx].GetId();
+				auto& currentPoint = points[currentPointId];
+				assert(currentPointId == points[currentPointId].GetId());
+				if (freePoints.contains(currentPointId)){
 					if (clusterSizes[i] - s < freePoints.size()) {
-						if (isCollinear(points[currentPoint], pointsInCurrentCluster )){
-							freePoints.erase(currentPoint);
-							points[currentPoint].SetCluster(i);
-							pointsInCurrentCluster.push_back(points[currentPoint]);
+						if (isCollinear(currentPoint, pointsInCurrentCluster )){
+							freePoints.erase(currentPointId);
+							currentPoint.SetCluster(i);
+							pointsInCurrentCluster.push_back(currentPoint);
 							s++;
 						}
 					}else{ 
-					freePoints.erase(currentPoint);
-					points[currentPoint].SetCluster(i);
-					pointsInCurrentCluster.push_back(points[currentPoint]);
+					freePoints.erase(currentPointId);
+					currentPoint.SetCluster(i);
+					pointsInCurrentCluster.push_back(currentPoint);
 					s++;
 					}
 				}
