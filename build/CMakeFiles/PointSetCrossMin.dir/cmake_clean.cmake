@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o"
   "CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o.d"
-  "CMakeFiles/PointSetCrossMin.dir/main.cpp.o"
-  "CMakeFiles/PointSetCrossMin.dir/main.cpp.o.d"
+  "CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o"
+  "CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o.d"
   "PointSetCrossMin"
   "PointSetCrossMin.pdb"
 )

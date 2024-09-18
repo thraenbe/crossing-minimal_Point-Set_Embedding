@@ -69,19 +69,19 @@ include CMakeFiles/PointSetCrossMin.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/PointSetCrossMin.dir/flags.make
 
-CMakeFiles/PointSetCrossMin.dir/main.cpp.o: CMakeFiles/PointSetCrossMin.dir/flags.make
-CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/code/main.cpp
-CMakeFiles/PointSetCrossMin.dir/main.cpp.o: CMakeFiles/PointSetCrossMin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PointSetCrossMin.dir/main.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PointSetCrossMin.dir/main.cpp.o -MF CMakeFiles/PointSetCrossMin.dir/main.cpp.o.d -o CMakeFiles/PointSetCrossMin.dir/main.cpp.o -c /home/bela/uni-tuebingen/6/bachelor/code/main.cpp
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o: CMakeFiles/PointSetCrossMin.dir/flags.make
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o: CMakeFiles/PointSetCrossMin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/bela/uni-tuebingen/6/bachelor/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o -MF CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o.d -o CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o -c /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp
 
-CMakeFiles/PointSetCrossMin.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PointSetCrossMin.dir/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bela/uni-tuebingen/6/bachelor/code/main.cpp > CMakeFiles/PointSetCrossMin.dir/main.cpp.i
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PointSetCrossMin.dir/con_main.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp > CMakeFiles/PointSetCrossMin.dir/con_main.cpp.i
 
-CMakeFiles/PointSetCrossMin.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PointSetCrossMin.dir/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bela/uni-tuebingen/6/bachelor/code/main.cpp -o CMakeFiles/PointSetCrossMin.dir/main.cpp.s
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PointSetCrossMin.dir/con_main.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp -o CMakeFiles/PointSetCrossMin.dir/con_main.cpp.s
 
 CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o: CMakeFiles/PointSetCrossMin.dir/flags.make
 CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o: /home/bela/uni-tuebingen/6/bachelor/code/JSONParser.cpp
@@ -99,13 +99,13 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.s: cmake_force
 
 # Object files for target PointSetCrossMin
 PointSetCrossMin_OBJECTS = \
-"CMakeFiles/PointSetCrossMin.dir/main.cpp.o" \
+"CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o" \
 "CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o"
 
 # External object files for target PointSetCrossMin
 PointSetCrossMin_EXTERNAL_OBJECTS =
 
-PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/main.cpp.o
+PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o
 PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
 PointSetCrossMin: CMakeFiles/PointSetCrossMin.dir/build.make
 PointSetCrossMin: /home/bela/uni-tuebingen/6/bachelor/code/ogdf/libOGDF.a

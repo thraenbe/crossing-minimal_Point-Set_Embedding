@@ -153,29 +153,29 @@ JSONParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.s
 .PHONY : JSONParser.cpp.s
 
-main.o: main.cpp.o
-.PHONY : main.o
+con_main.o: con_main.cpp.o
+.PHONY : con_main.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/main.cpp.o
-.PHONY : main.cpp.o
+con_main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o
+.PHONY : con_main.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+con_main.i: con_main.cpp.i
+.PHONY : con_main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/main.cpp.i
-.PHONY : main.cpp.i
+con_main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/con_main.cpp.i
+.PHONY : con_main.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+con_main.s: con_main.cpp.s
+.PHONY : con_main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/main.cpp.s
-.PHONY : main.cpp.s
+con_main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PointSetCrossMin.dir/build.make CMakeFiles/PointSetCrossMin.dir/con_main.cpp.s
+.PHONY : con_main.cpp.s
 
 # Help Target
 help:
@@ -189,9 +189,9 @@ help:
 	@echo "... JSONParser.o"
 	@echo "... JSONParser.i"
 	@echo "... JSONParser.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... con_main.o"
+	@echo "... con_main.i"
+	@echo "... con_main.s"
 .PHONY : help
 
 

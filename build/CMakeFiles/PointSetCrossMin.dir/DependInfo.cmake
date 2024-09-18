@@ -9,7 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/bela/uni-tuebingen/6/bachelor/code/JSONParser.cpp" "CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o" "gcc" "CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o.d"
-  "/home/bela/uni-tuebingen/6/bachelor/code/main.cpp" "CMakeFiles/PointSetCrossMin.dir/main.cpp.o" "gcc" "CMakeFiles/PointSetCrossMin.dir/main.cpp.o.d"
+  "/home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp" "CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o" "gcc" "CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

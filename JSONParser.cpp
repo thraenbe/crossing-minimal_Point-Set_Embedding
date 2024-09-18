@@ -10,14 +10,16 @@ using namespace nlohmann;
 JSONParser::JSONParser() = default;
 
 
-void JSONParser::jsonToGraph(size_t& numNodes,std::vector<Node>& nodes ,std::vector<std::pair<size_t,size_t>>& edges, std::vector<Point>& points, int& width, int& height, const std::string& filepath) {
+void JSONParser::jsonToGraph(size_t& numNodes,std::vector<Node>& nodes ,std::vector<Edge>& edges, std::vector<Point>& points, int& width, int& height, const std::string& filepath) {
     std::ifstream is(filepath+".json");
     is >> j;
     for (auto const& p : j["points"]) {
         points.emplace_back(p["id"],p["x"],p["y"]);
     }
+    int idx = 0;
     for (auto const& e : j["edges"]) {
-        edges.push_back({ e["source"],e["target"] });
+        edges.push_back({ e["source"],e["target"],idx });
+        idx++;
     }
     for (auto const& n : j["nodes"]){
         nodes.emplace_back(n["id"],n["x"],n["y"]);
@@ -31,21 +33,19 @@ void JSONParser::graphToJson(Graph& G, const std::string& filepath, const std::s
     std::cout << "\nOutputting JSON to " << filepath << std::endl;
 
     j.clear();
-    //push node information at the back of the "nodes" list
-    for (auto const& [nodeId,pointId] : G.mapVerticesToPoints) {
-        const auto& point = G.points[pointId];
-
-    }
+    
+    
     for (size_t i = 0; i < G.numNodes; i++){
         const auto& node = G.nodes[i]; 
+        const auto& pos = G.GetConstPosOfNode(i);
         j["nodes"].push_back({ {"id", i},
-                              {"x", node.GetX()},
-                              {"y", node.GetY()}});
+                              {"x", pos.GetX()},
+                              {"y", pos.GetY()}});
     }
 
-    for (auto const& [src,target] : G.edges) {
-        j["edges"].push_back({ {"source", src},
-                              {"target", target} });
+    for (auto const& e : G.edges) {
+        j["edges"].push_back({ {"source", e.first},
+                              {"target", e.second} });
     }
 
     std::vector<std::tuple<int, int>>::iterator it;

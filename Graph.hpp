@@ -21,13 +21,24 @@
 
 
 using size_t = std::size_t;
-using Edge = std::pair<size_t,size_t>;
+struct Edge : public std::pair<size_t, size_t> {
+    size_t id;
+
+    // Constructor with id
+    Edge(size_t u, size_t v, size_t id) : std::pair<size_t, size_t>(u, v), id(id) {}
+
+    // Constructor without id (default id = 0)
+    Edge(size_t u, size_t v) : std::pair<size_t, size_t>(u, v), id(0) {}
+
+};
 
 namespace {
 	const std::vector<std::vector<size_t>> InitAdjList(const size_t numNodes, const std::vector<Edge>& edges) {
 		//Generate adj list.
 		std::vector<std::vector<size_t>>tmpAdjList(numNodes);
-		for (const auto& [u, v] : edges) {
+		for (const auto& e : edges) {
+			auto& u = e.first;
+			auto& v = e.second;
 			tmpAdjList[u].push_back(v);
 			tmpAdjList[v].push_back(u);
 		}
@@ -37,6 +48,7 @@ namespace {
 struct Graph {
 	Graph(const size_t numNodes, const std::vector<Node>& nodes, const std::vector<Edge>& edges, const std::vector<Point>& pointSet, const int org_width , const int org_height)
 		: numNodes(nodes.size()), numEdges(edges.size()), numPoints(pointSet.size()), points(pointSet),  edges(edges), nodes(nodes), adjList(InitAdjList(numNodes, edges)), org_width(org_width), org_height(org_height) {
+		
 
 		width = std::max_element(nodes.begin(), nodes.end(), [](const Node& a, const Node& b) {
         return a._x < b._x;
@@ -60,7 +72,7 @@ struct Graph {
 			mapVerticesToPoints[i] = i;
 		}
 		
-		}
+}
 
 
 		// TODO  O(n²)
@@ -106,7 +118,6 @@ struct Graph {
 	// 	return {queue, used};
 	// }
 
-
 	// [[nodiscard]] inline std::vector<size_t> GetAdjacentNodes(const size_t nodeID,  std::unordered_set<size_t> usedNodes){
 	// 	std::vector<size_t> adjNodes;
 	// 	for (const auto idx : adjList[nodeID]){
@@ -117,8 +128,6 @@ struct Graph {
 	// 	return adjNodes;
     // }
 	
-
-
 	// [[nodiscard]] inline std::vector<size_t> GetClosestPoints( const size_t adjSize, const Point& p1, const std::vector<Point>&points ){
 	// 	std::vector<std::tuple<double, Point , size_t>> closestPoints;
 	//     for (const auto q : freePoints) {
@@ -145,6 +154,17 @@ struct Graph {
 	// 	return indices;
 	// }
 
+	[[nodiscard]] inline std::vector<Edge> getAdjEdges(const Node &n) const {
+        std::vector<Edge> adjEdges;
+		for (auto &e : edges){
+			if (e.first == n.GetId() || e.second == n.GetId()){
+				adjEdges.push_back(e);
+			}
+		}
+		assert(adjEdges.size() == adjList[n.GetId()].size());
+        return adjEdges;
+    }
+
 
 	// Point query.
 	[[nodiscard]] inline const Point& GetConstPosOfNode(const size_t nodeId) const {
@@ -152,17 +172,34 @@ struct Graph {
 	}
 	
 	// Edge relations
-	[[nodiscard]] bool inline AreAdjacent(const Edge& lhs, const Edge& rhs) const {
-		return lhs.first == rhs.first || lhs.first == rhs.second || rhs.first == lhs.second || rhs.second == lhs.second;
-	}
-	// TODO: Include weighted crossing in case of overlaps.
 	[[nodiscard]] int inline DoEdgesIntersect(const Edge& lhs, const Edge& rhs) const {
-		if (AreAdjacent(lhs, rhs)) {
-			return 0;
-		}
-		//std::cout << "                     Final Positon: " <<  GetConstPosOfNode(lhs.first).GetX() << ", " << GetConstPosOfNode(lhs.first).GetY() << std::endl;
-		return DoIntersect(GetConstPosOfNode(lhs.first), GetConstPosOfNode(lhs.second), GetConstPosOfNode(rhs.first), GetConstPosOfNode(rhs.second), numNodes);
+		const auto& p1 = GetConstPosOfNode(lhs.first);
+       	const auto& p2 = GetConstPosOfNode(lhs.second);
+		const auto& q1 = GetConstPosOfNode(rhs.first);
+       	const auto& q2 = GetConstPosOfNode(rhs.second);
+       	auto DoOverlap = [&](const Point& commonPoint, const Point& p, const Point& q) {
+          	if (Orientation(commonPoint, p, q) == 0 && !InBoundingBox(p, commonPoint, q)) {
+               return numNodes;
+           }
+           return (size_t) 0;
+       };
+
+       if (lhs.first== rhs.first) {
+           return DoOverlap(p1,p2,q2);
+       }
+       if (lhs.first== rhs.second) {
+           return DoOverlap(p1,p2,q1);
+       }
+       if (lhs.second== rhs.first) {
+           return DoOverlap(p2,p1,q2);
+       }
+       if (lhs.second== rhs.second) {
+           return DoOverlap(p2,p1,q1);
+       }
+	return DoIntersect(p1,p2,q1,q2, numNodes);
+
 	}
+
 	
 	[[nodiscard]] inline int ComputeCrossings(int& counter) const {
 		int crossings{ 0 };
@@ -367,9 +404,6 @@ void sortDirectionVectors(std::vector<vector<Point>>& directions){
 }
   
   
-  
-
-
 	/**
 	 * @brief Clusters all points locally into the given clusterSizes.
 	 *
@@ -449,19 +483,19 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 				auto& currentPoint = points[currentPointId];
 				assert(currentPointId == points[currentPointId].GetId());
 				if (freePoints.contains(currentPointId)){
-					if (clusterSizes[i] - s < freePoints.size()) {
-						if (isCollinear(currentPoint, pointsInCurrentCluster )){
-							freePoints.erase(currentPointId);
-							currentPoint.SetCluster(i);
-							pointsInCurrentCluster.push_back(currentPoint);
-							s++;
-						}
-					}else{ 
+					// if (clusterSizes[i] - s < freePoints.size()) {
+					// 	if (isCollinear(currentPoint, pointsInCurrentCluster )){
+					// 		freePoints.erase(currentPointId);
+					// 		currentPoint.SetCluster(i);
+					// 		pointsInCurrentCluster.push_back(currentPoint);
+					// 		s++;
+					// 	}
+					// }else{ 
 					freePoints.erase(currentPointId);
 					currentPoint.SetCluster(i);
 					pointsInCurrentCluster.push_back(currentPoint);
 					s++;
-					}
+					//}
 				}
 				if (s == clusterSizes[i]){
 					break;
@@ -512,8 +546,9 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 		std::vector<vector<Node>> nodeClusters(clusters.size());
 		for (auto* cluster : clusters) {
 			for (const ogdf::node& v : cluster->nodes()) {
-				nodes[v->index()].SetCluster(clusterIndex);
-				nodeClusters[clusterIndex].push_back(nodes[v->index()]);
+				Node &node = nodes[v->index()];
+				node.SetCluster(clusterIndex);
+				nodeClusters[clusterIndex].push_back(node);
 			}
 			
 			clusterIndex++;

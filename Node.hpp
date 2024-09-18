@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 
+
 class Node {
 public:
     // Constructor
@@ -43,5 +44,6 @@ public:
     double _x{ 0 };
 	double _y{ 0 };
 	size_t _cluster{0};
+    size_t _pointId{0};
 	
 };

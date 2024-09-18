@@ -169,13 +169,13 @@ using Segment = std::pair<Point, Point>;
 
 
 // Function to compute the cross product of vectors (p1 - p) and (p2 - p)
-double crossProduct(const Point& p, const Point& p1, const Point& p2) {
-    return (p1.x - p.x) * (p2.y - p.y) - (p1.y - p.y) * (p2.x - p.x);
+[[nodiscard]] inline double calcCrossProduct(const Point& p, const Point& p1, const Point& p2) {
+    return (p1._x - p._x) * (p2._y - p._y) - (p1._y - p._y) * (p2._x - p._x);
 }
 
 // Function to compute the angle of a point relative to p (for sorting purposes)
-double computeAngle(const Point& p, const Point& p1) {
-    return atan2(p1.y - p.y, p1.x - p.x);
+[[nodiscard]] inline double computeAngle(const Point& p, const Point& p1) {
+    return atan2(p1._y - p._y, p1._x - p._x);
 }
 
 [[nodiscard]] inline bool isCollinear(const Point& p, const std::vector<Point>& points) {
@@ -189,7 +189,7 @@ double computeAngle(const Point& p, const Point& p1) {
 
     // Check if any two consecutive points are collinear with p
     for (size_t i = 1; i < sortedPoints.size(); ++i) {
-        if (crossProduct(p, sortedPoints[i - 1], sortedPoints[i]) == 0) {
+        if (calcCrossProduct(p, sortedPoints[i - 1], sortedPoints[i]) == 0) {
             return true;
         }
     }
@@ -208,10 +208,6 @@ double computeAngle(const Point& p, const Point& p1) {
 	int o3 = Orientation(p2, q2, p1);
 	int o4 = Orientation(p2, q2, q1);
 
-	// General case
-	if (o1 != o2 && o3 != o4)
-		return 1;
-
 	// Special Cases
 	// p1, q1 and p2 are collinear and p2 lies on segment p1q1
 	if (o1 == 0 && InBoundingBox(p1, p2, q1)) return numNodes;
@@ -224,6 +220,11 @@ double computeAngle(const Point& p, const Point& p1) {
 
 	// p2, q2 and q1 are collinear and q1 lies on segment p2q2
 	if (o4 == 0 && InBoundingBox(p2, q1, q2)) return numNodes;
+
+	// General case
+	if (o1 != o2 && o3 != o4)
+		return 1;
+
 
 	return 0; // Doesn't fall in any of the above cases
 }
@@ -257,7 +258,6 @@ double computeAngle(const Point& p, const Point& p1) {
 	assert(distance >= 0);
 
 	return distance;
-
 }
 
 [[nodiscard]] inline double computeGradient(const Point& p, const Point& q ){
@@ -270,4 +270,3 @@ double computeAngle(const Point& p, const Point& p1) {
 	}
 	return gradient;
 }
-

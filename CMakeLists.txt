@@ -18,7 +18,7 @@ include_directories(${LIBXLSXWRITER_INCLUDE_DIRS})
 
 
 add_executable(PointSetCrossMin
-        main.cpp
+        con_main.cpp
         JSONParser.cpp
 	    JSONParser.hpp
         Geometry.hpp
@@ -26,7 +26,7 @@ add_executable(PointSetCrossMin
         Graph.hpp
         matching.hpp
         Node.hpp
-        switch-crossmin.hpp
+        light_crossmin.hpp
         rtree.h
         graphGrowing.hpp
         )

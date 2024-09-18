@@ -401,13 +401,14 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o: /home/bela/uni-tuebingen/6/bac
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h
 
-CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/code/main.cpp \
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp \
   /home/bela/uni-tuebingen/6/bachelor/code/Geometry.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/Graph.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/JSONParser.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/Node.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/graphGrowing.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/json.hpp \
+  /home/bela/uni-tuebingen/6/bachelor/code/light_crossmin.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/matching.hpp \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/AdjEntryArray.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Array.h \
@@ -540,7 +541,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h \
   /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h \
   /home/bela/uni-tuebingen/6/bachelor/code/rtree.h \
-  /home/bela/uni-tuebingen/6/bachelor/code/switch-crossmin.hpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -3747,10 +3747,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/fusion/include/for_each.hpp:
 
-/usr/include/boost/math/tools/roots.hpp:
-
-/usr/include/boost/fusion/include/cons.hpp:
-
 /usr/include/boost/iterator/indirect_iterator.hpp:
 
 /usr/include/boost/type_traits/is_copy_assignable.hpp:
@@ -3988,6 +3984,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/mp11/set.hpp:
 
 /usr/include/boost/function_types/detail/components_impl/arity10_1.hpp:
+
+/usr/include/boost/function_types/detail/components_impl/arity10_0.hpp:
+
+/usr/include/c++/11/iostream:
 
 /usr/include/boost/function_types/detail/components_as_mpl_sequence.hpp:
 
@@ -4396,6 +4396,14 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/c++/11/optional:
 
 /usr/include/boost/mpl/map/aux_/clear_impl.hpp:
+
+/usr/include/boost/math/tools/roots.hpp:
+
+/usr/include/boost/fusion/include/cons.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp:
+
+/usr/include/boost/mpl/aux_/preprocessor/default_params.hpp:
 
 /usr/include/c++/11/bits/uses_allocator_args.h:
 
@@ -5417,6 +5425,10 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/fusion/container/vector/detail/at_impl.hpp:
 
+/usr/include/boost/range/iterator_range_core.hpp:
+
+/usr/include/boost/fusion/adapted/boost_tuple/detail/build_cons.hpp:
+
 /usr/include/boost/predef/architecture/arm.h:
 
 /usr/include/x86_64-linux-gnu/asm/unistd_64.h:
@@ -5679,10 +5691,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
-/usr/include/c++/11/iostream:
-
-/usr/include/boost/function_types/detail/components_impl/arity10_0.hpp:
-
 /usr/include/c++/11/typeindex:
 
 /usr/include/boost/fusion/mpl/has_key.hpp:
@@ -5821,13 +5829,11 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h:
 
-/home/bela/uni-tuebingen/6/bachelor/code/main.cpp:
-
-/usr/include/boost/proto/detail/preprocessed/traits.hpp:
-
 /home/bela/uni-tuebingen/6/bachelor/code/graphGrowing.hpp:
 
 /usr/include/boost/proto/transform/detail/construct_pod_funop.hpp:
+
+/home/bela/uni-tuebingen/6/bachelor/code/light_crossmin.hpp:
 
 /usr/include/boost/iterator/zip_iterator.hpp:
 
@@ -6018,10 +6024,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/wchar.h:
 
 /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h:
-
-/home/bela/uni-tuebingen/6/bachelor/code/switch-crossmin.hpp:
-
-/usr/include/boost/parameter/aux_/yesno.hpp:
 
 /usr/include/boost/mp11/detail/mp_list.hpp:
 
@@ -6404,12 +6406,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/range/size_type.hpp:
 
 /usr/include/boost/mpl/aux_/preprocessor/def_params_tail.hpp:
-
-/usr/include/boost/mpl/aux_/preprocessor/default_params.hpp:
-
-/usr/include/boost/fusion/adapted/boost_tuple/detail/build_cons.hpp:
-
-/usr/include/boost/range/iterator_range_core.hpp:
 
 /usr/include/boost/utility/identity_type.hpp:
 
@@ -7245,6 +7241,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 
 /usr/include/boost/parameter/aux_/void.hpp:
 
+/usr/include/boost/parameter/aux_/yesno.hpp:
+
 /usr/include/boost/parameter/config.hpp:
 
 /usr/include/boost/parameter/is_argument_pack.hpp:
@@ -7920,6 +7918,8 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o: /home/bela/uni-tuebingen/6/bachelor/
 /usr/include/boost/predef/hardware/simd.h:
 
 /usr/include/boost/proto/detail/preprocessed/poly_function_funop.hpp:
+
+/usr/include/boost/proto/detail/preprocessed/traits.hpp:
 
 /usr/include/boost/proto/detail/preprocessed/unpack_expr_.hpp:
 

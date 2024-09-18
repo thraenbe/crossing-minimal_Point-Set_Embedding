@@ -304,8 +304,17 @@ namespace
 
     void simpleAssign(Graph& myGraph, int size){
         std::cout << " ------------------------------------------ Simple Assignment for matching \n \n";
-        for (int i = 0; i < size ; i++){
-            myGraph.mapVerticesToPoints[i] = i; 
+        int nodeId;
+        int pointId;
+        for (int i = 0 ; i <  myGraph.NodeClusters.size() ; i++){
+            auto& nodeCluster = myGraph.NodeClusters[i] ;
+            auto& pointCluster = myGraph.pointClusters[i];
+            for (int idx = 0; idx < nodeCluster.size(); idx++){
+                assert(idx < nodeCluster.size() && idx < pointCluster.size());
+                nodeId = nodeCluster[idx].GetId();
+                pointId = pointCluster[idx].GetId();
+                myGraph.mapVerticesToPoints[nodeId] = pointId; 
+            }
         }
     }
 
@@ -436,14 +445,13 @@ namespace
         //Add all possible edges to the Graph
         std::vector<Edge> edges;
         std::vector<size_t> edgeWeights;
-
+        int idx = 0;
         for (size_t i = 0; i < edgeWeightsArray.size(); ++i) {
             for (size_t j = i + 1; j < edgeWeightsArray.size(); ++j) {
-                Edge edge;
-                edge.first = i;
-                edge.second = j;
+                Edge edge(i, j, idx);
                 edges.push_back(edge);
                 edgeWeights.push_back(edgeWeightsArray[i][j]);
+                idx++;
             }
         }
         return std::make_pair(edges, edgeWeights);

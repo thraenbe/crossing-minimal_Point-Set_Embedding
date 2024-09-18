@@ -232,7 +232,7 @@ void iterativeCrossMinSwitch(const ogdf::Graph &G, ogdf::GraphAttributes &GA, co
 
 
 // Ensure that nodes lie in range [0,xdim] x [0,ydim] -> will only sample positions in this box
-void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf::GraphAttributes &secondGA, const int numberOfOuterLoops, const int numberOfSamples, const ogdf::List<ogdf::node> positions, const int numNodes) {
+void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf::GraphAttributes &secondGA, const int numberOfOuterLoops, const int numberOfSamples, ogdf::List<ogdf::node> positions, const int numNodes) {
     // initialize RTree data struct to speed up crossing computation
     RTree<int, int, 2, float> RTree;
     for (auto const &e : G.edges) {
@@ -259,7 +259,7 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
             int m_x = -1;
             int m_y = -1;
             int m_pointId;
-            ogdf::node point;
+            ogdf::node& point = positions.front() ;
             if (isNumeric(GA.label(n)) ){
                 int pointId =  std::stoi(GA.label(n));
                 } 
@@ -299,8 +299,8 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
                         break;
                     }
 
-                    m_x = (int)secondGA.x(point);
-                    m_y = (int)secondGA.y(point);
+                    m_x = (int) secondGA.x(point);
+                    m_y = (int) secondGA.y(point);
 
                     if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
                         m_pointId =  std::stoi(GA.label(n));
@@ -312,12 +312,6 @@ void iterativeCrossMinMove(const ogdf::Graph &G, ogdf::GraphAttributes &GA, ogdf
                 // Swap
                 std::swap(GA.x(n), secondGA.x(point));
                 std::swap(GA.y(n), secondGA.y(point));
-                // if (isNumeric(GA.label(n)) && isNumeric(secondGA.label(point))){
-                //     std::swap(GA.label(n), secondGA.label(point));
-                // } 
-                // else { 
-                //     break;
-                // }
             }
 
             if (m_x >= 0 && m_y >= 0){

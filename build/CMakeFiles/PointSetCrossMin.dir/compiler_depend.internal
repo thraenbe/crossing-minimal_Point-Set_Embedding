@@ -402,14 +402,15 @@ CMakeFiles/PointSetCrossMin.dir/JSONParser.cpp.o
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h
 
-CMakeFiles/PointSetCrossMin.dir/main.cpp.o
- /home/bela/uni-tuebingen/6/bachelor/code/main.cpp
+CMakeFiles/PointSetCrossMin.dir/con_main.cpp.o
+ /home/bela/uni-tuebingen/6/bachelor/code/con_main.cpp
  /home/bela/uni-tuebingen/6/bachelor/code/Geometry.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/Graph.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/JSONParser.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/Node.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/graphGrowing.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/json.hpp
+ /home/bela/uni-tuebingen/6/bachelor/code/light_crossmin.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/matching.hpp
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/AdjEntryArray.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/basic/Array.h
@@ -542,7 +543,6 @@ CMakeFiles/PointSetCrossMin.dir/main.cpp.o
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/boyer_myrvold/FindKuratowskis.h
  /home/bela/uni-tuebingen/6/bachelor/code/ogdf/include/ogdf/planarity/planarization_layout/CliqueReplacer.h
  /home/bela/uni-tuebingen/6/bachelor/code/rtree.h
- /home/bela/uni-tuebingen/6/bachelor/code/switch-crossmin.hpp
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
