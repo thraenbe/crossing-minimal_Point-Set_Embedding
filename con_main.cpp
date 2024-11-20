@@ -1,3 +1,4 @@
+#include "Graph.hpp"
 #include "JSONParser.hpp"
 #include "matching.hpp"
 #include "graphGrowing.hpp"
@@ -13,7 +14,10 @@
 #include <ogdf/graphalg/ModifiedNibbleClusterer.h>
 #include <boost/graph/adjacency_list.hpp>
 
+#include <string>
+#include <vector>
 #include <xlsxwriter.h>
+#include <fstream>  // for file handling
  
 
 using size_t = std::size_t;
@@ -280,7 +284,8 @@ void nodeClusteringFallback( Graph& myGraph, int& numberOfClusters){
 void nodeClustering( Graph& myGraph, ogdf::Graph& G, int& numberOfClusters, const int clustering_automatic_threshold){
     ogdf::SList<ogdf::SimpleCluster *> clusters;
     ogdf::Clusterer CG(G);
-    CG.setRecursive(false);
+    CG.setRecursive(true);
+    CG.setStopIndex(0.4);
     CG.setAutomaticThresholds(clustering_automatic_threshold); // 10
 
     CG.computeClustering(clusters);
@@ -329,8 +334,9 @@ int setClusteringAutomaticThreshold(size_t numEdges, int numNodes){
     return roundedSqrt;
 }
 
-std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSamples,  int numberOfOuterLoopsMove,  int numberOfOuterLoopsLocal, int clustering_automatic_threshold, const string& graphfile ){
-    std::vector<size_t> results(15,0);
+std::vector<double> computation(  long numberOfOuterLoopsGlobal , int numberOfSamples,  int numberOfOuterLoopsMove,  int numberOfOuterLoopsLocal, int clustering_automatic_threshold, const string& graphfile ){
+    std::vector<double> results(15,0);
+    std::vector<size_t> match_results;
 
     /*
      *1.READ GRAPH
@@ -356,7 +362,6 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
     /*
      *1.2 Convert graph to OGDF graph
      */
-
     ogdf::Graph G; 
     ogdf::GraphAttributes GA(G, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics | ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle | ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate | ogdf::GraphAttributes::nodeWeight);
     myGraph.toOgdfGraph(G, GA);
@@ -368,7 +373,7 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
     std::cout << "start clustering \n";
     int numberOfClusters;
 
-    if(myGraph.edges.size() > 130000){
+    if(myGraph.edges.size() > 100000000){
         nodeClusteringFallback(myGraph, numberOfClusters);
     }
     else if (false){
@@ -410,15 +415,19 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
     std::pair<Graph, std::vector<size_t>> pair = createClusteringGraph(myGraph, myGraph.NodeClusters.size());
     std::cout << "Matching Cluster Graph\n";
 
-    matchClusters(pair.first, pair.second);
+    results[0] = matchClusters(pair.first, pair.second);
+    results[1] = results[0]/numberOfClusters;
+
 
     const auto newClusterSizes = pair.first.assignClusters(myGraph, clusterSizes);
-    std::cout << "assigned Clusters \n ";
+    std::cout << results[0] << " \n ";
     auto augmentedClusterSizes = computeClusterSizes(myGraph, newClusterSizes, numberOfClusters);
 
     assert(pair.first.NodeClusters[0].size() == myGraph.NodeClusters[0].size());
 
     std::cout << "Clusters Succesfully assigned" << std::endl;
+
+
 
     /*
      *4. Cluster Points and Match
@@ -427,7 +436,7 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
     myGraph.manClustering(augmentedClusterSizes, myGraph.width, myGraph.height);
     std::cout << "Local Clustering Succesful" << std::endl;
 
-    myGraph.reductCluster(myGraph.points, clusterSizes[0]);
+    // myGraph.reductCluster(myGraph.points, clusterSizes[0]);
 
     std::cout << "Get Point Clusters" << std::endl;
 
@@ -435,49 +444,45 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
 
     std::cout << "Start Matching" << std::endl;
 
-    myGraph.mapVerticesToPoints = matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
+    match_results = matching(myGraph, myGraph.NodeClusters, myGraph.freePoints, myGraph.usedPoints, myGraph.points);
+    
     if (!areValuesUnique(myGraph.mapVerticesToPoints)){
         simpleAssign(myGraph, myGraph.nodes.size());
     }
+
     assert(areValuesUnique(myGraph.mapVerticesToPoints));
 
     int collinear = 0;
-    int crossings = myGraph.ComputeCrossings(collinear);
+    results[2] = myGraph.ComputeCrossings(collinear);
     
-    /*
+        /*
      *5. Swaping and Moving Nodes to reduce Crossings
      */
 
-    //IterativeCrossMin for Clusters
-    assignNodePosToPointPos(myGraph);
-    std::vector<size_t> freePoints = getFreePositions(myGraph);
+    // //IterativeCrossMin for Clusters
+    // assignNodePosToPointPos(myGraph);
+    // std::vector<size_t> freePoints = getFreePositions(myGraph);
 
-    std::cout << "Crossings: " <<     myGraph.ComputeCrossings(collinear) << std::endl;
-    std::cout << "Starting Iterative Local Crossing Minimization \n";
-
+    // std::cout << "Starting Iterative Local Crossing Minimization \n";
 
 
-    iterativeCrossMinLocal(myGraph, numberOfOuterLoopsLocal, freePoints, numberOfSamples, numberOfOuterLoopsMove, myGraph.numNodes);
-    assert(areValuesUnique(myGraph.mapVerticesToPoints));
 
-    std::cout << "Crossings: " <<   myGraph.ComputeCrossings(collinear) << std::endl;
-    std::cout << "Starting Global Iterative Crossing Minimization \n";
+    // iterativeCrossMinLocal(myGraph, numberOfOuterLoopsLocal, freePoints, numberOfSamples, numberOfOuterLoopsMove, myGraph.numNodes);
+    // assert(areValuesUnique(myGraph.mapVerticesToPoints));
+
+    // std::cout << "Starting Global Iterative Crossing Minimization \n";
     
 
     
-    //iterativeCrossMinGlobal(myGraph, numberOfOuterLoopsGlobal, numberOfOuterLoopsMove, freePoints, numberOfSamples, myGraph.numNodes, crossings);
-    assert(areValuesUnique(myGraph.mapVerticesToPoints));
+    // iterativeCrossMinGlobal(myGraph, numberOfOuterLoopsGlobal, numberOfOuterLoopsMove, freePoints, numberOfSamples, myGraph.numNodes, crossings);
+    // assert(areValuesUnique(myGraph.mapVerticesToPoints));
 
-    std::cout << "Crossings: " <<     myGraph.ComputeCrossings(collinear) << std::endl;
+
+
 
     /*
         6. Write Back
     */
-
-    for (auto m : myGraph.mapVerticesToPoints){
-        std::cout << m.second << std::endl;
-    }
-    assert(areValuesUnique(myGraph.mapVerticesToPoints) );
 
     write(myGraph, "../results" , graphfile, width, height, jp);
 
@@ -487,22 +492,59 @@ std::vector<size_t> computation(  int numberOfOuterLoopsGlobal , int numberOfSam
 
 }
 
+double avg(std::vector<int> numbers){
+    double sum = std::accumulate(numbers.begin(), numbers.end(), 0.0);
+
+        // Calculate the average
+    double average = sum / numbers.size();
+    return average;
+}
+
 
 int main(int argc, char* argv[]) {
-    
-    string graphfile{"g1"};     // n = 1200.
+
+    std::ofstream file("recursiveC-Nodes.txt");
+
+    std::cout << "RIGHT FILE" << std::endl;
+    string graphfile{"rand_2"};     // n = 1200.
     int clustering_automatic_threshold = 6;
 
-    int numberOfOuterLoopsGlobal = 1000;
-    int numberOfSamples = 1000 ;
-    int numberOfOuterLoopsMove = 4;
-    int numberOfOuterLoopsLocal = 10000;
 
-    for (int i = 0; i < 10; i++){
-    auto crossingVector = computation(numberOfOuterLoopsGlobal, numberOfSamples, numberOfOuterLoopsMove, numberOfOuterLoopsLocal, 
-                                        clustering_automatic_threshold, 
-                                        graphfile);
-    }
+    long numberOfOuterLoopsGlobal = 1000000;
+    int numberOfSamples = 50 ;
+    int numberOfOuterLoopsMove = 3;
+    int numberOfOuterLoopsLocal = 5;
+    std::vector<string> edgeP = {"0.05", "0.1", "0.15"};
+
+    // std::vector<string> pointSizes = {"50", "51", "52", "53", "54", "55", "56", "57", "58"};
+    // std::vector<string> pointSizes = {"50", "55", "60", "65", "70", "75", "80", "85", "90"};
+    // std::vector<string> pointSizes = {"50", "75", "100", "125", "150", "175", "200", "225", "250"};
+    std::vector<string> pointSizes = {"55", "110","220","440", "880"};
+
+
+    std::vector<int> crossingO;
+    std::vector<int> crossingI;
+    std::vector<int> crossingM;
+    if (file.is_open()) {
+        for (auto p : pointSizes){     
+            for (auto e : edgeP){
+                for (int i = 0 ; i < 10; i++){
+                    graphfile = "exp"+ e  + "_" + p + "_" + std::to_string(i);
+                    numberOfOuterLoopsGlobal = numberOfOuterLoopsGlobal + 10000000;
+                    auto crossingVector = computation(numberOfOuterLoopsGlobal, numberOfSamples, numberOfOuterLoopsMove, numberOfOuterLoopsLocal, 
+                                                    clustering_automatic_threshold, 
+                                                    graphfile); 
+                    crossingI.push_back(crossingVector[0]);
+                    crossingO.push_back(crossingVector[1]);
+                    crossingM.push_back(crossingVector[2]);
+                }  
+            }
+            file << p << ": " << avg(crossingI) << " " << avg(crossingO)  << " " << avg(crossingM);
+            file << "\n";
+        }
+    } else {
+        std::cerr << "Unable to open the file." << std::endl;
+    }    
 
     return 0;
 
@@ -511,3 +553,4 @@ int main(int argc, char* argv[]) {
     
     
 
+ 

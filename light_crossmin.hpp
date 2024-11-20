@@ -1,11 +1,16 @@
+#include "Geometry.hpp"
+#include "matching.hpp"
 #include "rtree.h"
 #include "Graph.hpp"
+#include <cstddef>
+#include <iterator>
 #include <ogdf/basic/simple_graph_alg.h>
 #include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/basic/Graph.h>
 #include <ogdf/basic/geometry.h> // For DPoint and DSegment
 #include <omp.h>
 #include <ranges>
+#include <vector>
 
 
 void getEdgeCrossingsWithRTree(const RTree<int, int, 2, float> &RTree, const Graph &G, const Edge &e,
@@ -141,7 +146,10 @@ void move(Graph &G, RTree<int, int, 2, float> &RTree,std::vector<size_t> &freePo
             for (int i = 0; i < adjEdges.size(); ++i) {
                 getEdgeCrossingsWithRTree(RTree, G, adjEdges[i], cr_after, numNodes);
             }
-
+            for (auto mapV : G.mapVerticesToPoints){
+                mapV;
+            }
+            assert(areValuesUnique(G.mapVerticesToPoints));
             
             if (cr_after <= cr_before) {
                 swap = true;
@@ -206,7 +214,12 @@ void switchNodes(Graph &G, RTree<int, int, 2, float> RTree, std::vector<Node> &n
 
             insertIntoRTree(RTree, G, n);
             removeFromRTree(RTree, G, m);
+
             
+            for (auto mapV : G.mapVerticesToPoints){
+                mapV;
+            }
+            assert(areValuesUnique(G.mapVerticesToPoints));
 
             #pragma omp parallel for reduction(+:cr_before)
             for (int idx = 0; idx < m_adjEdges.size(); ++idx) {
@@ -247,7 +260,6 @@ void switchNodes(Graph &G, RTree<int, int, 2, float> RTree, std::vector<Node> &n
             swapNodePositions(n,m);
             G.mapVerticesToPoints[n.GetId()]= n._pointId;
             G.mapVerticesToPoints[m.GetId()]= m._pointId;
-            
         }
         if (swap) {
             auto& m = G.nodes[m_idx];
@@ -262,10 +274,21 @@ void switchNodes(Graph &G, RTree<int, int, 2, float> RTree, std::vector<Node> &n
         insertIntoRTree(RTree, G, n);
     }
 }
+void createC(Graph &G, Graph &WCG, int cluster){
+    size_t numNodes = WCG.numNodes + G.NodeClusters[cluster].size() ; 
+    std::vector<Node> nodes = ;
+    const std::vector<Edge>& edges = ;
+    const std::vector<Point>& pointSet = G.pointClusters[cluster] ;
+    const int org_width = G.width; 
+    const int org_height = G.height;
+
+    Graph C (WCG.nodes, WCG.edges); 
+    C.
+}
 
 
 void iterativeCrossMinLocal( Graph &G, const int numberOfOuterLoops, std::vector<size_t> &freePoints, const int numberOfSamples, const int numberOfOuterLoopsMove,
-                                const int numNodes) {
+                                const int numNodes, Graph &WCG) {
     // initialize RTree data struct to speed up crossing computation
     RTree<int, int, 2, float> RTree;
     for (auto const &e : G.edges) {
@@ -278,7 +301,7 @@ void iterativeCrossMinLocal( Graph &G, const int numberOfOuterLoops, std::vector
     }
 
     for (int outerLoop = 0 ; outerLoop < numberOfOuterLoops; outerLoop++){
-        // std::cout << outerLoop << " of " << numberOfOuterLoops << std::endl;
+        std::cout << outerLoop << " of " << numberOfOuterLoops << std::endl;
         for (int l = 0; l < G.NodeClusters.size(); l++) {
             std::vector<Node> nodesToSwitch ;
             for (auto nTS : G.NodeClusters[l]){
@@ -317,14 +340,14 @@ void iterativeCrossMinGlobal( Graph &G, const int numberOfOuterLoops, const int 
 
 
     for (int outerLoop = 0 ; outerLoop < numberOfOuterLoops; outerLoop++){
-        // std::cout << outerLoop << " of " << numberOfOuterLoops << std::endl;
+        std::cout << outerLoop << " of " << numberOfOuterLoops << std::endl;
         std::vector<Node> &nodesToSwitch = G.nodes;
         std::vector<Point> &pointsToSwitch = G.points;
 
         if (pointsToSwitch.size() > nodesToSwitch.size()){ 
             for(int outerLoopMove = 0; outerLoopMove < numberOfOuterLoopsMove; outerLoopMove++){
                 
-               move(G, RTree, freePoints , G.nodes ,numberOfSamples, numNodes);
+              move(G, RTree, freePoints , G.nodes ,numberOfSamples, numNodes);
 
             }
         }
@@ -333,11 +356,4 @@ void iterativeCrossMinGlobal( Graph &G, const int numberOfOuterLoops, const int 
         
     }
 }
-
-
-
-
-
-
-
 

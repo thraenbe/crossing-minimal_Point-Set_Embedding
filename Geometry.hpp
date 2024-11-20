@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <cassert>
 
 
 // Required geometry for this contest -> points are on integer coordinates
@@ -166,6 +167,16 @@ using Segment = std::pair<Point, Point>;
 		return 0;
 	return (val > 0) ? 1 : 2;
 }
+
+[[nodiscard]] inline int NodeOrientation(const Point& p1, const Point& p2, const Point& p3)
+{
+	const double val = (p2._y - p1._y) * (p3._x - p2._x)
+		- (p2._x - p1._x) * (p3._y - p2._y);
+	if (val == 0.0)
+		return 0;
+	return (val > 0) ? 1 : 2;
+}
+
 
 
 // Function to compute the cross product of vectors (p1 - p) and (p2 - p)

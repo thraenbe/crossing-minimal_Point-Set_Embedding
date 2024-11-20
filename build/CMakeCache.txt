@@ -29,9 +29,6 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 //No help, variable specified on the command line.
 CMAKE_BUILD_TYPE:STRING=Debug
 
-//Enable/Disable color output during build.
-CMAKE_COLOR_MAKEFILE:BOOL=ON
-
 //No help, variable specified on the command line.
 CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++
 
@@ -114,8 +111,8 @@ CMAKE_INSTALL_PREFIX:PATH=/usr/local
 //Path to a program.
 CMAKE_LINKER:FILEPATH=/usr/bin/ld
 
-//Path to a program.
-CMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/gmake
+//Program used to build from build.ninja files.
+CMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/ninja
 
 //Flags used by the linker during the creation of modules during
 // all build types.
@@ -226,11 +223,14 @@ COIN:FILEPATH=/home/bela/uni-tuebingen/6/bachelor/code/ogdf/libCOIN.a
 //Path to a library.
 OGDF:FILEPATH=/home/bela/uni-tuebingen/6/bachelor/code/ogdf/libOGDF.a
 
-//Arguments to supply to pkg-config
-PKG_CONFIG_ARGN:STRING=
+//Value Computed by CMake
+PointSetCrossMinExp_BINARY_DIR:STATIC=/home/bela/uni-tuebingen/6/bachelor/code/build
 
-//pkg-config executable
-PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
+//Value Computed by CMake
+PointSetCrossMinExp_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+PointSetCrossMinExp_SOURCE_DIR:STATIC=/home/bela/uni-tuebingen/6/bachelor/code
 
 //Value Computed by CMake
 PointSetCrossMin_BINARY_DIR:STATIC=/home/bela/uni-tuebingen/6/bachelor/code/build
@@ -263,8 +263,6 @@ CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 CMAKE_CACHE_MINOR_VERSION:INTERNAL=29
 //Patch version of cmake used to create the current loaded cache
 CMAKE_CACHE_PATCH_VERSION:INTERNAL=3
-//ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
-CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
 CMAKE_COMMAND:INTERNAL=/usr/local/bin/cmake
 //Path to cpack program executable.
@@ -322,7 +320,7 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.
-CMAKE_GENERATOR:INTERNAL=Unix Makefiles
+CMAKE_GENERATOR:INTERNAL=Ninja
 //Generator instance identifier.
 CMAKE_GENERATOR_INSTANCE:INTERNAL=
 //Name of generator platform.
@@ -398,37 +396,6 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Boost
 FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake][c ][v1.74.0()]
-//Details about finding PkgConfig
-FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/usr/bin/pkg-config][v0.29.2()]
-LIBXLSXWRITER_CFLAGS:INTERNAL=
-LIBXLSXWRITER_CFLAGS_I:INTERNAL=
-LIBXLSXWRITER_CFLAGS_OTHER:INTERNAL=
-LIBXLSXWRITER_FOUND:INTERNAL=
-LIBXLSXWRITER_INCLUDEDIR:INTERNAL=
-LIBXLSXWRITER_LIBDIR:INTERNAL=
-LIBXLSXWRITER_LIBS:INTERNAL=
-LIBXLSXWRITER_LIBS_L:INTERNAL=
-LIBXLSXWRITER_LIBS_OTHER:INTERNAL=
-LIBXLSXWRITER_LIBS_PATHS:INTERNAL=
-LIBXLSXWRITER_MODULE_NAME:INTERNAL=
-LIBXLSXWRITER_PREFIX:INTERNAL=
-LIBXLSXWRITER_STATIC_CFLAGS:INTERNAL=
-LIBXLSXWRITER_STATIC_CFLAGS_I:INTERNAL=
-LIBXLSXWRITER_STATIC_CFLAGS_OTHER:INTERNAL=
-LIBXLSXWRITER_STATIC_LIBDIR:INTERNAL=
-LIBXLSXWRITER_STATIC_LIBS:INTERNAL=
-LIBXLSXWRITER_STATIC_LIBS_L:INTERNAL=
-LIBXLSXWRITER_STATIC_LIBS_OTHER:INTERNAL=
-LIBXLSXWRITER_STATIC_LIBS_PATHS:INTERNAL=
-LIBXLSXWRITER_VERSION:INTERNAL=
-LIBXLSXWRITER_libxlsxwriter_INCLUDEDIR:INTERNAL=
-LIBXLSXWRITER_libxlsxwriter_LIBDIR:INTERNAL=
-LIBXLSXWRITER_libxlsxwriter_PREFIX:INTERNAL=
-LIBXLSXWRITER_libxlsxwriter_VERSION:INTERNAL=
-//ADVANCED property for variable: PKG_CONFIG_ARGN
-PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
-PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //ADVANCED property for variable: boost_headers_DIR

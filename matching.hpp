@@ -1,6 +1,7 @@
 #pragma once
 #include "Graph.hpp"
 
+#include <cstddef>
 #include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/basic/geometry.h>
 
@@ -25,6 +26,7 @@
 #include <future>
 #include <chrono>
 #include <ranges>
+#include <vector>
 
 
 
@@ -160,6 +162,9 @@ void springEmbedding(const ogdf::Graph& G, ogdf::GraphAttributes& GA){
     if (ogdf::isConnected(G)){        
         KK.call(GA);
     }
+    else {
+        std::cout << "GRAPH IS NOT CONNECTED !!!";
+    }
 
     std::cout << std::endl;
 
@@ -181,7 +186,7 @@ void springEmbedding(const ogdf::Graph& G, ogdf::GraphAttributes& GA){
 
 
 inline float getWeight(const Point& point, const Node& node, const size_t num){
-    float weight =  num * (1 / (L2Dist(point, node.NodeToPoint()) + 1));
+    float weight =  num * (1/(L2Dist(point, node.NodeToPoint()) + 1));
     if (weight == 0){
         weight += 1;
     }
@@ -277,12 +282,12 @@ namespace
                 if (weight == 0){
                     weight += 1;
                 }
-
+                // std::cout << weight << " ";
                 assert(weight != 0);
                 boost::add_edge(j , i , EdgeProperty(static_cast<int>(weight)), BoostGraph);
                 // std::cout << "Match: " << j << " " << i <<"  NUM: " << num << "   Weight: " << weight << "  Node: " << nodes[j-points.size()].GetX() << " " << nodes[j-points.size()].GetY() << " " << "Point:  "<< allignedNodes[i].GetX() << " " << allignedNodes[i].GetY() << std::endl;
             }
-
+            // std::cout << std::endl;
         }
         assert(boost::num_vertices(BoostGraph) == points.size() + nodes.size());
         return BoostGraph;
@@ -290,20 +295,51 @@ namespace
 
     std::vector<size_t> minimumWeightMatching(BoostGraph& BoostGraph, int clusterSize){
         std::vector<VertexDescriptor> mate(boost::num_vertices(BoostGraph));
-            try {
-                boost::maximum_weighted_matching(BoostGraph, &mate[0]);
+        try {
+            boost::maximum_weighted_matching(BoostGraph, &mate[0]);
 
-                std::cout << "Max weight matching completed. Size: " << boost::matching_size(BoostGraph, &mate[0]) << "   Weight: "<< boost::matching_weight_sum(BoostGraph, &mate[0])  << std::endl;
-            } catch (const std::exception& e) {
-                std::cerr << "Exception during matching: " << e.what() << std::endl;
+            std::cout << "Max weight matching completed. Size: " << boost::matching_size(BoostGraph, &mate[0]) << "   Weight: "<< boost::matching_weight_sum(BoostGraph, &mate[0])  << std::endl;
+        } catch (const std::exception& e) {
+            std::cerr << "Exception during matching: " << e.what() << std::endl;
 
-            }
-
-                return mate;      
         }
 
+        return mate;      
+    }
+
+
+void greedyMinWeightMatching(BoostGraph& graph, Graph& myGraph) {
+    std::vector<int> map(num_vertices(graph), -1); // Initialize map with -1 (unassigned)
+    std::cout << " ------------------------------------------ Greedy Assignment for matching ######################################################### \n \n";
+
+    // Step 1: Get edge list with weights
+    std::vector<std::pair<BoostGraph::edge_descriptor, double>> edgesWithWeights;
+    for (auto edge : make_iterator_range(edges(graph))) {
+        auto weight = get(boost::edge_weight, graph, edge);
+        edgesWithWeights.emplace_back(edge, weight);
+    }
+
+    // Step 2: Sort edges by ascending weight
+    std::sort(edgesWithWeights.begin(), edgesWithWeights.end(),
+              [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+
+    // Step 3: Greedily assign each node its closest point
+    for (const auto& [edge, weight] : edgesWithWeights) {
+        auto nodeId = source(edge, graph);
+        auto pointId = target(edge, graph);
+        
+        // If neither node is assigned, connect them
+        if (map[nodeId] == -1 && map[pointId] == -1) {
+            map[nodeId] = pointId; 
+            map[pointId] = nodeId;
+            nodeId = nodeId - myGraph.points.size();
+            myGraph.mapVerticesToPoints[nodeId] = pointId;
+        }
+    }
+}
+
     void simpleAssign(Graph& myGraph, int size){
-        std::cout << " ------------------------------------------ Simple Assignment for matching \n \n";
+        std::cout << " ------------------------------------------ Simple Assignment for matching ######################################################### \n \n";
         int nodeId;
         int pointId;
         for (int i = 0 ; i <  myGraph.NodeClusters.size() ; i++){
@@ -318,15 +354,17 @@ namespace
         }
     }
 
-    void mapMatching(std::vector<size_t> mate, Graph& myGraph, int cluster){
+    void mapMatching(std::vector<size_t> mate, Graph& myGraph, int cluster, BoostGraph& BoostGraph){
         std::cout << std::endl;
         for (int i = 0; i < myGraph.NodeClusters[cluster].size(); i++){
             int nodeId = myGraph.NodeClusters[cluster][i].GetId();
             assert(i+myGraph.pointClusters[cluster].size()< mate.size());
             int pointId = myGraph.pointClusters[cluster][mate[i+myGraph.pointClusters[cluster].size()]].GetId() ;
             if (pointId >= myGraph.points.size()){
-                simpleAssign(myGraph,myGraph.NodeClusters[cluster].size() );
+                greedyMinWeightMatching(BoostGraph, myGraph);
                 break;
+                // simpleAssign(myGraph,myGraph.NodeClusters[cluster].size() );
+                // break;
             }
             assert(pointId < myGraph.points.size());
             assert(nodeId < myGraph.nodes.size());
@@ -348,15 +386,20 @@ namespace
     }
 
 
-    void mapMatching(std::vector<size_t> mate, Graph& myGraph){
-        std::cout << "Starting to match vertices of 1. Clustering" << std::endl;
+    void mapMatching(std::vector<size_t> mate, Graph& myGraph, BoostGraph& BoostGraph){
+        // std::cout << "Starting to match vertices of 1. Clustering" << std::endl;
+        for (auto m : mate){
+            std::cout << m << " ";
+        }
+        std::cout << std::endl;
         for (int i = 0; i < myGraph.nodes.size(); i++){
             int nodeId = myGraph.nodes[i].GetId();
             assert(i+myGraph.nodes.size() < mate.size());
             int pointId = mate[i+myGraph.nodes.size()];
             std::cout << pointId << " " << myGraph.points.size() << std::endl;
             if (pointId >= myGraph.points.size()){
-                simpleAssign(myGraph,myGraph.nodes.size() );
+                greedyMinWeightMatching(BoostGraph, myGraph);
+                // simpleAssign(myGraph,myGraph.nodes.size() );
                 break;
             }
             assert(nodeId < myGraph.nodes.size());
@@ -506,7 +549,7 @@ namespace
         return std::make_pair(ClusterGraph, edgeWeights);
     }
 
-    void matchClusters(Graph& ClusterGraph, const std::vector<size_t>& edgeWeights){
+    int matchClusters(Graph& ClusterGraph, const std::vector<size_t>& edgeWeights){
 
         std::vector<size_t> mate;
         ogdf::Graph G;
@@ -523,17 +566,20 @@ namespace
         ogdfToNodes(G, GA, ClusterGraph);
 
         std::cout << "convert cluster to Boost Graph \n";
-
-        BoostGraph = convertClusterToBoostGraph(ClusterGraph.points, ClusterGraph.NodeClusters[0], ClusterGraph.NodeClusters[0].size()*ClusterGraph.points.size());
+        int crossings = ClusterGraph.ComputeEffectiveCrossings(edgeWeights);
+        BoostGraph = convertClusterToBoostGraph(ClusterGraph.points, ClusterGraph.NodeClusters[0], ClusterGraph.points.size());
         mate = minimumWeightMatching(BoostGraph, ClusterGraph.NodeClusters[0].size());
 
-        mapMatching(mate, ClusterGraph);
+        mapMatching(mate, ClusterGraph, BoostGraph);
         std::cout << "finished 1. mapping \n";
+        return crossings;
     }
 
 
 
-    std::unordered_map<size_t, size_t> matching(Graph& myGraph, const std::vector<vector<Node>>& nodeClusters, std::unordered_set<size_t>&freePoints, std::unordered_set<size_t>&usedPoints, std::vector<Point>&points ){
+    std::vector<size_t> matching(Graph& myGraph, const std::vector<vector<Node>>& nodeClusters, std::unordered_set<size_t>&freePoints, std::unordered_set<size_t>&usedPoints, std::vector<Point>&points ){
+        std::vector<size_t> results = {0,0,0};
+        
         assert(myGraph.pointClusters.size() == myGraph.NodeClusters.size());
         std::vector<ogdf::Graph> graphClusters(nodeClusters.size());
         std::vector<ogdf::GraphAttributes> graphAttributesClusters(nodeClusters.size());
@@ -551,7 +597,7 @@ namespace
             BoostGraph = convertClusterToBoostGraph(myGraph.pointClusters[i], myGraph.NodeClusters[i], myGraph.nodes.size() * myGraph.edges.size() * myGraph.points.size());
             mate = minimumWeightMatching(BoostGraph, myGraph.NodeClusters[i].size());
 
-            mapMatching(mate, myGraph, i);
+            mapMatching(mate, myGraph, i, BoostGraph);
             std::cout << "Matching successful! " << std::endl;
 
 
@@ -560,5 +606,16 @@ namespace
             simpleAssign(myGraph, myGraph.nodes.size());
         }
 
-        return myGraph.mapVerticesToPoints;
+        return results;
     }
+
+void matchClusters(Graph& ClusterGraph, long num ){
+
+    std::vector<size_t> mate;
+
+    BoostGraph BoostGraph;
+    BoostGraph = convertClusterToBoostGraph(ClusterGraph.points, ClusterGraph.nodes, num );
+    mate = minimumWeightMatching(BoostGraph, ClusterGraph.nodes.size());
+    std::cout << " map Matching Number" << num <<  "  \n";
+    mapMatching(mate, ClusterGraph, BoostGraph);
+}

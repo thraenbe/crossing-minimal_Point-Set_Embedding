@@ -170,6 +170,12 @@ struct Graph {
 	[[nodiscard]] inline const Point& GetConstPosOfNode(const size_t nodeId) const {
 		return points[mapVerticesToPoints.at(nodeId)];
 	}
+
+[[nodiscard]] inline Point NodeToPoint(const size_t nodeId) const {
+    const auto& node = nodes[nodeId];  // Annahme: nodes ist ein Container von `Node`-Objekten
+    return Point(node.GetId(), node.GetX(), node.GetY());  // Rückgabe des Point-Objekts, ohne eine lokale Referenz zu erzeugen
+}
+
 	
 	// Edge relations
 	[[nodiscard]] int inline DoEdgesIntersect(const Edge& lhs, const Edge& rhs) const {
@@ -197,7 +203,35 @@ struct Graph {
            return DoOverlap(p2,p1,q1);
        }
 	return DoIntersect(p1,p2,q1,q2, numNodes);
+	}
 
+	[[nodiscard]] int inline DoEdgesIntersectVar(const Edge& lhs, const Edge& rhs) const {
+		
+		const auto& p1 = NodeToPoint(lhs.first);
+		
+       	const auto& p2 = NodeToPoint(lhs.second);
+		const auto& q1 = NodeToPoint(rhs.first);
+       	const auto& q2 = NodeToPoint(rhs.second);
+       	auto DoOverlap = [&](const Point& commonPoint, const Point& p, const Point& q) {
+          	if (Orientation(commonPoint, p, q) == 0 && !InBoundingBox(p, commonPoint, q)) {
+               return numNodes;
+           }
+           return (size_t) 0;
+       };
+
+       if (lhs.first== rhs.first) {
+           return DoOverlap(p1,p2,q2);
+       }
+       if (lhs.first== rhs.second) {
+           return DoOverlap(p1,p2,q1);
+       }
+       if (lhs.second== rhs.first) {
+           return DoOverlap(p2,p1,q2);
+       }
+       if (lhs.second== rhs.second) {
+           return DoOverlap(p2,p1,q1);
+       }
+	return DoIntersect(p1,p2,q1,q2, numNodes);
 	}
 
 	
@@ -219,6 +253,43 @@ struct Graph {
 		std::cout << " Collinear Crossings: " << counter << std::endl;
 		return crossings;
 	}
+
+	[[nodiscard]] inline int ComputeEffectiveCrossings(int& counter) const {
+		int crossings{ 0 };
+		int tmp = 0;
+		#pragma omp parallel for reduction (+:crossings) //<- use this if you want to parallelize the code
+		for (size_t i = 0; i < numEdges - 1; ++i) {
+			const auto& edge = edges[i];
+			for (size_t j = i + 1; j < numEdges; ++j) {
+				tmp = DoEdgesIntersectVar(edge,edges[j]);
+				crossings += tmp;
+				if (tmp > 1){
+					counter += 1;
+				}
+			}	
+		}
+		std::cout << " Collinear Crossings: " << counter << std::endl;
+		return crossings;
+	}
+
+
+	[[nodiscard]] inline int ComputeEffectiveCrossings(const std::vector<size_t>& edgeWeights) const {
+		int crossings{ 0 };
+		int tmp = 0;
+		#pragma omp parallel for reduction (+:crossings) //<- use this if you want to parallelize the code
+		for (size_t i = 0; i < numEdges - 1; ++i) {
+			const auto& edge = edges[i];
+			for (size_t j = i + 1; j < numEdges; ++j) {
+				tmp = DoEdgesIntersectVar(edge,edges[j]);
+				if (tmp == 1) {
+					tmp = edgeWeights[i]*edgeWeights[j]; 
+				}
+				crossings += tmp;
+			}
+		}
+		return crossings;
+	}
+
 
 	void toOgdfGraph(ogdf::Graph& ogdfGraph, ogdf::GraphAttributes& GA) const {
         std::unordered_map<size_t, ogdf::node> nodeMap;
@@ -470,42 +541,42 @@ void manClustering(vector<size_t> clusterSizes, int xmax, int ymax){
 
 	int direction = 0;
 	std::vector<Point> pointsInCurrentCluster;
-		for(auto i = 0; i < clusterSizes.size(); ++i){
-			direction = i % 8;
-			const auto& currentDirection = directions[direction];
-			assert(directions[direction].size() == points.size());
-			size_t s = 0;
-			// std::cout << "Starting While Loop: " << i << std::endl;
-			for(auto idx = 0; idx < points.size(); ++idx){
-				assert(currentDirection.size() > idx);
-				assert(s < clusterSizes[i]);
-				const auto& currentPointId = currentDirection[idx].GetId();
-				auto& currentPoint = points[currentPointId];
-				assert(currentPointId == points[currentPointId].GetId());
-				if (freePoints.contains(currentPointId)){
-					// if (clusterSizes[i] - s < freePoints.size()) {
-					// 	if (isCollinear(currentPoint, pointsInCurrentCluster )){
-					// 		freePoints.erase(currentPointId);
-					// 		currentPoint.SetCluster(i);
-					// 		pointsInCurrentCluster.push_back(currentPoint);
-					// 		s++;
-					// 	}
-					// }else{ 
-					freePoints.erase(currentPointId);
-					currentPoint.SetCluster(i);
-					pointsInCurrentCluster.push_back(currentPoint);
-					s++;
-					//}
-				}
-				if (s == clusterSizes[i]){
-					break;
-				}
+	for(auto i = 0; i < clusterSizes.size(); ++i){
+		direction = i % 8;
+		const auto& currentDirection = directions[direction];
+		assert(directions[direction].size() == points.size());
+		size_t s = 0;
+		// std::cout << "Starting While Loop: " << i << std::endl;
+		for(auto idx = 0; idx < points.size(); ++idx){
+			assert(currentDirection.size() > idx);
+			assert(s < clusterSizes[i]);
+			const auto& currentPointId = currentDirection[idx].GetId();
+			auto& currentPoint = points[currentPointId];
+			//assert(currentPointId == points[currentPointId].GetId());
+			if (freePoints.contains(currentPointId)){
+				// if (clusterSizes[i] - s < freePoints.size()) {
+				// 	if (isCollinear(currentPoint, pointsInCurrentCluster )){
+				// 		freePoints.erase(currentPointId);
+				// 		currentPoint.SetCluster(i);
+				// 		pointsInCurrentCluster.push_back(currentPoint);
+				// 		s++;
+				// 	}
+				// }else{ 
+				freePoints.erase(currentPointId);
+				currentPoint.SetCluster(i);
+				pointsInCurrentCluster.push_back(currentPoint);
+				s++;
+				//}
+			}
+			if (s == clusterSizes[i]){
+				break;
 			}
 		}
-		std::cout << "Clustering Complete" << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
-		assert(freePoints.empty());
-
 	}
+	std::cout << "Clustering Complete" << freePoints.size() << " " << clusterSizes[0] << " " << clusterSizes.size() << std::endl;
+	assert(freePoints.empty());
+
+}
 
 
 
