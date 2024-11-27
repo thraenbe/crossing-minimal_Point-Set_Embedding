@@ -17,7 +17,6 @@
 #include <ogdf/basic/GraphAttributes.h>
 #include <ogdf/graphalg/Clusterer.h>
 #include <ogdf/basic/SList.h>
-#include <ranges>
 
 
 using size_t = std::size_t;
@@ -35,6 +34,7 @@ struct Edge : public std::pair<size_t, size_t> {
 namespace {
 	const std::vector<std::vector<size_t>> InitAdjList(const size_t numNodes, const std::vector<Edge>& edges) {
 		//Generate adj list.
+		std::cout << "I\n";
 		std::vector<std::vector<size_t>>tmpAdjList(numNodes);
 		for (const auto& e : edges) {
 			auto& u = e.first;
@@ -42,6 +42,13 @@ namespace {
 			tmpAdjList[u].push_back(v);
 			tmpAdjList[v].push_back(u);
 		}
+	// 	for (size_t i = 0; i < tmpAdjList.size(); ++i) {
+	// 		std::cout << "Node " << i << ": ";
+	// 		for (const auto& neighbor : tmpAdjList[i]) {
+	// 			std::cout << neighbor << " ";
+	// 		}
+    // std::cout << "\n";
+	// 	}
 		return tmpAdjList;
 	}
 }
@@ -67,11 +74,11 @@ struct Graph {
 		// for (size_t i = 0; i < numPoints;++i) {
 		// 	freePoints.insert(i);
 		// }
-
+		std::cout << "m\n";
 		for (size_t i = 0; i < numNodes; i++) {
 			mapVerticesToPoints[i] = i;
 		}
-		
+		std::cout << "m\n";
 }
 
 
@@ -250,7 +257,7 @@ struct Graph {
 				}
 			}	
 		}
-		std::cout << " Collinear Crossings: " << counter << std::endl;
+		// std::cout << " Collinear Crossings: " << counter << std::endl;
 		return crossings;
 	}
 
@@ -268,7 +275,7 @@ struct Graph {
 				}
 			}	
 		}
-		std::cout << " Collinear Crossings: " << counter << std::endl;
+		// std::cout << " Collinear Crossings: " << counter << std::endl;
 		return crossings;
 	}
 

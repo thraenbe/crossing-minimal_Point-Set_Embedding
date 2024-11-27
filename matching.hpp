@@ -404,7 +404,7 @@ void greedyMinWeightMatching(BoostGraph& graph, Graph& myGraph) {
             }
             assert(nodeId < myGraph.nodes.size());
             myGraph.mapVerticesToPoints[nodeId] = pointId; 
-            // std::cout << "Matched Node: " << nodeId << " with Point: " << pointId << std::endl; 
+            std::cout << "Matched Node: " << nodeId << " with Point: " << pointId << std::endl; 
         }
     }
 
@@ -469,6 +469,7 @@ void greedyMinWeightMatching(BoostGraph& graph, Graph& myGraph) {
             sumX = sumX / pointClusters[i].size();
             sumY = sumY / pointClusters[i].size();
             centroids[i].SetPosition(sumX, sumY);
+            centroids[i]._id = i;
         }
         return centroids;
     }
@@ -586,7 +587,6 @@ void greedyMinWeightMatching(BoostGraph& graph, Graph& myGraph) {
         for (int i = 0 ; i < graphClusters.size(); i++){
             BoostGraph BoostGraph ;
             std::vector<size_t> mate;
-
 
             graphAttributesClusters[i] = ogdf::GraphAttributes(graphClusters[i],ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics | ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle | ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
             createClusterGraph(graphClusters[i], graphAttributesClusters[i], myGraph, nodeClusters[i]);

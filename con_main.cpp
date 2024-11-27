@@ -414,6 +414,7 @@ std::vector<double> computation(  long numberOfOuterLoopsGlobal , int numberOfSa
     
     std::pair<Graph, std::vector<size_t>> pair = createClusteringGraph(myGraph, myGraph.NodeClusters.size());
     std::cout << "Matching Cluster Graph\n";
+    Graph WCG = pair.first; 
 
     results[0] = matchClusters(pair.first, pair.second);
     results[1] = results[0]/numberOfClusters;
@@ -459,23 +460,23 @@ std::vector<double> computation(  long numberOfOuterLoopsGlobal , int numberOfSa
      *5. Swaping and Moving Nodes to reduce Crossings
      */
 
-    // //IterativeCrossMin for Clusters
-    // assignNodePosToPointPos(myGraph);
-    // std::vector<size_t> freePoints = getFreePositions(myGraph);
+    //IterativeCrossMin for Clusters
+    assignNodePosToPointPos(myGraph);
+    std::vector<size_t> freePoints = getFreePositions(myGraph);
 
-    // std::cout << "Starting Iterative Local Crossing Minimization \n";
+    std::cout << "Starting Iterative Local Crossing Minimization \n";
 
 
 
-    // iterativeCrossMinLocal(myGraph, numberOfOuterLoopsLocal, freePoints, numberOfSamples, numberOfOuterLoopsMove, myGraph.numNodes);
-    // assert(areValuesUnique(myGraph.mapVerticesToPoints));
+    iterativeCrossMinLocal(myGraph, numberOfOuterLoopsLocal, freePoints, numberOfSamples, numberOfOuterLoopsMove, myGraph.numNodes, WCG);
+    assert(areValuesUnique(myGraph.mapVerticesToPoints));
 
-    // std::cout << "Starting Global Iterative Crossing Minimization \n";
+    std::cout << "Starting Global Iterative Crossing Minimization \n";
     
 
     
-    // iterativeCrossMinGlobal(myGraph, numberOfOuterLoopsGlobal, numberOfOuterLoopsMove, freePoints, numberOfSamples, myGraph.numNodes, crossings);
-    // assert(areValuesUnique(myGraph.mapVerticesToPoints));
+    iterativeCrossMinGlobal(myGraph, numberOfOuterLoopsGlobal, numberOfOuterLoopsMove, freePoints, numberOfSamples, myGraph.numNodes);
+    assert(areValuesUnique(myGraph.mapVerticesToPoints));
 
 
 
@@ -510,27 +511,28 @@ int main(int argc, char* argv[]) {
     int clustering_automatic_threshold = 6;
 
 
-    long numberOfOuterLoopsGlobal = 1000000;
+    long numberOfOuterLoopsGlobal = 100;
     int numberOfSamples = 50 ;
     int numberOfOuterLoopsMove = 3;
-    int numberOfOuterLoopsLocal = 5;
-    std::vector<string> edgeP = {"0.05", "0.1", "0.15"};
+    int numberOfOuterLoopsLocal = 10;
+    int weights = 10000000;
+    std::vector<string> edgeP = {"0.1"};
 
     // std::vector<string> pointSizes = {"50", "51", "52", "53", "54", "55", "56", "57", "58"};
     // std::vector<string> pointSizes = {"50", "55", "60", "65", "70", "75", "80", "85", "90"};
     // std::vector<string> pointSizes = {"50", "75", "100", "125", "150", "175", "200", "225", "250"};
-    std::vector<string> pointSizes = {"55", "110","220","440", "880"};
+    // std::vector<string> pointSizes = {"55", "110","220","440", "880"};
+    std::vector<string> pointSizes = {"100", "200"};
 
 
     std::vector<int> crossingO;
     std::vector<int> crossingI;
     std::vector<int> crossingM;
     if (file.is_open()) {
-        for (auto p : pointSizes){     
+        for (auto p : pointSizes){
             for (auto e : edgeP){
-                for (int i = 0 ; i < 10; i++){
+                for (int i = 0 ; i < 1; i++){
                     graphfile = "exp"+ e  + "_" + p + "_" + std::to_string(i);
-                    numberOfOuterLoopsGlobal = numberOfOuterLoopsGlobal + 10000000;
                     auto crossingVector = computation(numberOfOuterLoopsGlobal, numberOfSamples, numberOfOuterLoopsMove, numberOfOuterLoopsLocal, 
                                                     clustering_automatic_threshold, 
                                                     graphfile); 
